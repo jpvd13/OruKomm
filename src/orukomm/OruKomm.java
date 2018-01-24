@@ -15,6 +15,7 @@ public class OruKomm {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        String hej;
         // TODO code application logic here
     }
     
