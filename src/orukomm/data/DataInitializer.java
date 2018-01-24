@@ -7,7 +7,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Creates database and initializes test data for the oru_komm database.
+ * Initializes test data for the oru_komm database.
  */
 public class DataInitializer {
 	private final Database db;
