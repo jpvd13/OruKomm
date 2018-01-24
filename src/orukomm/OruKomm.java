@@ -16,6 +16,7 @@ public class OruKomm {
      */
     public static void main(String[] args) {
         String hej;
+        String fml;
         // TODO code application logic here
     }
     
