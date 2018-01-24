@@ -17,6 +17,7 @@ public class OruKomm {
     public static void main(String[] args) {
         String hej;
         String fml;
+        int medlemmar = 10;
         // TODO code application logic here
     }
     
