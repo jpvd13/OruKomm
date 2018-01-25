@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import orukomm.MainWindow;
 import orukomm.data.DataInitializer;
 import orukomm.data.Database;
 
@@ -28,6 +29,7 @@ public class Login extends javax.swing.JFrame {
     public Login() {
         initComponents();
         db = Database.getInstance();
+        
     }
     
     private void login(String username, String password)
@@ -149,6 +151,11 @@ public class Login extends javax.swing.JFrame {
 
     private void btnLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLoginActionPerformed
         login(txtUsername.getText(), txtpPassword.getText());
+        
+        MainWindow mw = new MainWindow();
+        mw.setSize(500, 300);
+        mw.setVisible(true);
+        dispose();
     }//GEN-LAST:event_btnLoginActionPerformed
 
     private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed

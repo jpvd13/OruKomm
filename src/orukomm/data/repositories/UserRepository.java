@@ -25,7 +25,6 @@ public class UserRepository {
     
     private static Database db = new Database();
     private static Connection con = db.getConnection();
-    String faster = "fan";
     
     public static void registerUser(JTextField txt1, JTextField txt2, JTextField txt3, JTextField txt4, JPasswordField pw1, JPasswordField pw2) 
             throws SQLException
@@ -36,15 +35,16 @@ public class UserRepository {
         String email = txt3.getText();
         String username = txt4.getText();
         String password1 = pw1.getText();
+        String password2 = pw2.getText();
         
-        if(password1.equals(pw2))
+        if(password1.equals(password2))
         {
             try
             {
                 String query ="INSERT INTO user VALUES(null, '" + email + "','" + firstName + "','" + lastName + "','" + password1 + "', null);";
-
+                System.out.println(query);
                 PreparedStatement ps = con.prepareStatement(query);
-                ps.executeQuery();                
+                ps.executeUpdate();               
                                
             } catch(SQLException e){
                 System.out.println(e);

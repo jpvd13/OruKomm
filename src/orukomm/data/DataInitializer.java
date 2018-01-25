@@ -32,7 +32,7 @@ public class DataInitializer {
 			psDrp.executeUpdate();
 			
 			String createUserTable = "CREATE TABLE `user` ("
-				+ "`id` int(11) NOT NULL, `email` varchar(64) NOT NULL,"
+				+ "`id` int(11) NOT NULL AUTO_INCREMENT, `email` varchar(64) NOT NULL,"
 				+ "`first_name` varchar(32) NOT NULL, `surname` varchar(32) NOT NULL,"
 				+ "`password_hash` varchar(128) NOT NULL, `salt` varchar(10) DEFAULT NULL,"
 				+ "PRIMARY KEY (`id`), UNIQUE KEY `email` (`email`))"
