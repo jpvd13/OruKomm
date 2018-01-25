@@ -15,7 +15,7 @@ public class Database {
 	private final String dbDriver = "com.mysql.jdbc.Driver";
 	private final String connectionString = "jdbc:mysql://localhost:3306/oru_komm";
 	private final String dbUser = "root";
-	private final String dbPassword = "masterkey";
+	private final String dbPassword = "admin";
 	
 	public Database()
 	{
