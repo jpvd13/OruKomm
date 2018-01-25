@@ -136,6 +136,7 @@ public class RegPanel extends javax.swing.JPanel {
             Logger.getLogger(RegPanel.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println(ex);
         }
+        // TODO add your handling code here:
     }//GEN-LAST:event_btnSubmitActionPerformed
 
 
