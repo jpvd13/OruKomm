@@ -1,10 +1,12 @@
 package orukomm.data;
 
+import login.Login;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import login.Login;
 
 /**
  * Initializes test data for the oru_komm database.
@@ -18,7 +20,9 @@ public class DataInitializer {
 		
 		createTables();
 		seedData();
-		testLogin("foo@bar.com", "hejsan");
+		//testLogin("foo@bar.com", "hejsan");
+                Login meny = new Login();
+                meny.setVisible(true);
 	}
 	
 	private void createTables()
