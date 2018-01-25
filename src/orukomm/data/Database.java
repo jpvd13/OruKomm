@@ -14,8 +14,10 @@ public class Database {
 	private Connection connection;
 	private final String dbDriver = "com.mysql.jdbc.Driver";
 	private final String connectionString = "jdbc:mysql://localhost:3306/oru_komm";
+
 	private final String dbUser = "SYSDBA";
 	private final String dbPassword = "masterkey";
+
 	
 	public Database()
 	{
