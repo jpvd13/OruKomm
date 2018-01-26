@@ -14,7 +14,7 @@ public class Database {
 	private static Database singleton = null;
 	private Connection connection;
 	private final String dbDriver = "com.mysql.jdbc.Driver";
-	private final String connectionString = "jdbc:mysql://localhost:3306/oru_komm";
+	private final String connectionString = "jdbc:mysql://localhost:3306/oru_komm?autoReconnect=true&useSSL=false";
 
 	private final String dbUser = "root";
 	private final String dbPassword = "masterkey";
