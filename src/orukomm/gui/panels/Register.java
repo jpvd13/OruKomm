@@ -5,6 +5,7 @@ import javax.swing.JOptionPane;
 import orukomm.data.entities.User;
 import orukomm.data.repositories.UserRepository;
 import orukomm.gui.MainWindow;
+import orukomm.logic.Validation;
 
 public class Register extends javax.swing.JPanel {
 
@@ -25,16 +26,28 @@ public class Register extends javax.swing.JPanel {
 			newUser.setRole(1); // Should be retrieved from combobox.
 
 			// Validate submitted user.
-			boolean registration = false;
-
-			registration = true;
-
-			if (registration) {
-				// Write new user to data context.
-				userRepo.add(newUser);
-				parentFrame.switchPanel(parentFrame.pnlIndex);
-				JOptionPane.showMessageDialog(parentFrame, "Den nya användaren har registrerats.", "Användare registrerad", JOptionPane.INFORMATION_MESSAGE);
+			if (Validation.isEmptyOrNull(newUser.getFirstName())
+					|| Validation.isEmptyOrNull(newUser.getSurname())
+					|| Validation.isEmptyOrNull(newUser.getUsername())
+					|| Validation.isEmptyOrNull(newUser.getPassword())
+					|| Validation.isEmptyOrNull(pswPasswordConfirmation.getText())) {
+				JOptionPane.showMessageDialog(parentFrame, "Inga fält får lämnas tomma.", "Valideringsfel", JOptionPane.ERROR_MESSAGE);
+				
+				return;
 			}
+			
+			if (!newUser.getPassword().equals(pswPasswordConfirmation.getText())) {
+				JOptionPane.showMessageDialog(parentFrame, "Lösenorden du angav matchar inte varandra.", "Valideringsfel", JOptionPane.ERROR_MESSAGE);
+				
+				return;
+			}
+			
+			// TODO check that username is unique.
+			
+			// Survived validation: write new user to data context.
+			userRepo.add(newUser);
+			parentFrame.switchPanel(parentFrame.pnlIndex);
+			JOptionPane.showMessageDialog(parentFrame, "Den nya användaren har registrerats.", "Användare registrerad", JOptionPane.INFORMATION_MESSAGE);
 		});
 	}
 

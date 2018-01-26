@@ -10,7 +10,7 @@ public class Login extends javax.swing.JPanel {
 
 	private MainWindow parentFrame;
 	private UserRepository userRepo;
-	
+
 	public Login(MainWindow parentFrame) {
 		this.parentFrame = parentFrame;
 		initComponents();
@@ -24,26 +24,26 @@ public class Login extends javax.swing.JPanel {
 		btnLogin.addActionListener((ActionEvent e) -> {
 			// TODO run txtfPassword.getTetx() and salt through enryption method.
 			User user = userRepo.login(txtfUsername.getText(), pswPassword.getText());
-			
+
 			if (user.getId() == 0) {
 				JOptionPane.showMessageDialog(parentFrame, "Fel användarnamn eller lösenord.", "Inloggningen misslyckades", JOptionPane.ERROR_MESSAGE);
 			} else {
 				// Login success: 
 				parentFrame.loggedInUser = user;
 				String windowTitle = String.format("Orukomm [inloggad som %s %s]",
-				parentFrame.loggedInUser.getSurname(),
-				parentFrame.loggedInUser.getSurname());
+					parentFrame.loggedInUser.getFirstName(),
+					parentFrame.loggedInUser.getSurname());
 				parentFrame.setTitle(windowTitle);
-				
+
 				parentFrame.switchPanel(parentFrame.pnlRegister);
 			}
 		});
-		
+
 		pswPassword.addActionListener((ActionEvent e) -> {
 			btnLogin.doClick();
 		});
 	}
-	
+
 	@SuppressWarnings("unchecked")
         // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
         private void initComponents() {
