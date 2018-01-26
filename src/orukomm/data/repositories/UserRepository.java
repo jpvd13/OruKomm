@@ -23,9 +23,18 @@ public class UserRepository implements Repository<User> {
 
 	@Override
 	public void add(User user) {
-		// SQL to add user.
+		String query = String.format("INSERT INTO user VALUES (null, '%s', '%s', '%s', '%s', '%s', 1)",
+			user.getFirstName(), user.getSurname(), user.getUsername(), user.getPassword(), "SALT");
+		
+		PreparedStatement ps;
+		try {
+			ps = db.getConnection().prepareStatement(query);
+			ps.executeUpdate();
+		} catch (SQLException ex) {
+			Logger.getLogger(UserRepository.class.getName()).log(Level.SEVERE, null, ex);
+		}
 	}
-	
+
 	@Override
 	public void remove(User user) {
 		// SQL to remove user.
@@ -36,14 +45,14 @@ public class UserRepository implements Repository<User> {
 		// SQL to fetch User by id.
 		return new User();
 	}
-	
+
 	/*
 	 * Returns a user object if the username and password matches a row in the database.
-	*/
+	 */
 	public User login(String username, String password) {
 		User user = new User();
 		try {
-			String query = "SELECT * FROM user WHERE email = ? AND password_hash = ?";
+			String query = "SELECT * FROM user WHERE username = ? AND password_hash = ?";
 			PreparedStatement ps = db.getConnection().prepareStatement(query);
 
 			ps.setString(1, username);
@@ -56,7 +65,7 @@ public class UserRepository implements Repository<User> {
 					user.setId(rs.getInt("id"));
 					user.setFirstName(rs.getString("first_name"));
 					user.setSurname(rs.getString("surname"));
-					user.setUsername(rs.getString("email"));
+					user.setUsername(rs.getString("username"));
 					user.setPassword(rs.getString("password_hash"));
 					user.setSalt(rs.getString("salt"));
 					user.setRole(rs.getInt("role"));
@@ -65,10 +74,10 @@ public class UserRepository implements Repository<User> {
 		} catch (SQLException ex) {
 			Logger.getLogger(DataInitializer.class.getName()).log(Level.SEVERE, null, ex);
 		}
-		
+
 		return user;
 	}
-	
+
 	public static void registerUser(JTextField txt1, JTextField txt2, JTextField txt3, JTextField txt4, JPasswordField pw1, JPasswordField pw2)
 		throws SQLException {
 

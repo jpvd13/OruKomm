@@ -14,7 +14,6 @@ public class DataInitializer {
 
 	public DataInitializer() {
 		db = Database.getInstance();
-
 		createTables();
 		seedData();
 	}
@@ -25,11 +24,11 @@ public class DataInitializer {
 			psDrp.executeUpdate();
 
 			String createUserTable = "CREATE TABLE `user` ("
-				+ "`id` int(11) NOT NULL AUTO_INCREMENT, `email` varchar(64) NOT NULL,"
-				+ "`first_name` varchar(32) NOT NULL, `surname` varchar(32) NOT NULL,"
+				+ "`id` int(11) NOT NULL AUTO_INCREMENT, `first_name` varchar(32) NOT NULL,"
+				+ "`surname` varchar(32) NOT NULL, `username` varchar(64) NOT NULL,"
 				+ "`password_hash` varchar(128) NOT NULL, `salt` varchar(10) DEFAULT NULL,"
 				+ "role ENUM('0', '1', '2'), PRIMARY KEY (`id`),"
-				+ "UNIQUE KEY `email` (`email`)) ENGINE=InnoDB DEFAULT CHARSET=utf8";
+				+ "UNIQUE KEY `username` (`username`)) ENGINE=InnoDB DEFAULT CHARSET=utf8";
 
 			PreparedStatement psCrt = db.getConnection().prepareStatement(createUserTable);
 			psCrt.executeUpdate();
@@ -43,8 +42,8 @@ public class DataInitializer {
 		try {
 			// Cols: id, email, first_name, surname, password_hash, salt, role.
 			String insertUserData = "INSERT INTO user VALUES"
-				+ "(1, 'foo@bar.com', 'Foo', 'Bar', 'hejsan', 'HJK(/GHI', '0'),"
-				+ "(2, 'foo', 'Baz', 'Quuz', 'foo', 'HJK8/g&%', '0')";
+				+ "(1, 'Foo', 'Bar', 'foo', 'hejsan', 'HJK(/GHI', '1'),"
+				+ "(2, 'Baz', 'Quuz', 'bar', 'hejsan', 'HJK8/g&%', '1')";
 
 			PreparedStatement ps = db.getConnection().prepareStatement(insertUserData);
 			ps.executeUpdate();

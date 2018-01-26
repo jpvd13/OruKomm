@@ -15,7 +15,7 @@ public class MainWindow extends javax.swing.JFrame {
 	// Panels.
 	public Login pnlLogin;
 	public Index pnlIndex;
-	public Register pnlReg;
+	public Register pnlRegister;
 
 	public MainWindow() {
 		setTitle("OruKomm intranät");
@@ -30,7 +30,7 @@ public class MainWindow extends javax.swing.JFrame {
 		pnlContainer.setVisible(true);
 		pnlLogin = new Login(this);
 		pnlIndex = new Index(this);
-		pnlReg = new Register(this);
+		pnlRegister = new Register(this);
 	}
 
 	/**
