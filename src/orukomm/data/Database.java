@@ -10,35 +10,29 @@ import java.util.logging.Logger;
  * ...
  */
 public class Database {
+
 	private static Database singleton = null;
 	private Connection connection;
 	private final String dbDriver = "com.mysql.jdbc.Driver";
 	private final String connectionString = "jdbc:mysql://localhost:3306/oru_komm";
 
 	private final String dbUser = "root";
-	private final String dbPassword = "admin";
+	private final String dbPassword = "masterkey";
 
-	
-	public Database()
-	{
-		try
-		{
+	public Database() {
+		try {
 			Class.forName(dbDriver);
 			connection = DriverManager.getConnection(connectionString, dbUser, dbPassword);
-		}
-		catch (ClassNotFoundException | SQLException ex)
-		{
+		} catch (ClassNotFoundException | SQLException ex) {
 			Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
 		}
 	}
-	
-	public static Database getInstance()
-	{
+
+	public static Database getInstance() {
 		return singleton == null ? new Database() : singleton;
 	}
-	
-	public Connection getConnection()
-	{
+
+	public Connection getConnection() {
 		return connection;
 	}
 }
