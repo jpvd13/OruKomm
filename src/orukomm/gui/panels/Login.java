@@ -34,7 +34,7 @@ public class Login extends javax.swing.JPanel {
 				parentFrame.loggedInUser.getSurname());
 				parentFrame.setTitle(windowTitle);
 				
-				parentFrame.switchPanel(parentFrame.pnlIndex);
+				parentFrame.switchPanel(parentFrame.pnlRegister);
 			}
 		});
 		
@@ -55,6 +55,7 @@ public class Login extends javax.swing.JPanel {
                 pswPassword = new javax.swing.JPasswordField();
                 btnLogin = new javax.swing.JButton();
                 lblLoginError = new javax.swing.JLabel();
+                lblLoginHeading = new javax.swing.JLabel();
 
                 setLayout(new java.awt.GridBagLayout());
 
@@ -67,6 +68,9 @@ public class Login extends javax.swing.JPanel {
                 lblLoginError.setForeground(new java.awt.Color(255, 0, 0));
                 lblLoginError.setText(" ");
                 lblLoginError.setToolTipText("");
+
+                lblLoginHeading.setFont(new java.awt.Font("Noto Sans", 1, 14)); // NOI18N
+                lblLoginHeading.setText("Logga in");
 
                 javax.swing.GroupLayout pnlLoginContainerLayout = new javax.swing.GroupLayout(pnlLoginContainer);
                 pnlLoginContainer.setLayout(pnlLoginContainerLayout);
@@ -86,11 +90,17 @@ public class Login extends javax.swing.JPanel {
                                                         .addComponent(pswPassword, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                                                         .addComponent(btnLogin, javax.swing.GroupLayout.Alignment.TRAILING))))
                                 .addGap(87, 87, 87))
+                        .addGroup(pnlLoginContainerLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(lblLoginHeading)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 );
                 pnlLoginContainerLayout.setVerticalGroup(
                         pnlLoginContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(pnlLoginContainerLayout.createSequentialGroup()
-                                .addGap(73, 73, 73)
+                                .addGap(38, 38, 38)
+                                .addComponent(lblLoginHeading)
+                                .addGap(18, 18, 18)
                                 .addGroup(pnlLoginContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(txtfUsername, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(lblUsername))
@@ -118,6 +128,7 @@ public class Login extends javax.swing.JPanel {
         // Variables declaration - do not modify//GEN-BEGIN:variables
         private javax.swing.JButton btnLogin;
         private javax.swing.JLabel lblLoginError;
+        private javax.swing.JLabel lblLoginHeading;
         private javax.swing.JLabel lblPassword;
         private javax.swing.JLabel lblUsername;
         private javax.swing.JPanel pnlLoginContainer;
