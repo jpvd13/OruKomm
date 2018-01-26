@@ -1,14 +1,15 @@
 package orukomm.gui.panels;
 
 import java.awt.event.ActionEvent;
+import javax.swing.JOptionPane;
 import orukomm.data.entities.User;
 import orukomm.data.repositories.UserRepository;
 import orukomm.gui.MainWindow;
 
 public class Login extends javax.swing.JPanel {
 
-	private UserRepository userRepo;
 	private MainWindow parentFrame;
+	private UserRepository userRepo;
 	
 	public Login(MainWindow parentFrame) {
 		this.parentFrame = parentFrame;
@@ -25,7 +26,7 @@ public class Login extends javax.swing.JPanel {
 			User user = userRepo.login(txtfUsername.getText(), pswPassword.getText());
 			
 			if (user.getId() == 0) {
-				lblLoginError.setText("Fel användarnamn eller lösenord");
+				JOptionPane.showMessageDialog(parentFrame, "Fel användarnamn eller lösenord.", "Inloggningen misslyckades", JOptionPane.ERROR_MESSAGE);
 			} else {
 				// Login success: 
 				parentFrame.loggedInUser = user;
@@ -54,7 +55,6 @@ public class Login extends javax.swing.JPanel {
                 txtfUsername = new javax.swing.JTextField();
                 pswPassword = new javax.swing.JPasswordField();
                 btnLogin = new javax.swing.JButton();
-                lblLoginError = new javax.swing.JLabel();
                 lblLoginHeading = new javax.swing.JLabel();
 
                 setLayout(new java.awt.GridBagLayout());
@@ -65,10 +65,6 @@ public class Login extends javax.swing.JPanel {
 
                 btnLogin.setText("Logga in");
 
-                lblLoginError.setForeground(new java.awt.Color(255, 0, 0));
-                lblLoginError.setText(" ");
-                lblLoginError.setToolTipText("");
-
                 lblLoginHeading.setFont(new java.awt.Font("Noto Sans", 1, 14)); // NOI18N
                 lblLoginHeading.setText("Logga in");
 
@@ -78,17 +74,14 @@ public class Login extends javax.swing.JPanel {
                         pnlLoginContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlLoginContainerLayout.createSequentialGroup()
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(pnlLoginContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                        .addComponent(lblLoginError, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGroup(pnlLoginContainerLayout.createSequentialGroup()
-                                                .addGroup(pnlLoginContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(lblPassword, javax.swing.GroupLayout.Alignment.TRAILING)
-                                                        .addComponent(lblUsername, javax.swing.GroupLayout.Alignment.TRAILING))
-                                                .addGap(18, 18, 18)
-                                                .addGroup(pnlLoginContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(txtfUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(pswPassword, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                                        .addComponent(btnLogin, javax.swing.GroupLayout.Alignment.TRAILING))))
+                                .addGroup(pnlLoginContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(lblPassword, javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(lblUsername, javax.swing.GroupLayout.Alignment.TRAILING))
+                                .addGap(18, 18, 18)
+                                .addGroup(pnlLoginContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(txtfUsername, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(pswPassword, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(btnLogin, javax.swing.GroupLayout.Alignment.TRAILING))
                                 .addGap(87, 87, 87))
                         .addGroup(pnlLoginContainerLayout.createSequentialGroup()
                                 .addContainerGap()
@@ -110,9 +103,7 @@ public class Login extends javax.swing.JPanel {
                                         .addComponent(lblPassword))
                                 .addGap(18, 18, 18)
                                 .addComponent(btnLogin)
-                                .addGap(49, 49, 49)
-                                .addComponent(lblLoginError)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addContainerGap(78, Short.MAX_VALUE))
                 );
 
                 gridBagConstraints = new java.awt.GridBagConstraints();
@@ -127,7 +118,6 @@ public class Login extends javax.swing.JPanel {
 
         // Variables declaration - do not modify//GEN-BEGIN:variables
         private javax.swing.JButton btnLogin;
-        private javax.swing.JLabel lblLoginError;
         private javax.swing.JLabel lblLoginHeading;
         private javax.swing.JLabel lblPassword;
         private javax.swing.JLabel lblUsername;
