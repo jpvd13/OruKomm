@@ -42,8 +42,8 @@ public class DataInitializer {
 		try {
 			// Cols: id, email, first_name, surname, password_hash, salt, role.
 			String insertUserData = "INSERT INTO user VALUES"
-				+ "(1, 'Foo', 'Bar', 'foo', 'hejsan', 'HJK(/GHI', '1'),"
-				+ "(2, 'Baz', 'Quuz', 'bar', 'hejsan', 'HJK8/g&%', '1')";
+				+ "(1, 'Foo', 'Bar', 'foo@bar.com', 'hejsan', 'HJK(/GHI', '1'),"
+				+ "(2, 'Baz', 'Quuz', 'foo', 'hejsan', 'HJK8/g&%', '1')";
 
 			PreparedStatement ps = db.getConnection().prepareStatement(insertUserData);
 			ps.executeUpdate();
