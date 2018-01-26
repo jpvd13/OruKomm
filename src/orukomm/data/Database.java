@@ -29,7 +29,10 @@ public class Database {
 	}
 
 	public static Database getInstance() {
-		return singleton == null ? new Database() : singleton;
+		if (singleton == null)
+			singleton = new Database();
+
+		return singleton;
 	}
 
 	public Connection getConnection() {
