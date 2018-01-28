@@ -1,13 +1,17 @@
 package orukomm.gui;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.EnumSet;
 import javax.swing.JPanel;
+import orukomm.Settings;
 import orukomm.data.entities.User;
-import orukomm.data.entities.User.Role;
+import orukomm.data.entities.User.PermissionFlag;
 import orukomm.gui.panels.Index;
 import orukomm.gui.panels.Login;
 import orukomm.gui.panels.Register;
 
-public class MainWindow extends javax.swing.JFrame {
+public class MainWindow extends javax.swing.JFrame implements ActionListener {
 
 	// Global user object of the logged in user.
 	public User loggedInUser = new User();
@@ -24,6 +28,8 @@ public class MainWindow extends javax.swing.JFrame {
 		setLocationRelativeTo(null);
 		setVisible(true);
 		switchPanel(pnlLogin);
+		addActionListeners();
+		enableLoggedInInterface(Settings.LOGGED_OUT_ROLE);
 	}
 
 	private void initPanels() {
@@ -33,38 +39,63 @@ public class MainWindow extends javax.swing.JFrame {
 		pnlRegister = new Register(this);
 	}
 
-	/**
-	 * Enables and disables the relevant components for a logged in user depending on the user role.
+	/*
+	 * Enables and disables GUI components for a user role, depending on its permissions.
 	 */
-	public void enableLoggedInInterface(Role role) {
+	public void enableLoggedInInterface(EnumSet<PermissionFlag> userRole) {
+		if (userRole.contains(PermissionFlag.NONE)) {
+			mnuAccount.setVisible(false);
+		}
 		
-//		mnuArchiveLogout.setEnabled(loggedIn);
-//		mnuArchiveLogout.setVisible(loggedIn);
-//		mnuArchiveLogin.setEnabled(!loggedIn);
-//		mnuArchiveLogin.setVisible(!loggedIn);
-//		mnuAdministration.setEnabled(loggedIn);
-//		mnuAdministration.setVisible(loggedIn);
-//		mnuAdministrationRegisterTeacher.setVisible(isAdmin);
-//		mnuAdministrationAlterHead.setVisible(isAdmin);
-//		mnuAdministrationAlterPrefect.setVisible(isAdmin);
-//		mnuAdministrationAlterTeacher.setVisible(isAdmin);
-//		mnuSettings.setVisible(loggedIn);
-//		mnuSettings.setEnabled(loggedIn);
+		if (userRole.contains(PermissionFlag.USER)) {
+			mnuAccountRegUser.setVisible(true);
+		}
+
+		if (userRole.contains(PermissionFlag.ADMIN)) {
+			mnuAccountAdmin.setVisible(true);
+		}
+
+		if (userRole.contains(PermissionFlag.SUPERADMIN)) {
+			mnuAccountSuperadmin.setVisible(true);
+		}
 	}
 
-	/**
-	 * Removes all panels from the panel container and adds the specified panel to it.
+	/*
+	 * Removes current panel attached to the panel container and adds the specified panel to it.
 	 */
 	public void switchPanel(JPanel panel) {
-		// Remove the current panel.
 		pnlContainer.removeAll();
 		pnlContainer.repaint();
 		pnlContainer.revalidate();
 
-		// Add the specified panel to the wrapping panel.
 		pnlContainer.add(panel);
 		pnlContainer.repaint();
 		pnlContainer.revalidate();
+	}
+
+	private void addActionListeners() {
+		mnuArchiveExit.setActionCommand("mnuArchiveExit");
+		mnuArchiveExit.addActionListener(this);
+
+		mnuAccountLogout.setActionCommand("mnuAccountLogout");
+		mnuAccountLogout.addActionListener(this);
+	}
+
+	/*
+	 * Handle menu events.
+	 */
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		switch (e.getActionCommand()) {
+			case "mnuArchiveExit":
+				this.dispatchEvent(new java.awt.event.WindowEvent(this,	java.awt.event.WindowEvent.WINDOW_CLOSING));
+				break;
+				
+			case "mnuAccountLogout":
+				loggedInUser = new User();
+				System.gc(); // Wipe out the old user object.
+				break;
+		}
 	}
 
 	@SuppressWarnings("unchecked")
@@ -72,24 +103,46 @@ public class MainWindow extends javax.swing.JFrame {
         private void initComponents() {
 
                 pnlContainer = new javax.swing.JPanel();
-                jMenuBar1 = new javax.swing.JMenuBar();
-                jMenu1 = new javax.swing.JMenu();
-                jMenuItem1 = new javax.swing.JMenuItem();
+                mnubMain = new javax.swing.JMenuBar();
+                mnuArchive = new javax.swing.JMenu();
+                mnuArchiveExit = new javax.swing.JMenuItem();
+                mnuAccount = new javax.swing.JMenu();
+                mnuAccountLogout = new javax.swing.JMenuItem();
+                mnuAccountRegUser = new javax.swing.JMenuItem();
+                mnuAccountAdmin = new javax.swing.JMenuItem();
+                mnuAccountSuperadmin = new javax.swing.JMenuItem();
 
                 setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
                 pnlContainer.setPreferredSize(new java.awt.Dimension(1024, 768));
                 pnlContainer.setLayout(new java.awt.CardLayout());
 
-                jMenu1.setText("Arkiv");
+                mnuArchive.setText("Arkiv");
 
-                jMenuItem1.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, 0));
-                jMenuItem1.setText("Avsluta");
-                jMenu1.add(jMenuItem1);
+                mnuArchiveExit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+                mnuArchiveExit.setText("Avsluta");
+                mnuArchive.add(mnuArchiveExit);
 
-                jMenuBar1.add(jMenu1);
+                mnubMain.add(mnuArchive);
 
-                setJMenuBar(jMenuBar1);
+                mnuAccount.setText("Konto");
+
+                mnuAccountLogout.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+                mnuAccountLogout.setText("Logga ut");
+                mnuAccount.add(mnuAccountLogout);
+
+                mnuAccountRegUser.setText("Endast för användare");
+                mnuAccount.add(mnuAccountRegUser);
+
+                mnuAccountAdmin.setText("Endast för admin");
+                mnuAccount.add(mnuAccountAdmin);
+
+                mnuAccountSuperadmin.setText("Endast för superadmin");
+                mnuAccount.add(mnuAccountSuperadmin);
+
+                mnubMain.add(mnuAccount);
+
+                setJMenuBar(mnubMain);
 
                 javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
                 getContentPane().setLayout(layout);
@@ -106,9 +159,15 @@ public class MainWindow extends javax.swing.JFrame {
         }// </editor-fold>//GEN-END:initComponents
 
         // Variables declaration - do not modify//GEN-BEGIN:variables
-        private javax.swing.JMenu jMenu1;
-        private javax.swing.JMenuBar jMenuBar1;
-        private javax.swing.JMenuItem jMenuItem1;
+        private javax.swing.JMenu mnuAccount;
+        private javax.swing.JMenuItem mnuAccountAdmin;
+        private javax.swing.JMenuItem mnuAccountLogout;
+        private javax.swing.JMenuItem mnuAccountRegUser;
+        private javax.swing.JMenuItem mnuAccountSuperadmin;
+        private javax.swing.JMenu mnuArchive;
+        private javax.swing.JMenuItem mnuArchiveExit;
+        private javax.swing.JMenuBar mnubMain;
         private javax.swing.JPanel pnlContainer;
         // End of variables declaration//GEN-END:variables
+
 }
