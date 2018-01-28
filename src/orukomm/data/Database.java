@@ -2,12 +2,14 @@ package orukomm.data;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * ...
+ * Database singleton class providing the connection to the database and freeing connection resources.
  */
 public class Database {
 
@@ -19,7 +21,7 @@ public class Database {
 	private final String dbUser = "root";
 	private final String dbPassword = "masterkey";
 
-	public Database() {
+	private Database() {
 		try {
 			Class.forName(dbDriver);
 			connection = DriverManager.getConnection(connectionString, dbUser, dbPassword);
@@ -29,13 +31,44 @@ public class Database {
 	}
 
 	public static Database getInstance() {
-		if (singleton == null)
+		if (singleton == null) {
 			singleton = new Database();
+		}
 
 		return singleton;
 	}
 
 	public Connection getConnection() {
 		return connection;
+	}
+
+	/*
+	 * Closes prvided database resources.
+	 */
+	public static void close(ResultSet rs, PreparedStatement ps, Connection conn) {
+		if (rs != null) {
+			try {
+				rs.close();
+
+			} catch (SQLException ex) {
+				Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+			}
+		}
+		
+		if (ps != null) {
+			try {
+				ps.close();
+			} catch (SQLException ex) {
+				Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+			}
+		}
+		
+		if (conn != null) {
+			try {
+				conn.close();
+			} catch (SQLException ex) {
+				Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+			}
+		}
 	}
 }

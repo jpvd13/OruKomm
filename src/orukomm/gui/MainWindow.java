@@ -7,7 +7,6 @@ import javax.swing.JPanel;
 import orukomm.Settings;
 import orukomm.data.entities.User;
 import orukomm.data.entities.User.PermissionFlag;
-import orukomm.gui.panels.Index;
 import orukomm.gui.panels.Login;
 import orukomm.gui.panels.Register;
 
@@ -15,11 +14,6 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 
 	// Global user object of the logged in user.
 	public User loggedInUser = new User();
-
-	// Panels.
-	public Login pnlLogin;
-	public Index pnlIndex;
-	public Register pnlRegister;
 	
 	public MainWindow() {
 		setTitle(Settings.WINDOW_TITLE);
@@ -56,7 +50,6 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 		pnlContainer.removeAll();
 		pnlContainer.repaint();
 		pnlContainer.revalidate();
-		
 		pnlContainer.add(panel);
 		pnlContainer.repaint();
 		pnlContainer.revalidate();

@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 
 import orukomm.data.DataInitializer;
 import orukomm.data.Database;
+import static orukomm.data.Database.close;
 import orukomm.data.entities.User;
 
 public class UserRepository implements Repository<User> {
@@ -20,16 +21,19 @@ public class UserRepository implements Repository<User> {
 
 	@Override
 	public void add(User user) {
+		PreparedStatement ps = null;
 		String query = String.format("INSERT INTO user VALUES (null, ?, ?, ?, '%s', 'SALT', '%d')", user.getPassword(), user.getRole());
 		
 		try {
-			PreparedStatement ps = db.getConnection().prepareStatement(query);
+			ps = db.getConnection().prepareStatement(query);
 			ps.setString(1, user.getFirstName());
 			ps.setString(2, user.getSurname());
 			ps.setString(3, user.getUsername());
 			ps.executeUpdate();
 		} catch (SQLException ex) {
 			Logger.getLogger(UserRepository.class.getName()).log(Level.SEVERE, null, ex);
+		} finally {
+			close(null, ps, null);
 		}
 	}
 
@@ -49,18 +53,22 @@ public class UserRepository implements Repository<User> {
 	 */
 	public boolean userExists(String username) {
 		boolean userExists = false;
+		ResultSet rs = null;
+		PreparedStatement ps = null;
 		String query = "SELECT username FROM user WHERE username = ?";
+		
 		try {
-			PreparedStatement ps = db.getConnection().prepareStatement(query);
+			ps = db.getConnection().prepareStatement(query);
 			ps.setString(1, username);
-			ResultSet rs = ps.executeQuery();
+			rs = ps.executeQuery();
 			
 			if (rs.next()) {
 				userExists = true;
 			}
-			
 		} catch (SQLException ex) {
 			Logger.getLogger(UserRepository.class.getName()).log(Level.SEVERE, null, ex);
+		} finally {
+			close(rs, ps, null);
 		}
 		
 		return userExists;
@@ -71,13 +79,16 @@ public class UserRepository implements Repository<User> {
 	 */
 	public User login(String username, String password) {
 		User user = new User();
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		
 		try {
 			String query = "SELECT * FROM user WHERE username = ? AND password_hash = ?";
-			PreparedStatement ps = db.getConnection().prepareStatement(query);
+			ps = db.getConnection().prepareStatement(query);
 
 			ps.setString(1, username);
 			ps.setString(2, password);
-			ResultSet rs = ps.executeQuery();
+			rs = ps.executeQuery();
 
 			if (rs.next()) {
 				if (rs.isFirst() && rs.isLast()) {
@@ -93,6 +104,8 @@ public class UserRepository implements Repository<User> {
 			}
 		} catch (SQLException ex) {
 			Logger.getLogger(DataInitializer.class.getName()).log(Level.SEVERE, null, ex);
+		} finally {
+			close(rs, ps, null);
 		}
 
 		return user;
