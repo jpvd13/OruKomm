@@ -20,12 +20,13 @@ public class UserRepository implements Repository<User> {
 
 	@Override
 	public void add(User user) {
-		String query = String.format("INSERT INTO user VALUES (null, '%s', '%s', '%s', '%s', '%s', '%d')",
-			user.getFirstName(), user.getSurname(), user.getUsername(), user.getPassword(), "SALT", user.getRole());
+		String query = String.format("INSERT INTO user VALUES (null, ?, ?, '%s', ?, 'SALT', '%d')", user.getPassword(), user.getRole());
 		
-		PreparedStatement ps;
 		try {
-			ps = db.getConnection().prepareStatement(query);
+			PreparedStatement ps = db.getConnection().prepareStatement(query);
+			ps.setString(1, user.getFirstName());
+			ps.setString(2, user.getSurname());
+			ps.setString(3, user.getUsername());
 			ps.executeUpdate();
 		} catch (SQLException ex) {
 			Logger.getLogger(UserRepository.class.getName()).log(Level.SEVERE, null, ex);
