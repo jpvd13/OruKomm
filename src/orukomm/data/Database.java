@@ -11,7 +11,7 @@ import java.util.logging.Logger;
 /**
  * Database singleton class providing the connection to the database and freeing connection resources.
  */
-public class Database {
+public class Database {	
 
 	private static Database singleton = null;
 	private Connection connection;
@@ -43,7 +43,23 @@ public class Database {
 	}
 
 	/*
-	 * Closes prvided database resources.
+	 * Returns the number of rows fetched to the ResultSet.
+	 */
+	public static int fetchedRows(ResultSet rs) {
+		int rows = 0;
+		
+		try {
+			rs.last();
+			rows = rs.getRow();
+		} catch (SQLException ex) {
+			Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+		}
+		
+		return rows;
+	}
+	
+	/*
+	 * Closes provided database resources.
 	 */
 	public static void close(ResultSet rs, PreparedStatement ps, Connection conn) {
 		if (rs != null) {
