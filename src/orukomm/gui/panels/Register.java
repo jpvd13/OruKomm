@@ -63,6 +63,8 @@ public class Register extends javax.swing.JPanel {
 			// Check if username exists in data context.
 			if (userRepo.userExists(newUser.getUsername())) {
 				JOptionPane.showMessageDialog(parentFrame, "Användarnamnet du angav existerar redan.", "Användarnamn upptaget", JOptionPane.ERROR_MESSAGE);
+				
+				return;
 			}
 			
 			// User registration survived the validation: write new user to data context.

@@ -20,7 +20,7 @@ public class UserRepository implements Repository<User> {
 
 	@Override
 	public void add(User user) {
-		String query = String.format("INSERT INTO user VALUES (null, ?, ?, '%s', ?, 'SALT', '%d')", user.getPassword(), user.getRole());
+		String query = String.format("INSERT INTO user VALUES (null, ?, ?, ?, '%s', 'SALT', '%d')", user.getPassword(), user.getRole());
 		
 		try {
 			PreparedStatement ps = db.getConnection().prepareStatement(query);
