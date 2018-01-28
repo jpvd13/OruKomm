@@ -8,6 +8,7 @@ import orukomm.data.entities.User;
 import orukomm.data.repositories.UserRepository;
 import orukomm.gui.MainWindow;
 import orukomm.logic.Validation;
+import orukomm.logic.security.Encryption;
 
 public class Register extends javax.swing.JPanel {
 
@@ -22,12 +23,6 @@ public class Register extends javax.swing.JPanel {
 		// Registration submit event.
 		btnRegister.addActionListener((ActionEvent e) -> {
 			User newUser = new User();
-			newUser.setFirstName(txtfFirstName.getText());
-			newUser.setSurname(txtfSurname.getText());
-			newUser.setUsername(txtfUsername.getText());
-			newUser.setPassword(pswPassword.getText());
-			
-			// TODO generate salt and password hash.
 			
 			switch (cmbRoles.getSelectedIndex()) {
 				case 0:
@@ -43,31 +38,42 @@ public class Register extends javax.swing.JPanel {
 					break;
 			}
 			
-			// Validate submitted user.
-			if (Validation.isEmptyOrNull(newUser.getFirstName())
-					|| Validation.isEmptyOrNull(newUser.getSurname())
-					|| Validation.isEmptyOrNull(newUser.getUsername())
-					|| Validation.isEmptyOrNull(newUser.getPassword())
+			// Validate submitted user's properties.
+			if (Validation.isEmptyOrNull(txtfFirstName.getText())
+					|| Validation.isEmptyOrNull(txtfSurname.getText())
+					|| Validation.isEmptyOrNull(txtfUsername.getText())
+					|| Validation.isEmptyOrNull(pswPassword.getText())
 					|| Validation.isEmptyOrNull(pswPasswordConfirmation.getText())) {
 				JOptionPane.showMessageDialog(parentFrame, "Inga fält får lämnas tomma.", "Valideringsfel", JOptionPane.ERROR_MESSAGE);
 				
 				return;
 			}
 			
-			if (!newUser.getPassword().equals(pswPasswordConfirmation.getText())) {
+			if (!pswPassword.getText().equals(pswPasswordConfirmation.getText())) {
 				JOptionPane.showMessageDialog(parentFrame, "Lösenorden du angav matchar inte varandra.", "Valideringsfel", JOptionPane.ERROR_MESSAGE);
 				
 				return;
 			}
 			
-			// Check if username exists in data context.
-			if (userRepo.userExists(newUser.getUsername())) {
+			// Check if username exists in the data context.
+			if (userRepo.userExists(txtfUsername.getText())) {
 				JOptionPane.showMessageDialog(parentFrame, "Användarnamnet du angav existerar redan.", "Användarnamn upptaget", JOptionPane.ERROR_MESSAGE);
 				
 				return;
 			}
 			
-			// User registration survived the validation: write new user to data context.
+			// Generate salt and password hash.
+			String salt = Encryption.generateSalt();
+			String passwordHash = Encryption.generatePasswordHash(pswPassword.getText(), salt);
+			
+			// Set new user object and write it to the data context.
+			newUser.setFirstName(txtfFirstName.getText());
+			newUser.setSurname(txtfSurname.getText());
+			newUser.setUsername(txtfUsername.getText());
+			newUser.setPassword(passwordHash);
+			newUser.setSalt(salt);
+			
+			// User registration survived the validation: Write it to the data context.
 			userRepo.add(newUser);
 			parentFrame.switchPanel(new Index(parentFrame));
 			JOptionPane.showMessageDialog(parentFrame, "Den nya användaren har registrerats.", "Användare registrerad", JOptionPane.INFORMATION_MESSAGE);

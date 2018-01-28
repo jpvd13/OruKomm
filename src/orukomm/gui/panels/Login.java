@@ -6,6 +6,7 @@ import orukomm.data.entities.User;
 import orukomm.data.entities.User.PermissionFlag;
 import orukomm.data.repositories.UserRepository;
 import orukomm.gui.MainWindow;
+import orukomm.logic.security.Encryption;
 
 public class Login extends javax.swing.JPanel {
 
@@ -21,10 +22,21 @@ public class Login extends javax.swing.JPanel {
 	}
 
 	private void addEventListeners() {
-		// Login submit.
+		// Login event.
 		btnLogin.addActionListener((ActionEvent e) -> {
-			// TODO run txtfPassword.getTetx() and salt through enryption method.
-			User user = userRepo.login(txtfUsername.getText(), pswPassword.getText());
+			User user;
+			String salt = "";
+			String passwordHash = "";
+			
+			// Run submitted password and username's salt through SHA-256 hashing method if the submitted
+			// username exists in the data context.
+			if (userRepo.userExists(txtfUsername.getText())) {
+				User tmpUser = userRepo.getByUsername(txtfUsername.getText());
+				salt = tmpUser.getSalt();
+				passwordHash = Encryption.generatePasswordHash(pswPassword.getText(), salt);
+			}
+			
+			user = userRepo.login(txtfUsername.getText(), passwordHash);
 
 			if (user.getId() == 0) {
 				JOptionPane.showMessageDialog(parentFrame, "Fel användarnamn eller lösenord.", "Inloggningen misslyckades", JOptionPane.ERROR_MESSAGE);

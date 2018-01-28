@@ -22,7 +22,8 @@ public class UserRepository implements Repository<User> {
 	@Override
 	public void add(User user) {
 		PreparedStatement ps = null;
-		String query = String.format("INSERT INTO user VALUES (null, ?, ?, ?, '%s', 'SALT', '%d')", user.getPassword(), user.getRole());
+		String query = String.format("INSERT INTO user VALUES (null, ?, ?, ?, '%s', '%s', '%d')",
+			user.getPassword(), user.getSalt(), user.getRole());
 		
 		try {
 			ps = db.getConnection().prepareStatement(query);
@@ -43,7 +44,7 @@ public class UserRepository implements Repository<User> {
 	}
 
 	@Override
-	public User get(int id) {
+	public User getById(int id) {
 		// SQL to fetch User by id.
 		return new User();
 	}
@@ -72,6 +73,39 @@ public class UserRepository implements Repository<User> {
 		}
 		
 		return userExists;
+	}
+	
+	public User getByUsername(String username) {
+		User user = new User();
+		ResultSet rs =  null;
+		PreparedStatement ps = null;
+		
+		try {
+			String query = "SELECT * FROM user WHERE username = ?";
+			ps = db.getConnection().prepareStatement(query);
+
+			ps.setString(1, username);
+			rs = ps.executeQuery();
+
+			if (rs.next()) {
+				if (rs.isFirst() && rs.isLast()) {
+					// Username exists.
+					user.setId(rs.getInt("id"));
+					user.setFirstName(rs.getString("first_name"));
+					user.setSurname(rs.getString("surname"));
+					user.setUsername(rs.getString("username"));
+					user.setPassword(rs.getString("password_hash"));
+					user.setSalt(rs.getString("salt"));
+					user.setRole(rs.getInt("role"));
+				}
+			}
+		} catch (SQLException ex) {
+			Logger.getLogger(DataInitializer.class.getName()).log(Level.SEVERE, null, ex);
+		} finally {
+			close(rs, ps, null);
+		}
+
+		return user;		
 	}
 	
 	/*
