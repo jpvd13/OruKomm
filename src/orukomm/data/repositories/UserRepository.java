@@ -11,7 +11,7 @@ import javax.swing.JTextField;
 import orukomm.data.DataInitializer;
 import orukomm.data.Database;
 import orukomm.data.entities.User;
-import orukomm.data.entities.User.Role;
+import orukomm.data.entities.User.PermissionFlag;
 
 public class UserRepository implements Repository<User> {
 
@@ -89,7 +89,7 @@ public class UserRepository implements Repository<User> {
 
 		if (password1.equals(password2)) {
 			try {
-				String query = "INSERT INTO user VALUES(null, '" + email + "','" + firstName + "','" + lastName + "','" + password1 + "', null," + Role.USER.ordinal() + ")";
+				String query = "INSERT INTO user VALUES(null, '" + email + "','" + firstName + "','" + lastName + "','" + password1 + "', null," + PermissionFlag.USER.ordinal() + ")";
 				System.out.println(query);
 				PreparedStatement ps = db.getConnection().prepareStatement(query);
 				ps.executeUpdate();

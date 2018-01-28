@@ -1,5 +1,7 @@
 package orukomm.data.entities;
 
+import java.util.EnumSet;
+
 /*
  * Models a user account at OruKomm.
  */
@@ -9,7 +11,7 @@ public class User implements Entity {
 	private String firstName;
 	private String surname;
 	private String username;
-	private String password;
+	private String passwordHash;
 	private String salt;
 	private int role;
 
@@ -32,11 +34,11 @@ public class User implements Entity {
 	}
 
 	public String getPassword() {
-		return password;
+		return passwordHash;
 	}
 
 	public void setPassword(String password) {
-		this.password = password;
+		this.passwordHash = password;
 	}
 
 	public String getSalt() {
@@ -76,17 +78,48 @@ public class User implements Entity {
 		return firstName + " " + surname;
 	}
 
-	public enum Role {
-		USER(0),
-		ADMIN(1),
-		SUPERMAN(2);
-		private final int value;
+	/*
+	 * User permissions represented as a bit field structure.
+	 */
+	public enum PermissionFlag {
+		NONE(1<<0),
+		USER(1<<1),
+		ADMIN(1<<2),
+		SUPERADMIN(1<<3);
 		
-		private Role(int value) {
-			this.value = value;
+		private final int permissionFlagValue;
+		
+		PermissionFlag(int permissionFlagValue) {
+			this.permissionFlagValue = permissionFlagValue;
 		}
 		
-		public int getValue() {
+		public int getPermissionFlagValue() {
+			return permissionFlagValue;
+		}
+		
+		/*
+		 * Translates numeric permission code into a set of flags.
+		 */
+		public EnumSet<PermissionFlag> getPermissionFlags(int permissionValue) {
+			EnumSet permissionFlags = EnumSet.noneOf(PermissionFlag.class);
+			for (PermissionFlag permissionFlag : PermissionFlag.values()) {
+				int flagValue = permissionFlag.permissionFlagValue;
+				if ((flagValue&permissionValue) == flagValue)
+					permissionFlags.add(permissionFlag);
+			}
+		
+			return permissionFlags;
+		}
+		
+		/*
+		 * Translates a set of permission flags into a numeric role code.
+		 */
+		public int getPermissionValue(EnumSet<PermissionFlag> permissions) {
+			int value = 0;
+			for(PermissionFlag permissionFlag : permissions) {
+				value|=permissionFlag.getPermissionFlagValue();
+			}
+			
 			return value;
 		}
 	}
