@@ -4,7 +4,7 @@ import orukomm.gui.MainWindow;
 
 /*
  * First panel to display after successful login.
-*/
+ */
 public class Index extends javax.swing.JPanel {
 
 	public Index(MainWindow parentFrame) {
