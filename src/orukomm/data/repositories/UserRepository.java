@@ -20,8 +20,8 @@ public class UserRepository implements Repository<User> {
 
 	@Override
 	public void add(User user) {
-		String query = String.format("INSERT INTO user VALUES (null, '%s', '%s', '%s', '%s', '%s', %d)",
-			user.getFirstName(), user.getSurname(), user.getUsername(), user.getPassword(), user.getRole(), "SALT");
+		String query = String.format("INSERT INTO user VALUES (null, '%s', '%s', '%s', '%s', '%s', '%d')",
+			user.getFirstName(), user.getSurname(), user.getUsername(), user.getPassword(), "SALT", user.getRole());
 		
 		PreparedStatement ps;
 		try {
