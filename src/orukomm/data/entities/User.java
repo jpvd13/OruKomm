@@ -101,7 +101,7 @@ public class User implements Entity {
 		 * Translates numeric permission code into a set of flags.
 		 */
 		public EnumSet<PermissionFlag> getPermissionFlags(int permissionValue) {
-			EnumSet permissionFlags = EnumSet.noneOf(PermissionFlag.class);
+			EnumSet<PermissionFlag> permissionFlags = EnumSet.noneOf(PermissionFlag.class);
 			for (PermissionFlag permissionFlag : PermissionFlag.values()) {
 				int flagValue = permissionFlag.permissionFlagValue;
 				if ((flagValue&permissionValue) == flagValue)
