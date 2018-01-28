@@ -10,5 +10,5 @@ public interface Repository<Entity> {
 	public void remove(Entity entity);
 
 	// Fetch an entity by id.
-	public Entity get(int id);
+	public Entity getById(int id);
 }

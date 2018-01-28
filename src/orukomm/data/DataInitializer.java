@@ -26,7 +26,7 @@ public class DataInitializer {
 			String createUserTable = "CREATE TABLE `user` ("
 				+ "`id` int(11) NOT NULL AUTO_INCREMENT, `first_name` varchar(32) NOT NULL,"
 				+ "`surname` varchar(32) NOT NULL, `username` varchar(64) NOT NULL,"
-				+ "`password_hash` varchar(128) NOT NULL, `salt` varchar(10) DEFAULT NULL,"
+				+ "`password_hash` varchar(128) NOT NULL, `salt` varchar(16) DEFAULT NULL,"
 				+ "role ENUM('2', '6', '14') DEFAULT '2', PRIMARY KEY (`id`),"
 				+ "UNIQUE KEY `username` (`username`)) ENGINE=InnoDB DEFAULT CHARSET=utf8";
 
@@ -42,9 +42,9 @@ public class DataInitializer {
 		try {
 			// Cols: id, email, first_name, surname, password_hash, salt, role.
 			String insertUserData = "INSERT INTO user VALUES"
-				+ "(1, 'Foo', 'Bar', 'foo', 'hejsan', 'HJK(/GHI', '14'),"
-				+ "(2, 'Bar', 'Baz', 'bar', 'hejsan', 'HJK(/GHI', '6'),"
-				+ "(3, 'Baz', 'Quuz', 'baz', 'hejsan', 'HJK(/GHI', '2')";
+				+ "(1, 'Foo', 'Bar', 'foo', 'oEs4nBWAs6OxlaK/oG+bTlBW+LJ1VvuvMFsR7dWg3Dg=', 'Kg+R+prTBxLg3Q==', '14'),"
+				+ "(2, 'Bar', 'Baz', 'bar', 'xZ+21vhC9MOCXqD6xvFuP/N98bVbk3LlJpw0ItS65pg=', 'hDMxhhcEqiG1gw==', '6'),"
+				+ "(3, 'Baz', 'Quuz', 'baz', 'Clv2a/V++MNDfaIylfpxp8b6KvHeK7ts7t3nCGeFv9o=', '8LM/8OOc5zvjew==', '2')";
 
 			PreparedStatement ps = db.getConnection().prepareStatement(insertUserData);
 			ps.executeUpdate();
