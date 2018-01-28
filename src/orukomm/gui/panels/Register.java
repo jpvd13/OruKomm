@@ -1,6 +1,7 @@
 package orukomm.gui.panels;
 
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 import orukomm.Settings;
 import orukomm.data.entities.User;
@@ -18,6 +19,7 @@ public class Register extends javax.swing.JPanel {
 		initComponents();
 		userRepo = new UserRepository();
 
+		// Registration submit event.
 		btnRegister.addActionListener((ActionEvent e) -> {
 			User newUser = new User();
 			newUser.setFirstName(txtfFirstName.getText());
@@ -65,8 +67,15 @@ public class Register extends javax.swing.JPanel {
 			
 			// User registration survived the validation: write new user to data context.
 			userRepo.add(newUser);
-			parentFrame.switchPanel(parentFrame.pnlIndex);
+			parentFrame.switchPanel(new Index(parentFrame));
 			JOptionPane.showMessageDialog(parentFrame, "Den nya användaren har registrerats.", "Användare registrerad", JOptionPane.INFORMATION_MESSAGE);
+		});
+		
+		pswPasswordConfirmation.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				btnRegister.doClick();
+			}
 		});
 	}
 

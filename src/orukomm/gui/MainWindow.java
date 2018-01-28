@@ -35,8 +35,6 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 	
 	private void initPanels() {
 		pnlContainer.setVisible(true);
-		pnlIndex = new Index(this);
-		pnlRegister = new Register(this);
 	}
 
 	/*
@@ -48,9 +46,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 		boolean hasSuperadminPermission = userRole.contains(PermissionFlag.SUPERADMIN);
 		
 		mnuAccount.setVisible(hasUserPermission);
-		mnuAccountRegularUser.setVisible(hasUserPermission);
-		mnuAccountAdmin.setVisible(hasAdminPermission);
-		mnuAccountSuperadmin.setVisible(hasSuperadminPermission);		
+		mnuAdministration.setVisible(hasSuperadminPermission);
 	}
 
 	/*
@@ -70,6 +66,9 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 		mnuArchiveExit.setActionCommand("mnuArchiveExit");
 		mnuArchiveExit.addActionListener(this);
 		
+		mnuAdministrationRegister.setActionCommand("mnuAdministrationRegister");
+		mnuAdministrationRegister.addActionListener(this);
+		
 		mnuAccountLogout.setActionCommand("mnuAccountLogout");
 		mnuAccountLogout.addActionListener(this);
 	}
@@ -84,6 +83,10 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 				this.dispatchEvent(new java.awt.event.WindowEvent(this, java.awt.event.WindowEvent.WINDOW_CLOSING));
 				break;
 			
+			case "mnuAdministrationRegister":
+				switchPanel(new Register((this)));
+				break;
+				
 			case "mnuAccountLogout":
 				logout();
 				break;
@@ -109,11 +112,10 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
                 mnubMain = new javax.swing.JMenuBar();
                 mnuArchive = new javax.swing.JMenu();
                 mnuArchiveExit = new javax.swing.JMenuItem();
+                mnuAdministration = new javax.swing.JMenu();
+                mnuAdministrationRegister = new javax.swing.JMenuItem();
                 mnuAccount = new javax.swing.JMenu();
                 mnuAccountLogout = new javax.swing.JMenuItem();
-                mnuAccountRegularUser = new javax.swing.JMenuItem();
-                mnuAccountAdmin = new javax.swing.JMenuItem();
-                mnuAccountSuperadmin = new javax.swing.JMenuItem();
 
                 setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -128,20 +130,18 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 
                 mnubMain.add(mnuArchive);
 
+                mnuAdministration.setText("Administration");
+
+                mnuAdministrationRegister.setText("Registrera användare");
+                mnuAdministration.add(mnuAdministrationRegister);
+
+                mnubMain.add(mnuAdministration);
+
                 mnuAccount.setText("Konto");
 
                 mnuAccountLogout.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
                 mnuAccountLogout.setText("Logga ut");
                 mnuAccount.add(mnuAccountLogout);
-
-                mnuAccountRegularUser.setText("Endast för användare");
-                mnuAccount.add(mnuAccountRegularUser);
-
-                mnuAccountAdmin.setText("Endast för admin");
-                mnuAccount.add(mnuAccountAdmin);
-
-                mnuAccountSuperadmin.setText("Endast för superadmin");
-                mnuAccount.add(mnuAccountSuperadmin);
 
                 mnubMain.add(mnuAccount);
 
@@ -163,10 +163,9 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 
         // Variables declaration - do not modify//GEN-BEGIN:variables
         private javax.swing.JMenu mnuAccount;
-        private javax.swing.JMenuItem mnuAccountAdmin;
         private javax.swing.JMenuItem mnuAccountLogout;
-        private javax.swing.JMenuItem mnuAccountRegularUser;
-        private javax.swing.JMenuItem mnuAccountSuperadmin;
+        private javax.swing.JMenu mnuAdministration;
+        private javax.swing.JMenuItem mnuAdministrationRegister;
         private javax.swing.JMenu mnuArchive;
         private javax.swing.JMenuItem mnuArchiveExit;
         private javax.swing.JMenuBar mnubMain;

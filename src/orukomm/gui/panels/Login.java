@@ -34,7 +34,7 @@ public class Login extends javax.swing.JPanel {
 				String windowTitle = String.format("Orukomm [inloggad som %s %s]", parentFrame.loggedInUser.getFirstName(), parentFrame.loggedInUser.getSurname());
 				parentFrame.setTitle(windowTitle);
 				parentFrame.enableLoggedInInterface(PermissionFlag.NONE.getPermissionFlags(user.getRole()));
-				parentFrame.switchPanel(parentFrame.pnlRegister);
+				parentFrame.switchPanel(new Index(parentFrame));
 				parentFrame.remove(this);
 			}
 		});

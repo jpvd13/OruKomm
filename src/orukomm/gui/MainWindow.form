@@ -19,6 +19,18 @@
             </MenuItem>
           </SubComponents>
         </Menu>
+        <Menu class="javax.swing.JMenu" name="mnuAdministration">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Administration"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="mnuAdministrationRegister">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Registrera anv&#xe4;ndare"/>
+              </Properties>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
         <Menu class="javax.swing.JMenu" name="mnuAccount">
           <Properties>
             <Property name="text" type="java.lang.String" value="Konto"/>
@@ -30,21 +42,6 @@
                   <KeyStroke key="Ctrl+Alt+L"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Logga ut"/>
-              </Properties>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="mnuAccountRegularUser">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Endast f&#xf6;r anv&#xe4;ndare"/>
-              </Properties>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="mnuAccountAdmin">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Endast f&#xf6;r admin"/>
-              </Properties>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="mnuAccountSuperadmin">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Endast f&#xf6;r superadmin"/>
               </Properties>
             </MenuItem>
           </SubComponents>
