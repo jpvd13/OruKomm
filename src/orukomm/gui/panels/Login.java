@@ -3,6 +3,7 @@ package orukomm.gui.panels;
 import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;
 import orukomm.data.entities.User;
+import orukomm.data.entities.User.PermissionFlag;
 import orukomm.data.repositories.UserRepository;
 import orukomm.gui.MainWindow;
 
@@ -28,14 +29,13 @@ public class Login extends javax.swing.JPanel {
 			if (user.getId() == 0) {
 				JOptionPane.showMessageDialog(parentFrame, "Fel användarnamn eller lösenord.", "Inloggningen misslyckades", JOptionPane.ERROR_MESSAGE);
 			} else {
-				// Login success: 
+				// Login success.
 				parentFrame.loggedInUser = user;
-				String windowTitle = String.format("Orukomm [inloggad som %s %s]",
-					parentFrame.loggedInUser.getFirstName(),
-					parentFrame.loggedInUser.getSurname());
+				String windowTitle = String.format("Orukomm [inloggad som %s %s]", parentFrame.loggedInUser.getFirstName(), parentFrame.loggedInUser.getSurname());
 				parentFrame.setTitle(windowTitle);
-
+				parentFrame.enableLoggedInInterface(PermissionFlag.NONE.getPermissionFlags(user.getRole()));
 				parentFrame.switchPanel(parentFrame.pnlRegister);
+				parentFrame.remove(this);
 			}
 		});
 

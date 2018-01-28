@@ -20,21 +20,21 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 	public Login pnlLogin;
 	public Index pnlIndex;
 	public Register pnlRegister;
-
+	
 	public MainWindow() {
-		setTitle("OruKomm intranät");
+		setTitle(Settings.WINDOW_TITLE);
+		setResizable(false);
 		initComponents();
 		initPanels();
 		setLocationRelativeTo(null);
 		setVisible(true);
-		switchPanel(pnlLogin);
+		switchPanel(new Login(this));
 		addActionListeners();
 		enableLoggedInInterface(Settings.LOGGED_OUT_ROLE);
 	}
-
+	
 	private void initPanels() {
 		pnlContainer.setVisible(true);
-		pnlLogin = new Login(this);
 		pnlIndex = new Index(this);
 		pnlRegister = new Register(this);
 	}
@@ -43,21 +43,14 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 	 * Enables and disables GUI components for a user role, depending on its permissions.
 	 */
 	public void enableLoggedInInterface(EnumSet<PermissionFlag> userRole) {
-		if (userRole.contains(PermissionFlag.NONE)) {
-			mnuAccount.setVisible(false);
-		}
+		boolean hasUserPermission = userRole.contains(PermissionFlag.USER);
+		boolean hasAdminPermission = userRole.contains(PermissionFlag.ADMIN);
+		boolean hasSuperadminPermission = userRole.contains(PermissionFlag.SUPERADMIN);
 		
-		if (userRole.contains(PermissionFlag.USER)) {
-			mnuAccountRegUser.setVisible(true);
-		}
-
-		if (userRole.contains(PermissionFlag.ADMIN)) {
-			mnuAccountAdmin.setVisible(true);
-		}
-
-		if (userRole.contains(PermissionFlag.SUPERADMIN)) {
-			mnuAccountSuperadmin.setVisible(true);
-		}
+		mnuAccount.setVisible(hasUserPermission);
+		mnuAccountRegularUser.setVisible(hasUserPermission);
+		mnuAccountAdmin.setVisible(hasAdminPermission);
+		mnuAccountSuperadmin.setVisible(hasSuperadminPermission);		
 	}
 
 	/*
@@ -67,16 +60,16 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 		pnlContainer.removeAll();
 		pnlContainer.repaint();
 		pnlContainer.revalidate();
-
+		
 		pnlContainer.add(panel);
 		pnlContainer.repaint();
 		pnlContainer.revalidate();
 	}
-
+	
 	private void addActionListeners() {
 		mnuArchiveExit.setActionCommand("mnuArchiveExit");
 		mnuArchiveExit.addActionListener(this);
-
+		
 		mnuAccountLogout.setActionCommand("mnuAccountLogout");
 		mnuAccountLogout.addActionListener(this);
 	}
@@ -88,16 +81,26 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		switch (e.getActionCommand()) {
 			case "mnuArchiveExit":
-				this.dispatchEvent(new java.awt.event.WindowEvent(this,	java.awt.event.WindowEvent.WINDOW_CLOSING));
+				this.dispatchEvent(new java.awt.event.WindowEvent(this, java.awt.event.WindowEvent.WINDOW_CLOSING));
 				break;
-				
+			
 			case "mnuAccountLogout":
-				loggedInUser = new User();
-				System.gc(); // Wipe out the old user object.
+				logout();
 				break;
 		}
 	}
-
+	
+	/*
+	 * Reset logged in user object, wipe out the old one, and set the appropriate GUI.
+	 */
+	private void logout() {
+		loggedInUser = new User();
+		System.gc();
+		enableLoggedInInterface(Settings.LOGGED_OUT_ROLE);
+		setTitle(Settings.WINDOW_TITLE);
+		switchPanel(new Login((this)));
+	}
+	
 	@SuppressWarnings("unchecked")
         // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
         private void initComponents() {
@@ -108,7 +111,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
                 mnuArchiveExit = new javax.swing.JMenuItem();
                 mnuAccount = new javax.swing.JMenu();
                 mnuAccountLogout = new javax.swing.JMenuItem();
-                mnuAccountRegUser = new javax.swing.JMenuItem();
+                mnuAccountRegularUser = new javax.swing.JMenuItem();
                 mnuAccountAdmin = new javax.swing.JMenuItem();
                 mnuAccountSuperadmin = new javax.swing.JMenuItem();
 
@@ -131,8 +134,8 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
                 mnuAccountLogout.setText("Logga ut");
                 mnuAccount.add(mnuAccountLogout);
 
-                mnuAccountRegUser.setText("Endast för användare");
-                mnuAccount.add(mnuAccountRegUser);
+                mnuAccountRegularUser.setText("Endast för användare");
+                mnuAccount.add(mnuAccountRegularUser);
 
                 mnuAccountAdmin.setText("Endast för admin");
                 mnuAccount.add(mnuAccountAdmin);
@@ -162,7 +165,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
         private javax.swing.JMenu mnuAccount;
         private javax.swing.JMenuItem mnuAccountAdmin;
         private javax.swing.JMenuItem mnuAccountLogout;
-        private javax.swing.JMenuItem mnuAccountRegUser;
+        private javax.swing.JMenuItem mnuAccountRegularUser;
         private javax.swing.JMenuItem mnuAccountSuperadmin;
         private javax.swing.JMenu mnuArchive;
         private javax.swing.JMenuItem mnuArchiveExit;

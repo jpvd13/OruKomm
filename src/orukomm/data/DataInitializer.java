@@ -27,7 +27,7 @@ public class DataInitializer {
 				+ "`id` int(11) NOT NULL AUTO_INCREMENT, `first_name` varchar(32) NOT NULL,"
 				+ "`surname` varchar(32) NOT NULL, `username` varchar(64) NOT NULL,"
 				+ "`password_hash` varchar(128) NOT NULL, `salt` varchar(10) DEFAULT NULL,"
-				+ "role ENUM('1', '2', '3'), PRIMARY KEY (`id`),"
+				+ "role ENUM('2', '6', '14') DEFAULT '2', PRIMARY KEY (`id`),"
 				+ "UNIQUE KEY `username` (`username`)) ENGINE=InnoDB DEFAULT CHARSET=utf8";
 
 			PreparedStatement psCrt = db.getConnection().prepareStatement(createUserTable);
@@ -37,13 +37,14 @@ public class DataInitializer {
 		}
 
 	}
-
+	
 	private void seedData() {
 		try {
 			// Cols: id, email, first_name, surname, password_hash, salt, role.
 			String insertUserData = "INSERT INTO user VALUES"
-				+ "(1, 'Foo', 'Bar', 'foo@bar.com', 'hejsan', 'HJK(/GHI', '1'),"
-				+ "(2, 'Baz', 'Quuz', 'foo', 'hejsan', 'HJK8/g&%', '1')";
+				+ "(1, 'Foo', 'Bar', 'foo@bar.com', 'hejsan', 'HJK(/GHI', '2'),"
+				+ "(2, 'Foo', 'Bar', 'foo', 'hejsan', 'HJK(/GHI', '6'),"
+				+ "(3, 'Baz', 'Quuz', 'bar', 'hejsan', 'HJK8/g&%', '14')";
 
 			PreparedStatement ps = db.getConnection().prepareStatement(insertUserData);
 			ps.executeUpdate();
