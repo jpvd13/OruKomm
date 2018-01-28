@@ -6,12 +6,9 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
 import orukomm.data.DataInitializer;
 import orukomm.data.Database;
 import orukomm.data.entities.User;
-import orukomm.data.entities.User.PermissionFlag;
 
 public class UserRepository implements Repository<User> {
 
@@ -23,8 +20,8 @@ public class UserRepository implements Repository<User> {
 
 	@Override
 	public void add(User user) {
-		String query = String.format("INSERT INTO user VALUES (null, '%s', '%s', '%s', '%s', '%s', 1)",
-			user.getFirstName(), user.getSurname(), user.getUsername(), user.getPassword(), "SALT");
+		String query = String.format("INSERT INTO user VALUES (null, '%s', '%s', '%s', '%s', '%s', %d)",
+			user.getFirstName(), user.getSurname(), user.getUsername(), user.getPassword(), user.getRole(), "SALT");
 		
 		PreparedStatement ps;
 		try {
@@ -46,6 +43,28 @@ public class UserRepository implements Repository<User> {
 		return new User();
 	}
 
+	/*
+	 * Checks if a user with specified username exists.
+	 */
+	public boolean userExists(String username) {
+		boolean userExists = false;
+		String query = "SELECT username FROM user WHERE username = ?";
+		try {
+			PreparedStatement ps = db.getConnection().prepareStatement(query);
+			ps.setString(1, username);
+			ResultSet rs = ps.executeQuery();
+			
+			if (rs.next()) {
+				userExists = true;
+			}
+			
+		} catch (SQLException ex) {
+			Logger.getLogger(UserRepository.class.getName()).log(Level.SEVERE, null, ex);
+		}
+		
+		return userExists;
+	}
+	
 	/*
 	 * Returns a user object if the username and password matches a row in the database.
 	 */
@@ -76,27 +95,5 @@ public class UserRepository implements Repository<User> {
 		}
 
 		return user;
-	}
-
-	public static void registerUser(JTextField txt1, JTextField txt2, JTextField txt3, JTextField txt4, JPasswordField pw1, JPasswordField pw2)
-		throws SQLException {
-
-		String firstName = txt1.getText();
-		String lastName = txt2.getText();
-		String email = txt3.getText();
-		String password1 = pw1.getText();
-		String password2 = pw2.getText();
-
-		if (password1.equals(password2)) {
-			try {
-				String query = "INSERT INTO user VALUES(null, '" + email + "','" + firstName + "','" + lastName + "','" + password1 + "', null," + PermissionFlag.USER.ordinal() + ")";
-				System.out.println(query);
-				PreparedStatement ps = db.getConnection().prepareStatement(query);
-				ps.executeUpdate();
-
-			} catch (SQLException ex) {
-				Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
-			}
-		}
 	}
 }
