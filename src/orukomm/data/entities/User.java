@@ -14,6 +14,7 @@ public class User implements Entity {
 	private String passwordHash;
 	private String salt;
 	private int role;
+        private String email;
 
 	@Override
 	public int getId() {
@@ -72,6 +73,13 @@ public class User implements Entity {
 	public void setRole(int role) {
 		this.role = role;
 	}
+        public void setEmail(String email) {
+            this.email = email;
+        }
+        
+        public String getEmail() {
+            return email;
+        }
 
 	@Override
 	public String toString() {

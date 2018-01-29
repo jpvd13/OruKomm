@@ -22,7 +22,7 @@ public class UserRepository implements Repository<User> {
 	@Override
 	public void add(User user) {
 		PreparedStatement ps = null;
-		String query = String.format("INSERT INTO user VALUES (null, ?, ?, ?, '%s', '%s', '%d')",
+		String query = String.format("INSERT INTO user VALUES (null, ?, ?, ?, '%s', '%s', '%d', ?)",
 			user.getPassword(), user.getSalt(), user.getRole());
 		
 		try {
@@ -30,6 +30,7 @@ public class UserRepository implements Repository<User> {
 			ps.setString(1, user.getFirstName());
 			ps.setString(2, user.getSurname());
 			ps.setString(3, user.getUsername());
+                        ps.setString(4, user.getEmail());
 			ps.executeUpdate();
 		} catch (SQLException ex) {
 			Logger.getLogger(UserRepository.class.getName()).log(Level.SEVERE, null, ex);
@@ -97,6 +98,7 @@ public class UserRepository implements Repository<User> {
 					user.setPassword(rs.getString("password_hash"));
 					user.setSalt(rs.getString("salt"));
 					user.setRole(rs.getInt("role"));
+                                        user.setEmail(rs.getString("email"));
 				}
 			}
 		} catch (SQLException ex) {
@@ -134,6 +136,7 @@ public class UserRepository implements Repository<User> {
 					user.setPassword(rs.getString("password_hash"));
 					user.setSalt(rs.getString("salt"));
 					user.setRole(rs.getInt("role"));
+                                        user.setEmail(rs.getString("email"));
 				}
 			}
 		} catch (SQLException ex) {

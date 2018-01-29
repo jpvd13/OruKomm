@@ -10,12 +10,12 @@ import orukomm.gui.MainWindow;
 import orukomm.logic.Validation;
 import orukomm.logic.security.Encryption;
 
-public class Register extends javax.swing.JPanel {
+public class Update extends javax.swing.JPanel {
 
 	private MainWindow parentFrame;
 	private UserRepository userRepo;
 
-	public Register(MainWindow parentFrame) {
+	public Update(MainWindow parentFrame) {
 		this.parentFrame = parentFrame;
 		initComponents();
 		userRepo = new UserRepository();
@@ -43,8 +43,7 @@ public class Register extends javax.swing.JPanel {
 					|| Validation.isEmptyOrNull(txtfSurname.getText())
 					|| Validation.isEmptyOrNull(txtfUsername.getText())
 					|| Validation.isEmptyOrNull(pswPassword.getText())
-					|| Validation.isEmptyOrNull(pswPasswordConfirmation.getText()) 
-                                        || Validation.isEmptyOrNull(txtfEmail.getText())) {
+					|| Validation.isEmptyOrNull(pswPasswordConfirmation.getText())) {
 				JOptionPane.showMessageDialog(parentFrame, "Inga fält får lämnas tomma.", "Valideringsfel", JOptionPane.ERROR_MESSAGE);
 				
 				return;
@@ -73,7 +72,6 @@ public class Register extends javax.swing.JPanel {
 			newUser.setUsername(txtfUsername.getText());
 			newUser.setPassword(passwordHash);
 			newUser.setSalt(salt);
-                        newUser.setEmail(txtfEmail.getText());
 			
 			// User registration survived the validation: Write it to the data context.
 			userRepo.add(newUser);
@@ -108,8 +106,6 @@ public class Register extends javax.swing.JPanel {
         lblPasswordConfirmation = new javax.swing.JLabel();
         cmbRoles = new javax.swing.JComboBox<>();
         lblUserRole = new javax.swing.JLabel();
-        lblPasswordConfirmation1 = new javax.swing.JLabel();
-        txtfEmail = new javax.swing.JTextField();
 
         setPreferredSize(new java.awt.Dimension(1024, 768));
 
@@ -119,20 +115,18 @@ public class Register extends javax.swing.JPanel {
 
         lblUsername.setText("Användarnamn");
 
-        lblPassword.setText("Lösenord");
+        lblPassword.setText("Nytt lösenord");
 
-        btnRegister.setText("Registrera");
+        btnRegister.setText("Ändra");
 
         lblRegisterHeading.setFont(new java.awt.Font("Noto Sans", 1, 14)); // NOI18N
-        lblRegisterHeading.setText("Registrera ny användare");
+        lblRegisterHeading.setText("Ändra uppgifter");
 
-        lblPasswordConfirmation.setText("Bekräfta lösenord");
+        lblPasswordConfirmation.setText("Bekräfta nytt lösenord");
 
         cmbRoles.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Användare", "Admin", "Superadmin" }));
 
         lblUserRole.setText("Användarroll");
-
-        lblPasswordConfirmation1.setText("E-post adress");
 
         javax.swing.GroupLayout pnlRegisterContainerLayout = new javax.swing.GroupLayout(pnlRegisterContainer);
         pnlRegisterContainer.setLayout(pnlRegisterContainerLayout);
@@ -153,11 +147,8 @@ public class Register extends javax.swing.JPanel {
                                     .addComponent(lblUsername)
                                     .addComponent(lblPassword))
                                 .addGap(50, 50, 50))
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlRegisterContainerLayout.createSequentialGroup()
-                                .addGroup(pnlRegisterContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(lblPasswordConfirmation, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblPasswordConfirmation1, javax.swing.GroupLayout.Alignment.LEADING))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)))
+                            .addComponent(lblPasswordConfirmation, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblUserRole, javax.swing.GroupLayout.Alignment.LEADING))
                         .addGroup(pnlRegisterContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(pnlRegisterContainerLayout.createSequentialGroup()
                                 .addGap(1, 1, 1)
@@ -166,20 +157,11 @@ public class Register extends javax.swing.JPanel {
                                     .addComponent(txtfSurname)
                                     .addComponent(txtfFirstName)
                                     .addComponent(pswPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                            .addComponent(pswPasswordConfirmation, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(txtfEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(pnlRegisterContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(btnRegister)
+                                .addComponent(pswPasswordConfirmation, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(cmbRoles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(39, 39, 39))))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlRegisterContainerLayout.createSequentialGroup()
-                .addGroup(pnlRegisterContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(pnlRegisterContainerLayout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnRegister))
-                    .addGroup(pnlRegisterContainerLayout.createSequentialGroup()
-                        .addGap(24, 24, 24)
-                        .addComponent(lblUserRole)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(cmbRoles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(73, 73, 73))
         );
         pnlRegisterContainerLayout.setVerticalGroup(
             pnlRegisterContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -206,17 +188,13 @@ public class Register extends javax.swing.JPanel {
                 .addGroup(pnlRegisterContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(pswPasswordConfirmation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblPasswordConfirmation))
-                .addGap(20, 20, 20)
-                .addGroup(pnlRegisterContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblPasswordConfirmation1)
-                    .addComponent(txtfEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(pnlRegisterContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cmbRoles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblUserRole))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 37, Short.MAX_VALUE)
                 .addComponent(btnRegister)
-                .addGap(27, 27, 27))
+                .addGap(67, 67, 67))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -232,7 +210,7 @@ public class Register extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(214, 214, 214)
                 .addComponent(pnlRegisterContainer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(169, Short.MAX_VALUE))
+                .addContainerGap(58, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -243,7 +221,6 @@ public class Register extends javax.swing.JPanel {
     private javax.swing.JLabel lblFirstName;
     private javax.swing.JLabel lblPassword;
     private javax.swing.JLabel lblPasswordConfirmation;
-    private javax.swing.JLabel lblPasswordConfirmation1;
     private javax.swing.JLabel lblRegisterHeading;
     private javax.swing.JLabel lblSurname;
     private javax.swing.JLabel lblUserRole;
@@ -251,7 +228,6 @@ public class Register extends javax.swing.JPanel {
     private javax.swing.JPanel pnlRegisterContainer;
     private javax.swing.JPasswordField pswPassword;
     private javax.swing.JPasswordField pswPasswordConfirmation;
-    private javax.swing.JTextField txtfEmail;
     private javax.swing.JTextField txtfFirstName;
     private javax.swing.JTextField txtfSurname;
     private javax.swing.JTextField txtfUsername;
