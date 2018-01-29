@@ -40,9 +40,29 @@ public class UserRepository implements Repository<User> {
 
 	@Override
 	public void remove(User user) {
-		// SQL to remove user.
+		PreparedStatement ps = null;
+//		String query = String.format("DELETE FROM user WHERE id = '", args)
 	}
 
+	@Override
+	public void update(User user) {
+		PreparedStatement ps = null;
+		String query = String.format("UPDATE user SET first_name = ?, surname = ?, username = ?, password_hash = '%s', salt = '%s', role = '%d' WHERE id = '%d'",
+				user.getPassword(), user.getSalt(), user.getRole(), user.getId());
+		
+		try {
+			ps = db.getConnection().prepareStatement(query);
+			ps.setString(1, user.getFirstName());
+			ps.setString(2, user.getSurname());
+			ps.setString(3, user.getUsername());
+			ps.executeUpdate();
+		} catch (SQLException ex) {
+			Logger.getLogger(UserRepository.class.getName()).log(Level.SEVERE, null, ex);
+		} finally {
+			close(null, ps, null);
+		}
+	}
+	
 	@Override
 	public User getById(int id) {
 		// SQL to fetch User by id.
