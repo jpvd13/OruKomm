@@ -48,15 +48,13 @@ public class UserRepository implements Repository<User> {
 	@Override
 	public void update(User user) {
 		PreparedStatement ps = null;
-		String query = String.format("UPDATE user SET first_name = ?, surname = ?, username = ?, email = ?, password_hash = '%s', salt = '%s', role = '%d' WHERE id = '%d'",
-				user.getPassword(), user.getSalt(), user.getRole(), user.getId());
-
+		String query = String.format("UPDATE user SET first_name = ?, surname = ?, email = ?, password_hash = '%s', salt = '%s' WHERE id = '%d'",
+				user.getPassword(), user.getSalt(), user.getId());                                
 		try {
 			ps = db.getConnection().prepareStatement(query);
 			ps.setString(1, user.getFirstName());
 			ps.setString(2, user.getSurname());
-			ps.setString(3, user.getUsername());
-			ps.setString(4, user.getEmail());
+			ps.setString(3, user.getEmail());
 			ps.executeUpdate();
 		} catch (SQLException ex) {
 			Logger.getLogger(UserRepository.class.getName()).log(Level.SEVERE, null, ex);
@@ -67,8 +65,34 @@ public class UserRepository implements Repository<User> {
 
 	@Override
 	public User getById(int id) {
-		// SQL to fetch User by id.
-		return new User();
+		User user = new User();
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		
+		String query = String.format("SELECT * FROM user WHERE id = '%d'", id);
+		
+		try {
+			ps = db.getConnection().prepareStatement(query);
+			rs = ps.executeQuery();
+			
+			if (Database.fetchedRows(rs) == 1) {
+					// Username exists.
+					user.setId(rs.getInt("id"));
+					user.setFirstName(rs.getString("first_name"));
+					user.setSurname(rs.getString("surname"));
+					user.setUsername(rs.getString("username"));
+					user.setEmail(rs.getString("email"));
+					user.setPassword(rs.getString("password_hash"));
+					user.setSalt(rs.getString("salt"));
+					user.setRole(rs.getInt("role"));
+			}
+		} catch (SQLException ex) {
+			Logger.getLogger(UserRepository.class.getName()).log(Level.SEVERE, null, ex);
+		} finally {
+			close(rs, ps, null);
+		}
+		
+		return user;
 	}
 
 	/*
@@ -109,18 +133,16 @@ public class UserRepository implements Repository<User> {
 			ps.setString(1, username);
 			rs = ps.executeQuery();
 
-			if (rs.next()) {
-				if (rs.isFirst() && rs.isLast()) {
-					// Username exists.
-					user.setId(rs.getInt("id"));
-					user.setFirstName(rs.getString("first_name"));
-					user.setSurname(rs.getString("surname"));
-					user.setUsername(rs.getString("username"));
-					user.setEmail(rs.getString("email"));
-					user.setPassword(rs.getString("password_hash"));
-					user.setSalt(rs.getString("salt"));
-					user.setRole(rs.getInt("role"));
-				}
+			if (Database.fetchedRows(rs) == 1) {
+				// Username exists.
+				user.setId(rs.getInt("id"));
+				user.setFirstName(rs.getString("first_name"));
+				user.setSurname(rs.getString("surname"));
+				user.setUsername(rs.getString("username"));
+				user.setEmail(rs.getString("email"));
+				user.setPassword(rs.getString("password_hash"));
+				user.setSalt(rs.getString("salt"));
+				user.setRole(rs.getInt("role"));
 			}
 		} catch (SQLException ex) {
 			Logger.getLogger(DataInitializer.class.getName()).log(Level.SEVERE, null, ex);
