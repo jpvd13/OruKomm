@@ -42,7 +42,17 @@ public class UserRepository implements Repository<User> {
 	@Override
 	public void remove(User user) {
 		PreparedStatement ps = null;
-//		String query = String.format("DELETE FROM user WHERE id = '", args)
+		String query = String.format("DELETE FROM user WHERE id = '%d'", user.getId());
+		
+		try {
+			ps = db.getConnection().prepareStatement(query);
+			ps.executeUpdate();
+		}
+		catch (SQLException ex) {
+			Logger.getLogger(UserRepository.class.getName()).log(Level.SEVERE, null, ex);
+		} finally {
+			close(null, ps, null);
+		}
 	}
 
 	@Override
