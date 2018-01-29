@@ -19,6 +19,9 @@ public class Update extends javax.swing.JPanel {
 		this.parentFrame = parentFrame;
 		initComponents();
 		userRepo = new UserRepository();
+                fillTxtfields();
+                
+                
 
 		// Registration submit event.
 		btnRegister.addActionListener((ActionEvent e) -> {
@@ -74,7 +77,7 @@ public class Update extends javax.swing.JPanel {
 			newUser.setSalt(salt);
 			
 			// User registration survived the validation: Write it to the data context.
-			userRepo.add(newUser);
+			userRepo.update(newUser);
 			parentFrame.switchPanel(new Index(parentFrame));
 			JOptionPane.showMessageDialog(parentFrame, "Den nya användaren har registrerats.", "Användare registrerad", JOptionPane.INFORMATION_MESSAGE);
 		});
@@ -86,6 +89,19 @@ public class Update extends javax.swing.JPanel {
 			}
 		});
 	}
+        
+        public void fillTxtfields(){
+            
+            User editUser = userRepo.getById(parentFrame.loggedInUser.getId());
+            
+            txtfFirstName.setText(editUser.getFirstName());
+            txtfSurname.setText(editUser.getSurname());
+            txtfUsername.setText(editUser.getUsername());
+            
+            System.out.println("hej");
+            System.out.println(editUser.getFirstName());
+            
+        }
 
 	@SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -118,6 +134,11 @@ public class Update extends javax.swing.JPanel {
         lblPassword.setText("Nytt lösenord");
 
         btnRegister.setText("Ändra");
+        btnRegister.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegisterActionPerformed(evt);
+            }
+        });
 
         lblRegisterHeading.setFont(new java.awt.Font("Noto Sans", 1, 14)); // NOI18N
         lblRegisterHeading.setText("Ändra uppgifter");
@@ -147,8 +168,8 @@ public class Update extends javax.swing.JPanel {
                                     .addComponent(lblUsername)
                                     .addComponent(lblPassword))
                                 .addGap(50, 50, 50))
-                            .addComponent(lblPasswordConfirmation, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblUserRole, javax.swing.GroupLayout.Alignment.LEADING))
+                            .addComponent(lblUserRole, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblPasswordConfirmation))
                         .addGroup(pnlRegisterContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(pnlRegisterContainerLayout.createSequentialGroup()
                                 .addGap(1, 1, 1)
@@ -213,6 +234,10 @@ public class Update extends javax.swing.JPanel {
                 .addContainerGap(58, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegisterActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnRegisterActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

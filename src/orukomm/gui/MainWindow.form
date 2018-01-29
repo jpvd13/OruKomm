@@ -28,6 +28,9 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Registrera anv&#xe4;ndare"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuAdministrationRegisterActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -42,6 +45,11 @@
                   <KeyStroke key="Ctrl+Alt+L"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Logga ut"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="mnuAccountEdit">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Redigera anv&#xe4;ndare"/>
               </Properties>
             </MenuItem>
           </SubComponents>
