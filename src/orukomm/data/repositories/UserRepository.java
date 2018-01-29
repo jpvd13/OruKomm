@@ -22,14 +22,15 @@ public class UserRepository implements Repository<User> {
 	@Override
 	public void add(User user) {
 		PreparedStatement ps = null;
-		String query = String.format("INSERT INTO user VALUES (null, ?, ?, ?, '%s', '%s', '%d')",
-			user.getPassword(), user.getSalt(), user.getRole());
-		
+		String query = String.format("INSERT INTO user VALUES (null, ?, ?, ?, ?, '%s', '%s', '%d')",
+				user.getPassword(), user.getSalt(), user.getRole());
+
 		try {
 			ps = db.getConnection().prepareStatement(query);
 			ps.setString(1, user.getFirstName());
 			ps.setString(2, user.getSurname());
 			ps.setString(3, user.getUsername());
+			ps.setString(4, user.getEmail());
 			ps.executeUpdate();
 		} catch (SQLException ex) {
 			Logger.getLogger(UserRepository.class.getName()).log(Level.SEVERE, null, ex);
@@ -40,7 +41,28 @@ public class UserRepository implements Repository<User> {
 
 	@Override
 	public void remove(User user) {
-		// SQL to remove user.
+		PreparedStatement ps = null;
+//		String query = String.format("DELETE FROM user WHERE id = '", args)
+	}
+
+	@Override
+	public void update(User user) {
+		PreparedStatement ps = null;
+		String query = String.format("UPDATE user SET first_name = ?, surname = ?, username = ?, email = ?, password_hash = '%s', salt = '%s', role = '%d' WHERE id = '%d'",
+				user.getPassword(), user.getSalt(), user.getRole(), user.getId());
+
+		try {
+			ps = db.getConnection().prepareStatement(query);
+			ps.setString(1, user.getFirstName());
+			ps.setString(2, user.getSurname());
+			ps.setString(3, user.getUsername());
+			ps.setString(4, user.getEmail());
+			ps.executeUpdate();
+		} catch (SQLException ex) {
+			Logger.getLogger(UserRepository.class.getName()).log(Level.SEVERE, null, ex);
+		} finally {
+			close(null, ps, null);
+		}
 	}
 
 	@Override
@@ -57,12 +79,12 @@ public class UserRepository implements Repository<User> {
 		ResultSet rs = null;
 		PreparedStatement ps = null;
 		String query = "SELECT username FROM user WHERE username = ?";
-		
+
 		try {
 			ps = db.getConnection().prepareStatement(query);
 			ps.setString(1, username);
 			rs = ps.executeQuery();
-			
+
 			if (rs.next()) {
 				userExists = true;
 			}
@@ -71,15 +93,15 @@ public class UserRepository implements Repository<User> {
 		} finally {
 			close(rs, ps, null);
 		}
-		
+
 		return userExists;
 	}
-	
+
 	public User getByUsername(String username) {
 		User user = new User();
-		ResultSet rs =  null;
+		ResultSet rs = null;
 		PreparedStatement ps = null;
-		
+
 		try {
 			String query = "SELECT * FROM user WHERE username = ?";
 			ps = db.getConnection().prepareStatement(query);
@@ -94,6 +116,7 @@ public class UserRepository implements Repository<User> {
 					user.setFirstName(rs.getString("first_name"));
 					user.setSurname(rs.getString("surname"));
 					user.setUsername(rs.getString("username"));
+					user.setEmail(rs.getString("email"));
 					user.setPassword(rs.getString("password_hash"));
 					user.setSalt(rs.getString("salt"));
 					user.setRole(rs.getInt("role"));
@@ -105,9 +128,9 @@ public class UserRepository implements Repository<User> {
 			close(rs, ps, null);
 		}
 
-		return user;		
+		return user;
 	}
-	
+
 	/*
 	 * Returns a user object if the username and password matches a row in the database.
 	 */
@@ -115,7 +138,7 @@ public class UserRepository implements Repository<User> {
 		User user = new User();
 		ResultSet rs = null;
 		PreparedStatement ps = null;
-		
+
 		try {
 			String query = "SELECT * FROM user WHERE username = ? AND password_hash = ?";
 			ps = db.getConnection().prepareStatement(query);
@@ -134,6 +157,7 @@ public class UserRepository implements Repository<User> {
 					user.setPassword(rs.getString("password_hash"));
 					user.setSalt(rs.getString("salt"));
 					user.setRole(rs.getInt("role"));
+					user.setEmail(rs.getString("email"));
 				}
 			}
 		} catch (SQLException ex) {

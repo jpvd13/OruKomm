@@ -14,11 +14,15 @@ public class User implements Entity {
 	private String passwordHash;
 	private String salt;
 	private int role;
+
         
         public static int MAX_LENGTH_FIRST_NAME = 32;
         public static int MAX_LENGTH_SURNAME = 32;
         public static int MAX_LENGTH_USERNAME = 64;
         public static int MAX_LENGTH_PASSWORDHASH = 128;
+
+	private String email;
+
 
 	@Override
 	public int getId() {
@@ -78,6 +82,14 @@ public class User implements Entity {
 		this.role = role;
 	}
 
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	@Override
 	public String toString() {
 		return firstName + " " + surname;
@@ -87,21 +99,21 @@ public class User implements Entity {
 	 * User permissions represented as a bit field structure.
 	 */
 	public enum PermissionFlag {
-		NONE(1<<0),
-		USER(1<<1),
-		ADMIN(1<<2),
-		SUPERADMIN(1<<3);
-		
+		NONE(1 << 0),
+		USER(1 << 1),
+		ADMIN(1 << 2),
+		SUPERADMIN(1 << 3);
+
 		private final int permissionFlagValue;
-		
+
 		PermissionFlag(int permissionFlagValue) {
 			this.permissionFlagValue = permissionFlagValue;
 		}
-		
+
 		public int getPermissionFlagValue() {
 			return permissionFlagValue;
 		}
-		
+
 		/*
 		 * Translates numeric permission code into a set of flags.
 		 */
@@ -109,22 +121,23 @@ public class User implements Entity {
 			EnumSet<PermissionFlag> permissionFlags = EnumSet.noneOf(PermissionFlag.class);
 			for (PermissionFlag permissionFlag : PermissionFlag.values()) {
 				int flagValue = permissionFlag.permissionFlagValue;
-				if ((flagValue&permissionValue) == flagValue)
+				if ((flagValue & permissionValue) == flagValue) {
 					permissionFlags.add(permissionFlag);
+				}
 			}
-		
+
 			return permissionFlags;
 		}
-		
+
 		/*
 		 * Translates a set of permission flags into a numeric role code.
 		 */
 		public int getPermissionValue(EnumSet<PermissionFlag> permissions) {
 			int value = 0;
-			for(PermissionFlag permissionFlag : permissions) {
-				value|=permissionFlag.getPermissionFlagValue();
+			for (PermissionFlag permissionFlag : permissions) {
+				value |= permissionFlag.getPermissionFlagValue();
 			}
-			
+
 			return value;
 		}
 	}
