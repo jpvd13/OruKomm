@@ -18,7 +18,6 @@ public class Login extends javax.swing.JPanel {
 		initComponents();
 		addEventListeners();
 		userRepo = new UserRepository();
-
 	}
 
 	private void addEventListeners() {

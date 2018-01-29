@@ -25,6 +25,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 		switchPanel(new Login(this));
 		addActionListeners();
 		enableLoggedInInterface(Settings.LOGGED_OUT_ROLE);
+		
 	}
 	
 	private void initPanels() {
