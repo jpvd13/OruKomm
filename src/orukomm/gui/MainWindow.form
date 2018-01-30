@@ -44,6 +44,11 @@
                 <Property name="text" type="java.lang.String" value="Logga ut"/>
               </Properties>
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="mnuAccountEdit">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Redigera anv&#xe4;ndare"/>
+              </Properties>
+            </MenuItem>
           </SubComponents>
         </Menu>
       </SubComponents>

@@ -2,6 +2,7 @@ package orukomm.gui.panels;
 
 import java.awt.event.ActionEvent;
 import javax.swing.JOptionPane;
+import orukomm.Settings;
 import orukomm.data.entities.User;
 import orukomm.data.entities.User.PermissionFlag;
 import orukomm.data.repositories.UserRepository;
@@ -42,7 +43,7 @@ public class Login extends javax.swing.JPanel {
 			} else {
 				// Login success.
 				parentFrame.loggedInUser = user;
-				String windowTitle = String.format("Orukomm [inloggad som %s %s]", parentFrame.loggedInUser.getFirstName(), parentFrame.loggedInUser.getSurname());
+				String windowTitle = String.format("%s [inloggad som %s %s]", Settings.WINDOW_TITLE, parentFrame.loggedInUser.getFirstName(), parentFrame.loggedInUser.getSurname());
 				parentFrame.setTitle(windowTitle);
 				parentFrame.enableLoggedInInterface(PermissionFlag.NONE.getPermissionFlags(user.getRole()));
 				parentFrame.switchPanel(new Index(parentFrame));
