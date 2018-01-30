@@ -39,6 +39,7 @@ public class Register extends javax.swing.JPanel {
 			}
 
 			// Validate submitted user's properties.
+                       
 			if (Validation.isEmptyOrNull(txtfFirstName.getText())
 					|| Validation.isEmptyOrNull(txtfSurname.getText())
 					|| Validation.isEmptyOrNull(txtfUsername.getText())
@@ -49,6 +50,35 @@ public class Register extends javax.swing.JPanel {
 
 				return;
 			}
+
+                        
+			if (Validation.wordLength(txtfFirstName.getText(), User.MAX_LENGTH_FIRST_NAME))
+                        {
+                        JOptionPane.showMessageDialog(parentFrame, "Förnamnet får inte vara längre än 32 tecken!", "Valideringsfel", JOptionPane.ERROR_MESSAGE);
+                        return;
+                        }
+                        
+                        
+                        if (Validation.wordLength(txtfSurname.getText(), User.MAX_LENGTH_SURNAME))
+                        {
+                        JOptionPane.showMessageDialog(parentFrame, "Efternamnet får inte vara längre än 32 tecken!", "Valideringsfel", JOptionPane.ERROR_MESSAGE);
+                        return;
+                        }
+                        
+                        if(Validation.wordLength(txtfUsername.getText(), User.MAX_LENGTH_USERNAME))
+                        {
+                        JOptionPane.showMessageDialog(parentFrame, "Användarnamnet får inte vara längre än 64 tecken!", "Valideringsfel", JOptionPane.ERROR_MESSAGE);
+                        return;
+                        }
+                        
+                        if(Validation.wordLength(pswPassword.getText(), User.MAX_LENGTH_PASSWORDHASH))
+                        {
+                        JOptionPane.showMessageDialog(parentFrame, "Lösenordet får inte vara längre än 128 tecken!", "Valideringsfel", JOptionPane.ERROR_MESSAGE);
+                        return;
+                        }
+                        
+                            
+
 
 			if (!pswPassword.getText().equals(pswPasswordConfirmation.getText())) {
 				JOptionPane.showMessageDialog(parentFrame, "Lösenorden du angav matchar inte varandra.", "Valideringsfel", JOptionPane.ERROR_MESSAGE);
