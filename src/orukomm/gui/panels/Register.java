@@ -71,6 +71,12 @@ public class Register extends javax.swing.JPanel {
                         return;
                         }
                         
+                        if(Validation.wordLength(txtfEmail.getText(), User.MAX_LENGTH_EMAIL))
+                        {
+                        JOptionPane.showMessageDialog(parentFrame, "Email-adressen får inte vara längre än 128 tecken!", "Valideringsfel", JOptionPane.ERROR_MESSAGE);
+                        return;
+                        }
+                        
                         if(Validation.wordLength(pswPassword.getText(), User.MAX_LENGTH_PASSWORDHASH))
                         {
                         JOptionPane.showMessageDialog(parentFrame, "Lösenordet får inte vara längre än 128 tecken!", "Valideringsfel", JOptionPane.ERROR_MESSAGE);
@@ -92,6 +98,13 @@ public class Register extends javax.swing.JPanel {
 
 				return;
 			}
+                        
+                        // Check if email exists in the data context.
+                        if(userRepo.emailExists(txtfEmail.getText()))
+                        {
+                        JOptionPane.showMessageDialog(parentFrame, "Email-adressen du angav existerar redan.", "Email upptagen", JOptionPane.ERROR_MESSAGE);
+                                return;
+                        }
 
 			// Generate salt and password hash.
 			String salt = Encryption.generateSalt();

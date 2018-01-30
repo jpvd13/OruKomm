@@ -132,6 +132,28 @@ public class UserRepository implements Repository<User> {
 
 		return userExists;
 	}
+        public boolean emailExists(String email) {
+		boolean emailExists = false;
+		ResultSet rs = null;
+		PreparedStatement ps = null;
+		String query = "SELECT email FROM user WHERE email = ?";
+
+		try {
+			ps = db.getConnection().prepareStatement(query);
+			ps.setString(1, email);
+			rs = ps.executeQuery();
+
+			if (rs.next()) {
+				emailExists = true;
+			}
+		} catch (SQLException ex) {
+			Logger.getLogger(UserRepository.class.getName()).log(Level.SEVERE, null, ex);
+		} finally {
+			close(rs, ps, null);
+		}
+
+		return emailExists;
+	}
 
 	public User getByUsername(String username) {
 		User user = new User();
