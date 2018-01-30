@@ -25,14 +25,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
         setVisible(true);
         switchPanel(new Login(this));
         addActionListeners();
-        enableLoggedInInterface(Settings.LOGGED_OUT_ROLE);
-        
-        
-        FileStorage fs = new FileStorage();
-        fs.readFile("C:\\server\\images\\bild.jpg");
-        fs.insertFile(1, "C:\\server\\images\\bild.jpg");
-        fs.convertToBlob(1, "C:\\server\\images\\bildblob.jpg");
-        
+        enableLoggedInInterface(Settings.LOGGED_OUT_ROLE);       
         
     }
 
