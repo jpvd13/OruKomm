@@ -15,6 +15,9 @@ public class Update extends javax.swing.JPanel {
 	private MainWindow parentFrame;
 	private UserRepository userRepo;
 
+	private String newPassword = "";
+	private String newPasswordConfirmation = "";
+
 	public Update(MainWindow parentFrame) {
 		this.parentFrame = parentFrame;
 		initComponents();
@@ -25,7 +28,7 @@ public class Update extends javax.swing.JPanel {
 		btnUpdate.addActionListener((ActionEvent e) -> {
 			User editUser = new User();
 
-			// Validate submitted user's properties.
+			// Validate user's properties.
 			if (Validation.isEmptyOrNull(txtfFirstName.getText())
 					|| Validation.isEmptyOrNull(txtfSurname.getText())
 					|| Validation.isEmptyOrNull(txtfEmail.getText())) {
@@ -49,15 +52,23 @@ public class Update extends javax.swing.JPanel {
 			editUser.setSalt(parentFrame.loggedInUser.getSalt());
 			editUser.setEmail(txtfEmail.getText());
 			editUser.setRole(parentFrame.loggedInUser.getRole());
-			
-			if (!Validation.isEmptyOrNull(pswPassword.getText()) && !Validation.isEmptyOrNull(pswPasswordConfirmation.getText())) {
-				// Update password.
+
+			// Check if password should be updated.
+			if (!Validation.isEmptyOrNull(pswPassword.getText()) || !Validation.isEmptyOrNull(pswPasswordConfirmation.getText())) {
 				String salt = Encryption.generateSalt();
 				String passwordHash = Encryption.generatePasswordHash(pswPassword.getText(), salt);
 				editUser.setPassword(passwordHash);
 				editUser.setSalt(salt);
+
+				// Validate the new password.
+				if (!newPassword.equals(newPasswordConfirmation)) {
+					JOptionPane.showMessageDialog(parentFrame, "Lösenorden du angav matchar inte varandra.", "Valideringsfel", JOptionPane.ERROR_MESSAGE);
+
+					return;
+				}
+
 			}
-			
+
 			// Account update survived the validation: Write it to the data context.
 			parentFrame.loggedInUser = editUser;
 			userRepo.update(editUser);
@@ -75,7 +86,7 @@ public class Update extends javax.swing.JPanel {
 		});
 	}
 
-	public void fillTxtfields() {	
+	private void fillTxtfields() {
 		txtfFirstName.setText(parentFrame.loggedInUser.getFirstName());
 		txtfSurname.setText(parentFrame.loggedInUser.getSurname());
 		txtfEmail.setText(parentFrame.loggedInUser.getEmail());
