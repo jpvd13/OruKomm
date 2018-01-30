@@ -28,9 +28,6 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Registrera anv&#xe4;ndare"/>
               </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuAdministrationRegisterActionPerformed"/>
-              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>

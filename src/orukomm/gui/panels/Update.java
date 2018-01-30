@@ -3,6 +3,7 @@ package orukomm.gui.panels;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
+import orukomm.Settings;
 import orukomm.data.entities.User;
 import orukomm.data.repositories.UserRepository;
 import orukomm.gui.MainWindow;
@@ -60,8 +61,10 @@ public class Update extends javax.swing.JPanel {
 			// Account update survived the validation: Write it to the data context.
 			parentFrame.loggedInUser = editUser;
 			userRepo.update(editUser);
+			String windowTitle = String.format("%s [inloggad som %s %s]", Settings.WINDOW_TITLE, parentFrame.loggedInUser.getFirstName(), parentFrame.loggedInUser.getSurname());
+			parentFrame.setTitle(windowTitle);
 			parentFrame.switchPanel(new Index(parentFrame));
-			JOptionPane.showMessageDialog(parentFrame, "Användaruppgifterna har ändrats.", "Användare registrerad", JOptionPane.INFORMATION_MESSAGE);
+			JOptionPane.showMessageDialog(parentFrame, "Användaruppgifterna har ändrats.", "Användaruppgifter uppdaterade", JOptionPane.INFORMATION_MESSAGE);
 		});
 
 		pswPasswordConfirmation.addActionListener(new ActionListener() {
