@@ -19,7 +19,7 @@ public class Database {
 	private final String connectionString = "jdbc:mysql://localhost:3306/oru_komm?autoReconnect=true&useSSL=false";
 
 	private final String dbUser = "root";
-	private final String dbPassword = "masterkey";
+	private final String dbPassword = "admin";
 
 	private Database() {
 		try {

@@ -9,6 +9,7 @@ import orukomm.data.entities.User;
 import orukomm.data.entities.User.PermissionFlag;
 import orukomm.gui.panels.Login;
 import orukomm.gui.panels.Register;
+import orukomm.gui.panels.Update;
 
 public class MainWindow extends javax.swing.JFrame implements ActionListener {
 
@@ -24,8 +25,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 		setVisible(true);
 		switchPanel(new Login(this));
 		addActionListeners();
-		enableLoggedInInterface(Settings.LOGGED_OUT_ROLE);
-		
+		enableLoggedInInterface(Settings.LOGGED_OUT_ROLE);                
 	}
 	
 	private void initPanels() {
@@ -42,6 +42,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 		
 		mnuAccount.setVisible(hasUserPermission);
 		mnuAdministration.setVisible(hasSuperadminPermission);
+                mnuAccountEdit.setVisible(hasUserPermission);
 	}
 
 	/*
@@ -65,6 +66,9 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 		
 		mnuAccountLogout.setActionCommand("mnuAccountLogout");
 		mnuAccountLogout.addActionListener(this);
+                
+                mnuAccountEdit.setActionCommand("mnuAccountEdit");
+                mnuAccountEdit.addActionListener(this);
 	}
 
 	/*
@@ -84,6 +88,10 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 			case "mnuAccountLogout":
 				logout();
 				break;
+                                
+                        case "mnuAccountEdit":
+                                switchPanel(new Update((this)));
+                                break;                               
 		}
 	}
 	
@@ -99,71 +107,85 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 	}
 	
 	@SuppressWarnings("unchecked")
-        // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
-        private void initComponents() {
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
 
-                pnlContainer = new javax.swing.JPanel();
-                mnubMain = new javax.swing.JMenuBar();
-                mnuArchive = new javax.swing.JMenu();
-                mnuArchiveExit = new javax.swing.JMenuItem();
-                mnuAdministration = new javax.swing.JMenu();
-                mnuAdministrationRegister = new javax.swing.JMenuItem();
-                mnuAccount = new javax.swing.JMenu();
-                mnuAccountLogout = new javax.swing.JMenuItem();
+        pnlContainer = new javax.swing.JPanel();
+        mnubMain = new javax.swing.JMenuBar();
+        mnuArchive = new javax.swing.JMenu();
+        mnuArchiveExit = new javax.swing.JMenuItem();
+        mnuAdministration = new javax.swing.JMenu();
+        mnuAdministrationRegister = new javax.swing.JMenuItem();
+        mnuAccount = new javax.swing.JMenu();
+        mnuAccountLogout = new javax.swing.JMenuItem();
+        mnuAccountEdit = new javax.swing.JMenuItem();
 
-                setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-                pnlContainer.setPreferredSize(new java.awt.Dimension(1024, 768));
-                pnlContainer.setLayout(new java.awt.CardLayout());
+        pnlContainer.setPreferredSize(new java.awt.Dimension(1024, 768));
+        pnlContainer.setLayout(new java.awt.CardLayout());
 
-                mnuArchive.setText("Arkiv");
+        mnuArchive.setText("Arkiv");
 
-                mnuArchiveExit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-                mnuArchiveExit.setText("Avsluta");
-                mnuArchive.add(mnuArchiveExit);
+        mnuArchiveExit.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_Q, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        mnuArchiveExit.setText("Avsluta");
+        mnuArchive.add(mnuArchiveExit);
 
-                mnubMain.add(mnuArchive);
+        mnubMain.add(mnuArchive);
 
-                mnuAdministration.setText("Administration");
+        mnuAdministration.setText("Administration");
 
-                mnuAdministrationRegister.setText("Registrera användare");
-                mnuAdministration.add(mnuAdministrationRegister);
+        mnuAdministrationRegister.setText("Registrera användare");
+        mnuAdministrationRegister.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnuAdministrationRegisterActionPerformed(evt);
+            }
+        });
+        mnuAdministration.add(mnuAdministrationRegister);
 
-                mnubMain.add(mnuAdministration);
+        mnubMain.add(mnuAdministration);
 
-                mnuAccount.setText("Konto");
+        mnuAccount.setText("Konto");
 
-                mnuAccountLogout.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
-                mnuAccountLogout.setText("Logga ut");
-                mnuAccount.add(mnuAccountLogout);
+        mnuAccountLogout.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
+        mnuAccountLogout.setText("Logga ut");
+        mnuAccount.add(mnuAccountLogout);
 
-                mnubMain.add(mnuAccount);
+        mnuAccountEdit.setText("Redigera användare");
+        mnuAccount.add(mnuAccountEdit);
 
-                setJMenuBar(mnubMain);
+        mnubMain.add(mnuAccount);
 
-                javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-                getContentPane().setLayout(layout);
-                layout.setHorizontalGroup(
-                        layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(pnlContainer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                );
-                layout.setVerticalGroup(
-                        layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(pnlContainer, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                );
+        setJMenuBar(mnubMain);
 
-                pack();
-        }// </editor-fold>//GEN-END:initComponents
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(pnlContainer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(pnlContainer, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        );
 
-        // Variables declaration - do not modify//GEN-BEGIN:variables
-        private javax.swing.JMenu mnuAccount;
-        private javax.swing.JMenuItem mnuAccountLogout;
-        private javax.swing.JMenu mnuAdministration;
-        private javax.swing.JMenuItem mnuAdministrationRegister;
-        private javax.swing.JMenu mnuArchive;
-        private javax.swing.JMenuItem mnuArchiveExit;
-        private javax.swing.JMenuBar mnubMain;
-        private javax.swing.JPanel pnlContainer;
-        // End of variables declaration//GEN-END:variables
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void mnuAdministrationRegisterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnuAdministrationRegisterActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_mnuAdministrationRegisterActionPerformed
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu mnuAccount;
+    private javax.swing.JMenuItem mnuAccountEdit;
+    private javax.swing.JMenuItem mnuAccountLogout;
+    private javax.swing.JMenu mnuAdministration;
+    private javax.swing.JMenuItem mnuAdministrationRegister;
+    private javax.swing.JMenu mnuArchive;
+    private javax.swing.JMenuItem mnuArchiveExit;
+    private javax.swing.JMenuBar mnubMain;
+    private javax.swing.JPanel pnlContainer;
+    // End of variables declaration//GEN-END:variables
 
 }
