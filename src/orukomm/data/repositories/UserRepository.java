@@ -58,15 +58,13 @@ public class UserRepository implements Repository<User> {
 	@Override
 	public void update(User user) {
 		PreparedStatement ps = null;
-		String query = String.format("UPDATE user SET first_name = ?, surname = ?, username = ?, email = ?, password_hash = '%s', salt = '%s', role = '%d' WHERE id = '%d'",
-				user.getPassword(), user.getSalt(), user.getRole(), user.getId());
-
+		String query = String.format("UPDATE user SET first_name = ?, surname = ?, email = ?, password_hash = '%s', salt = '%s' WHERE id = '%d'",
+				user.getPassword(), user.getSalt(), user.getId());                                
 		try {
 			ps = db.getConnection().prepareStatement(query);
 			ps.setString(1, user.getFirstName());
 			ps.setString(2, user.getSurname());
-			ps.setString(3, user.getUsername());
-			ps.setString(4, user.getEmail());
+			ps.setString(3, user.getEmail());
 			ps.executeUpdate();
 		} catch (SQLException ex) {
 			Logger.getLogger(UserRepository.class.getName()).log(Level.SEVERE, null, ex);
