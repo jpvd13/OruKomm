@@ -3,7 +3,6 @@ package orukomm.gui.panels;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
-import orukomm.Settings;
 import orukomm.data.entities.User;
 import orukomm.data.repositories.UserRepository;
 import orukomm.gui.MainWindow;
@@ -12,73 +11,75 @@ import orukomm.logic.security.Encryption;
 
 public class Update extends javax.swing.JPanel {
 
-    private MainWindow parentFrame;
-    private UserRepository userRepo;
+	private MainWindow parentFrame;
+	private UserRepository userRepo;
 
-    public Update(MainWindow parentFrame) {
-        this.parentFrame = parentFrame;
-        initComponents();
-        userRepo = new UserRepository();
-        fillTxtfields();
+	public Update(MainWindow parentFrame) {
+		this.parentFrame = parentFrame;
+		initComponents();
+		userRepo = new UserRepository();
+		fillTxtfields();
 
-        // Update submit event.
-        btnUpdate.addActionListener((ActionEvent e) -> {
-            User editUser = new User();
+		// Update submit event.
+		btnUpdate.addActionListener((ActionEvent e) -> {
+			User editUser = new User();
 
-            // Validate submitted user's properties.
-            if (Validation.isEmptyOrNull(txtfFirstName.getText())
-                    || Validation.isEmptyOrNull(txtfSurname.getText())
-                    || Validation.isEmptyOrNull(pswPassword.getText())
-                    || Validation.isEmptyOrNull(pswPasswordConfirmation.getText())) {
-                JOptionPane.showMessageDialog(parentFrame, "Inga fält får lämnas tomma.", "Valideringsfel", JOptionPane.ERROR_MESSAGE);
+			// Validate submitted user's properties.
+			if (Validation.isEmptyOrNull(txtfFirstName.getText())
+					|| Validation.isEmptyOrNull(txtfSurname.getText())
+					|| Validation.isEmptyOrNull(txtfEmail.getText())) {
+				JOptionPane.showMessageDialog(parentFrame, "Inga fält får lämnas tomma.", "Valideringsfel", JOptionPane.ERROR_MESSAGE);
 
-                return;
-            }
+				return;
+			}
 
-            if (!pswPassword.getText().equals(pswPasswordConfirmation.getText())) {
-                JOptionPane.showMessageDialog(parentFrame, "Lösenorden du angav matchar inte varandra.", "Valideringsfel", JOptionPane.ERROR_MESSAGE);
+			if (!pswPassword.getText().equals(pswPasswordConfirmation.getText())) {
+				JOptionPane.showMessageDialog(parentFrame, "Lösenorden du angav matchar inte varandra.", "Valideringsfel", JOptionPane.ERROR_MESSAGE);
 
-                return;
-            }
+				return;
+			}
 
-            // Generate salt and password hash.
-            String salt = Encryption.generateSalt();
-            String passwordHash = Encryption.generatePasswordHash(pswPassword.getText(), salt);
+			// Set new user object and write it to the data context.
+			editUser.setId(parentFrame.loggedInUser.getId());
+			editUser.setFirstName(txtfFirstName.getText());
+			editUser.setSurname(txtfSurname.getText());
+			editUser.setUsername(this.parentFrame.loggedInUser.getUsername());
+			editUser.setPassword(parentFrame.loggedInUser.getPassword());
+			editUser.setSalt(parentFrame.loggedInUser.getSalt());
+			editUser.setEmail(txtfEmail.getText());
+			editUser.setRole(parentFrame.loggedInUser.getRole());
+			
+			if (!Validation.isEmptyOrNull(pswPassword.getText()) && !Validation.isEmptyOrNull(pswPasswordConfirmation.getText())) {
+				// Update password.
+				String salt = Encryption.generateSalt();
+				String passwordHash = Encryption.generatePasswordHash(pswPassword.getText(), salt);
+				editUser.setPassword(passwordHash);
+				editUser.setSalt(salt);
+			}
+			
+			// Account update survived the validation: Write it to the data context.
+			parentFrame.loggedInUser = editUser;
+			userRepo.update(editUser);
+			parentFrame.switchPanel(new Index(parentFrame));
+			JOptionPane.showMessageDialog(parentFrame, "Användaruppgifterna har ändrats.", "Användare registrerad", JOptionPane.INFORMATION_MESSAGE);
+		});
 
-            // Set new user object and write it to the data context.
-            editUser.setFirstName(txtfFirstName.getText());
-            editUser.setSurname(txtfSurname.getText());
-            editUser.setPassword(passwordHash);
-            editUser.setEmail(txtfEmail.getText());
-            editUser.setSalt(salt);
-            editUser.setId(parentFrame.loggedInUser.getId());
+		pswPasswordConfirmation.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				btnUpdate.doClick();
+			}
+		});
+	}
 
-            // User registration survived the validation: Write it to the data context.
-            userRepo.update(editUser);
-            parentFrame.switchPanel(new Index(parentFrame));
-            JOptionPane.showMessageDialog(parentFrame, "Den nya användaren har registrerats.", "Användare registrerad", JOptionPane.INFORMATION_MESSAGE);
-        });
+	public void fillTxtfields() {	
+		txtfFirstName.setText(parentFrame.loggedInUser.getFirstName());
+		txtfSurname.setText(parentFrame.loggedInUser.getSurname());
+		txtfEmail.setText(parentFrame.loggedInUser.getEmail());
 
-        pswPasswordConfirmation.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                btnUpdate.doClick();
-            }
-        });
-    }
+	}
 
-    public void fillTxtfields() {
-
-        User editUser = userRepo.getById(parentFrame.loggedInUser.getId());
-
-        txtfFirstName.setText(editUser.getFirstName());
-        txtfSurname.setText(editUser.getSurname());
-        
-        
-    
-    }
-
-    @SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -206,7 +207,7 @@ public class Update extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-        // TODO add your handling code here:
+		// TODO add your handling code here:
     }//GEN-LAST:event_btnUpdateActionPerformed
 
 
