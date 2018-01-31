@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import java.util.EnumSet;
 import javax.swing.JPanel;
 import orukomm.Settings;
+import orukomm.data.FileStorage;
 import orukomm.data.entities.User;
 import orukomm.data.entities.User.PermissionFlag;
 import orukomm.gui.panels.Login;
