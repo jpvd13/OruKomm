@@ -46,7 +46,7 @@ public class PostRepository {
                 // Username exists.
                 post.setId(rs.getInt("id"));
                 post.setTitel(rs.getString("titel"));
-                post.setAuthor(rs.getString("author"));
+                post.setPoster(rs.getString("poster"));
                 post.setDate(rs.getString("date"));
 
             }
@@ -75,7 +75,7 @@ public class PostRepository {
             while (rs.next()) {
                 post.setId(rs.getInt("id"));
                 post.setTitel(rs.getString("title"));
-                post.setAuthor(rs.getString("author"));
+                post.setPoster(rs.getString("poster"));
                 post.setDate(rs.getString("date"));
                 
                 postList.add(post);

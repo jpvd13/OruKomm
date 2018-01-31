@@ -12,7 +12,7 @@ package orukomm.data.entities;
 public class Post {
     private int id;
     private String title;
-    private String author;
+    private String poster;
     private String date;
     
     
@@ -25,12 +25,12 @@ public class Post {
         this.title = titel;
     }
 
-    public String getAuthor() {
-        return author;
+    public String getPoster() {
+        return poster;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public void setPoster(String poster) {
+        this.poster = poster;
     }
 
     public String getDate() {

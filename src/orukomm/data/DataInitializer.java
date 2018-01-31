@@ -36,7 +36,8 @@ public class DataInitializer {
             String createPostsTable = "CREATE TABLE posts ("
                     + "id int(11) NOT NULL AUTO_INCREMENT, poster int,"
                     + "title VARCHAR(50) NOT NULL, description TEXT,"
-                    + "PRIMARY KEY (id), date DATE,"
+                    + "date DATE,"
+                    + "PRIMARY KEY (id),"
                     + "FOREIGN KEY (poster) REFERENCES `user`(`id`))"
                     + "ENGINE=InnoDB DEFAULT CHARSET=utf8";
 
@@ -45,7 +46,9 @@ public class DataInitializer {
 
             String createAttTable = "CREATE TABLE attachments ("
                     + "id int(11) NOT NULL AUTO_INCREMENT, post_id int,"
-                    + "file MEDIUMBLOB, PRIMARY KEY (id))"
+                    + "file MEDIUMBLOB,"
+                    + "PRIMARY KEY (id),"
+                    + "FOREIGN KEY (post_id) REFERENCES posts(id))"
                     + "ENGINE=InnoDB DEFAULT CHARSET=utf8";
             
             PreparedStatement psCrtAtts = db.getConnection().prepareStatement(createAttTable);
@@ -77,8 +80,7 @@ public class DataInitializer {
             ps.executeUpdate();
             
             String insertPostsData = "INSERT INTO posts VALUES"
-                    + " (1 , 1, 'Bla', 'Bla', '2018-01-31')";
-            
+                    + " (1 , 1, 'Bla', 'Bla', '2008-11-11')";
             PreparedStatement ps2 = db.getConnection().prepareStatement(insertPostsData);
             ps2.executeUpdate();
             
