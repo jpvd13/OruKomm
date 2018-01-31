@@ -80,7 +80,7 @@ public class FileStorage {
      */
     public void insertFile(int postId, String filename) {
         // update sql
-        String updateSQL = "INSERT INTO attachments values(?, ?, ?)";                
+        String updateSQL = "INSERT INTO attachments values(?, ?, ?)";   
 
         try (Connection conn = connect();
                 PreparedStatement pstmt = conn.prepareStatement(updateSQL)) {
@@ -93,7 +93,7 @@ public class FileStorage {
             pstmt.setInt(2, postId);            
             pstmt.setBytes(3, FileStorage.this.readFile(filename));
             pstmt.executeUpdate();
-            System.out.println("Stored file in as BLOB in attachments column.");
+            System.out.println("Stored file as BLOB in attachments column.");
 
             id_autoUp++;
             postId++; //Ska bytas ut
@@ -111,8 +111,8 @@ public class FileStorage {
      * @param post_id
      * @param fileName
      */
-    public void convertToBlob(int post_id, String fileName) {
-        // update sql
+    public void selectFile(int post_id, String fileName) {
+        // insert into db
         String selectSQL = "SELECT file FROM attachments WHERE id=?";
         ResultSet rs = null;
         FileOutputStream fos = null;
