@@ -24,19 +24,26 @@
             <Property name="text" type="java.lang.String" value="Administration"/>
           </Properties>
           <SubComponents>
-            <MenuItem class="javax.swing.JMenuItem" name="mnuAdministrationRegister">
+            <Menu class="javax.swing.JMenu" name="mnuAdministrationUsers">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Registrera anv&#xe4;ndare"/>
+                <Property name="text" type="java.lang.String" value="Anv&#xe4;ndare"/>
               </Properties>
-            </MenuItem>
+              <SubComponents>
+                <MenuItem class="javax.swing.JMenuItem" name="mnuAdministrationRegister">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Registrera anv&#xe4;ndare"/>
+                  </Properties>
+                </MenuItem>
+                <MenuItem class="javax.swing.JMenuItem" name="mnuAdministrationEditUser">
+                  <Properties>
+                    <Property name="text" type="java.lang.String" value="Redigera anv&#xe4;ndare"/>
+                  </Properties>
+                </MenuItem>
+              </SubComponents>
+            </Menu>
             <MenuItem class="javax.swing.JMenuItem" name="mnuAdministrationAddCategory">
               <Properties>
                 <Property name="text" type="java.lang.String" value="L&#xe4;gg till ny bloggkategori"/>
-              </Properties>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="mnuAdministrationEditUser">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Redigera anv&#xe4;ndare"/>
               </Properties>
             </MenuItem>
           </SubComponents>
@@ -46,17 +53,17 @@
             <Property name="text" type="java.lang.String" value="Konto"/>
           </Properties>
           <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="mnuAccountEdit">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="&#xc4;ndra kontouppgifter"/>
+              </Properties>
+            </MenuItem>
             <MenuItem class="javax.swing.JMenuItem" name="mnuAccountLogout">
               <Properties>
                 <Property name="accelerator" type="javax.swing.KeyStroke" editor="org.netbeans.modules.form.editors.KeyStrokeEditor">
                   <KeyStroke key="Ctrl+Alt+L"/>
                 </Property>
                 <Property name="text" type="java.lang.String" value="Logga ut"/>
-              </Properties>
-            </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="mnuAccountEdit">
-              <Properties>
-                <Property name="text" type="java.lang.String" value="Redigera anv&#xe4;ndare"/>
               </Properties>
             </MenuItem>
           </SubComponents>

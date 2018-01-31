@@ -157,12 +157,13 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
         mnuArchive = new javax.swing.JMenu();
         mnuArchiveExit = new javax.swing.JMenuItem();
         mnuAdministration = new javax.swing.JMenu();
+        mnuAdministrationUsers = new javax.swing.JMenu();
         mnuAdministrationRegister = new javax.swing.JMenuItem();
-        mnuAdministrationAddCategory = new javax.swing.JMenuItem();
         mnuAdministrationEditUser = new javax.swing.JMenuItem();
+        mnuAdministrationAddCategory = new javax.swing.JMenuItem();
         mnuAccount = new javax.swing.JMenu();
-        mnuAccountLogout = new javax.swing.JMenuItem();
         mnuAccountEdit = new javax.swing.JMenuItem();
+        mnuAccountLogout = new javax.swing.JMenuItem();
         mnuFeed = new javax.swing.JMenu();
         mnuFormalFeed = new javax.swing.JMenuItem();
         mnuPost = new javax.swing.JMenu();
@@ -183,25 +184,29 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 
         mnuAdministration.setText("Administration");
 
+        mnuAdministrationUsers.setText("Användare");
+
         mnuAdministrationRegister.setText("Registrera användare");
-        mnuAdministration.add(mnuAdministrationRegister);
+        mnuAdministrationUsers.add(mnuAdministrationRegister);
+
+        mnuAdministrationEditUser.setText("Redigera användare");
+        mnuAdministrationUsers.add(mnuAdministrationEditUser);
+
+        mnuAdministration.add(mnuAdministrationUsers);
 
         mnuAdministrationAddCategory.setText("Lägg till ny bloggkategori");
         mnuAdministration.add(mnuAdministrationAddCategory);
-
-        mnuAdministrationEditUser.setText("Redigera användare");
-        mnuAdministration.add(mnuAdministrationEditUser);
 
         mnubMain.add(mnuAdministration);
 
         mnuAccount.setText("Konto");
 
+        mnuAccountEdit.setText("Ändra kontouppgifter");
+        mnuAccount.add(mnuAccountEdit);
+
         mnuAccountLogout.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         mnuAccountLogout.setText("Logga ut");
         mnuAccount.add(mnuAccountLogout);
-
-        mnuAccountEdit.setText("Redigera användare");
-        mnuAccount.add(mnuAccountEdit);
 
         mnubMain.add(mnuAccount);
 
@@ -252,6 +257,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
     private javax.swing.JMenuItem mnuAdministrationAddCategory;
     private javax.swing.JMenuItem mnuAdministrationEditUser;
     private javax.swing.JMenuItem mnuAdministrationRegister;
+    private javax.swing.JMenu mnuAdministrationUsers;
     private javax.swing.JMenu mnuArchive;
     private javax.swing.JMenuItem mnuArchiveExit;
     private javax.swing.JMenu mnuFeed;
