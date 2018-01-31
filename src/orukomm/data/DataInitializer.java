@@ -35,7 +35,7 @@ public class DataInitializer {
 
             String createPostsTable = "CREATE TABLE posts ("
                     + "id int(11) NOT NULL AUTO_INCREMENT, poster int,"
-                    + "title VARCHAR(50) NOT NULL, description VARCHAR(500),"
+                    + "title VARCHAR(50) NOT NULL, description TEXT,"
                     + "PRIMARY KEY (id),"
                     + "FOREIGN KEY (poster) REFERENCES `user`(`id`))"
                     + "ENGINE=InnoDB DEFAULT CHARSET=utf8";
@@ -69,6 +69,13 @@ public class DataInitializer {
 
             PreparedStatement ps = db.getConnection().prepareStatement(insertUserData);
             ps.executeUpdate();
+            
+            String insertPostsData = "INSERT INTO posts VALUES"
+                    + " (1 , 1, 'Bla', 'Bla')";
+            
+            PreparedStatement ps2 = db.getConnection().prepareStatement(insertPostsData);
+            ps2.executeUpdate();
+            
         } catch (SQLException ex) {
             Logger.getLogger(DataInitializer.class.getName()).log(Level.SEVERE, null, ex);
         }
