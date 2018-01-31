@@ -36,7 +36,7 @@ public class DataInitializer {
             String createPostsTable = "CREATE TABLE posts ("
                     + "id int(11) NOT NULL AUTO_INCREMENT, poster int,"
                     + "title VARCHAR(50) NOT NULL, description TEXT,"
-                    + "PRIMARY KEY (id),"
+                    + "PRIMARY KEY (id), date DATE"
                     + "FOREIGN KEY (poster) REFERENCES `user`(`id`))"
                     + "ENGINE=InnoDB DEFAULT CHARSET=utf8";
 
