@@ -31,12 +31,12 @@
               <SubComponents>
                 <MenuItem class="javax.swing.JMenuItem" name="mnuAdministrationRegister">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Registrera anv&#xe4;ndare"/>
+                    <Property name="text" type="java.lang.String" value="Registrera"/>
                   </Properties>
                 </MenuItem>
                 <MenuItem class="javax.swing.JMenuItem" name="mnuAdministrationEditUser">
                   <Properties>
-                    <Property name="text" type="java.lang.String" value="Redigera anv&#xe4;ndare"/>
+                    <Property name="text" type="java.lang.String" value="Redigera"/>
                   </Properties>
                 </MenuItem>
               </SubComponents>

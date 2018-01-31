@@ -2,19 +2,21 @@ package orukomm.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.EnumSet;
 import javax.swing.JPanel;
 import orukomm.CreatePost;
 import orukomm.Settings;
 import orukomm.data.FileStorage;
+import orukomm.data.entities.Entity;
 import orukomm.data.entities.User;
 import orukomm.data.entities.User.PermissionFlag;
 import orukomm.gui.dialogs.AddCategory;
-import orukomm.gui.panels.AdminEditUser;
+import orukomm.gui.panels.AdminUpdateUsers;
 import orukomm.gui.panels.FormalFeed;
 import orukomm.gui.panels.Login;
 import orukomm.gui.panels.Register;
-import orukomm.gui.panels.Update;
+import orukomm.gui.panels.UpdateAccount;
 
 public class MainWindow extends javax.swing.JFrame implements ActionListener {
 
@@ -113,7 +115,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
                             break;
 
                         case "mnuAdministrationEditUser":
-                            switchPanel(new AdminEditUser(this));
+                            switchPanel(new AdminUpdateUsers(this));
                             break;
                             
 			case "mnuAccountLogout":
@@ -121,7 +123,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 				break;
 
 			case "mnuAccountEdit":
-				switchPanel(new Update((this)));
+				switchPanel(new UpdateAccount((this)));
 				break;
                                 
                         case "mnuFormalFeed":
@@ -147,7 +149,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 		setTitle(Settings.WINDOW_TITLE);
 		switchPanel(new Login((this)));
 	}
-
+        
 	@SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -186,10 +188,10 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 
         mnuAdministrationUsers.setText("Användare");
 
-        mnuAdministrationRegister.setText("Registrera användare");
+        mnuAdministrationRegister.setText("Registrera");
         mnuAdministrationUsers.add(mnuAdministrationRegister);
 
-        mnuAdministrationEditUser.setText("Redigera användare");
+        mnuAdministrationEditUser.setText("Redigera");
         mnuAdministrationUsers.add(mnuAdministrationEditUser);
 
         mnuAdministration.add(mnuAdministrationUsers);
