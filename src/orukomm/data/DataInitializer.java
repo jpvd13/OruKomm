@@ -72,7 +72,7 @@ public class DataInitializer {
             ps.executeUpdate();
             
             String insertPostsData = "INSERT INTO posts VALUES"
-                    + " (1 , 1, 'Bla', 'Bla', 01-31-2018)";
+                    + " (1 , 1, 'Bla', 'Bla', '2008-11-11')";
             
             PreparedStatement ps2 = db.getConnection().prepareStatement(insertPostsData);
             ps2.executeUpdate();
