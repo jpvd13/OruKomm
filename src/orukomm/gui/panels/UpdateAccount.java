@@ -10,7 +10,7 @@ import orukomm.gui.MainWindow;
 import orukomm.logic.Validation;
 import orukomm.logic.security.Encryption;
 
-public class Update extends javax.swing.JPanel {
+public class UpdateAccount extends javax.swing.JPanel {
 
 	private MainWindow parentFrame;
 	private UserRepository userRepo;
@@ -18,7 +18,7 @@ public class Update extends javax.swing.JPanel {
 	private String newPassword = "";
 	private String newPasswordConfirmation = "";
 
-	public Update(MainWindow parentFrame) {
+	public UpdateAccount(MainWindow parentFrame) {
 		this.parentFrame = parentFrame;
 		initComponents();
 		userRepo = new UserRepository();
