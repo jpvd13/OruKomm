@@ -51,6 +51,18 @@
             </MenuItem>
           </SubComponents>
         </Menu>
+        <Menu class="javax.swing.JMenu" name="mnuFeed">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Fl&#xf6;de"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="mnuFormalFeed">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Formellt fl&#xf6;de"/>
+              </Properties>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
       </SubComponents>
     </Menu>
   </NonVisualComponents>

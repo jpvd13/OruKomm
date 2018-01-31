@@ -8,6 +8,7 @@ import orukomm.Settings;
 import orukomm.data.FileStorage;
 import orukomm.data.entities.User;
 import orukomm.data.entities.User.PermissionFlag;
+import orukomm.gui.panels.FormalFeed;
 import orukomm.gui.panels.Login;
 import orukomm.gui.panels.Register;
 import orukomm.gui.panels.Update;
@@ -44,6 +45,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 		mnuAccount.setVisible(hasUserPermission);
 		mnuAdministration.setVisible(hasSuperadminPermission);
 		mnuAccountEdit.setVisible(hasUserPermission);
+                mnuFeed.setVisible(hasUserPermission);
 	}
 
 	/*
@@ -70,6 +72,9 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 
 		mnuAccountEdit.setActionCommand("mnuAccountEdit");
 		mnuAccountEdit.addActionListener(this);
+                
+                mnuFormalFeed.setActionCommand("mnuFormalFeed");
+                mnuFormalFeed.addActionListener(this);
 	}
 
 	/*
@@ -93,6 +98,10 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 			case "mnuAccountEdit":
 				switchPanel(new Update((this)));
 				break;
+                                
+                        case "mnuFormalFeed":
+                            switchPanel(new FormalFeed());
+                            break;
 		}
 	}
 
@@ -120,6 +129,8 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
         mnuAccount = new javax.swing.JMenu();
         mnuAccountLogout = new javax.swing.JMenuItem();
         mnuAccountEdit = new javax.swing.JMenuItem();
+        mnuFeed = new javax.swing.JMenu();
+        mnuFormalFeed = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -152,6 +163,13 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 
         mnubMain.add(mnuAccount);
 
+        mnuFeed.setText("Flöde");
+
+        mnuFormalFeed.setText("Formellt flöde");
+        mnuFeed.add(mnuFormalFeed);
+
+        mnubMain.add(mnuFeed);
+
         setJMenuBar(mnubMain);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -176,6 +194,8 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
     private javax.swing.JMenuItem mnuAdministrationRegister;
     private javax.swing.JMenu mnuArchive;
     private javax.swing.JMenuItem mnuArchiveExit;
+    private javax.swing.JMenu mnuFeed;
+    private javax.swing.JMenuItem mnuFormalFeed;
     private javax.swing.JMenuBar mnubMain;
     private javax.swing.JPanel pnlContainer;
     // End of variables declaration//GEN-END:variables
