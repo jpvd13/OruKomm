@@ -20,7 +20,7 @@ public class DataInitializer {
 
     private void createTables() {
         try {
-            PreparedStatement psDrp = db.getConnection().prepareStatement("DROP TABLE IF EXISTS attachments, posts, `user`");
+            PreparedStatement psDrp = db.getConnection().prepareStatement("DROP TABLE IF EXISTS `category`, `attachments`, `posts`, `user`");
             psDrp.executeUpdate();
 
             String createUserTable = "CREATE TABLE `user` ("
@@ -53,6 +53,14 @@ public class DataInitializer {
             
             PreparedStatement psCrtAtts = db.getConnection().prepareStatement(createAttTable);
             psCrtAtts.executeUpdate();
+            
+            String createCategoryTable = "CREATE TABLE category ("
+                    + "id int(11) NOT NULL AUTO_INCREMENT, category VARCHAR(64),"
+                    + "PRIMARY KEY (id))"
+                    + "ENGINE=InnoDB DEFAULT CHARSET=utf8";
+            
+            PreparedStatement psCrtCat = db.getConnection().prepareStatement(createCategoryTable);
+            psCrtCat.executeUpdate();            
 
         } catch (SQLException ex) {
             Logger.getLogger(DataInitializer.class.getName()).log(Level.SEVERE, null, ex);
@@ -72,8 +80,9 @@ public class DataInitializer {
             ps.executeUpdate();
             
             String insertPostsData = "INSERT INTO posts VALUES"
+
                     + " (null , 1, 'Bla', 'Bla', '2008-11-11')";
-            
+
             PreparedStatement ps2 = db.getConnection().prepareStatement(insertPostsData);
             ps2.executeUpdate();
             

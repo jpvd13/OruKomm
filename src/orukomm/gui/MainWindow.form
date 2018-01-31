@@ -29,6 +29,16 @@
                 <Property name="text" type="java.lang.String" value="Registrera anv&#xe4;ndare"/>
               </Properties>
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="mnuAdministrationAddCategory">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="L&#xe4;gg till ny bloggkategori"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="mnuAdministrationEditUser">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Redigera anv&#xe4;ndare"/>
+              </Properties>
+            </MenuItem>
           </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="mnuAccount">
@@ -60,6 +70,21 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Formellt fl&#xf6;de"/>
               </Properties>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
+        <Menu class="javax.swing.JMenu" name="mnuPost">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="Inl&#xe4;gg"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="mnuNewPost">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Skriv Inl&#xe4;gg"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuNewPostActionPerformed"/>
+              </Events>
             </MenuItem>
           </SubComponents>
         </Menu>
