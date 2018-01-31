@@ -32,7 +32,7 @@ public class FormalFeed extends javax.swing.JPanel {
         Object[] row = new Object[3];    // Använder Object klassen så att Arrayn kan ta in vilka object som helst
         for (int i = 0; i < postList.size(); i++) {  
             row[0] = postList.get(i).getTitle();
-            row[1] = postList.get(i).getAuthor();
+            row[1] = postList.get(i).getPoster();
             row[2] = postList.get(i).getDate();
             model.addRow(row);
         }
@@ -69,6 +69,7 @@ public class FormalFeed extends javax.swing.JPanel {
             }
         });
         tblFormalFeed.setColumnSelectionAllowed(true);
+        tblFormalFeed.getTableHeader().setReorderingAllowed(false);
         tblFormalFeed.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 tblFormalFeedMouseClicked(evt);
