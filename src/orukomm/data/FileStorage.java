@@ -34,7 +34,7 @@ public class FileStorage {
     private final String connectionString = "jdbc:mysql://localhost:3306/oru_komm?autoReconnect=true&useSSL=false";
 
     private final String dbUser = "root";
-    private final String dbPassword = "admin";
+    private final String dbPassword = "masterkey";
 
     public User loggedInUser = new User();
 
@@ -79,7 +79,7 @@ public class FileStorage {
      * @param postId
      * @param filename
      */
-    public void insertFile(int postId, String filename) {
+    public void insertFile(int postId, int attachId, String filename) {
         // update sql
         String updateSQL = "INSERT INTO attachments values(?, ?, ?)";
 
@@ -90,7 +90,7 @@ public class FileStorage {
             int id_autoUp = 1;
             postId = 1;
 
-            pstmt.setInt(1, id_autoUp);
+            pstmt.setInt(1, attachId);
             pstmt.setInt(2, postId);
             pstmt.setBytes(3, FileStorage.this.readFile(filename));
             pstmt.executeUpdate();
