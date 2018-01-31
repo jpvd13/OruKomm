@@ -37,7 +37,10 @@ public class FileStorage {
     private final String dbPassword = "admin";
 
     public User loggedInUser = new User();
-
+    
+    int postId;
+    
+        
     public Connection connect() {
         try {
             Class.forName(dbDriver);
@@ -79,25 +82,31 @@ public class FileStorage {
      * @param postId
      * @param filename
      */
-    public void insertFile(int postId, String filename) {
+    
+    public int selectMax(){
+        String query ="SELECT MAX id FROM posts";
+        try (Connection conn = connect();
+                PreparedStatement pstmt = conn.prepareStatement(query)) {
+                ResultSet  rs = pstmt.executeQuery();
+                postId = rs.getInt("id");
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(FileStorage.class.getName()).log(Level.SEVERE, null, ex);
+        } return postId;
+    } 
+    
+    public void insertFile(String filename) {
         // update sql
-        String updateSQL = "INSERT INTO attachments values(?, ?, ?)";
+        selectMax();
+        String updateSQL = "INSERT INTO attachments values(null, ?, ?)";
 
         try (Connection conn = connect();
-            PreparedStatement pstmt = conn.prepareStatement(updateSQL)) {
-
-            // set parameters
-            int id_autoUp = 1;
-            postId = 1;
-
-            pstmt.setInt(1, id_autoUp);
-            pstmt.setInt(2, postId);
-            pstmt.setBytes(3, FileStorage.this.readFile(filename));
+            PreparedStatement pstmt = conn.prepareStatement(updateSQL)) {            
+           
+            pstmt.setInt(1, postId);
+            pstmt.setBytes(2, FileStorage.this.readFile(filename));
             pstmt.executeUpdate();
-            System.out.println("Stored file as BLOB in attachments column.");
-
-            id_autoUp++;
-            postId++; //Ska bytas ut
+            System.out.println("Stored file as BLOB in attachments column.");            
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -175,5 +184,29 @@ public class FileStorage {
         BufferedImage image = ImageIO.read(in);
         
     }
+    
+    public void insertPost(String content, String title, String date){
+        
+        String query = "INSERT INTO posts values(null, ?, ?, ?, ?)";
+                
+        try (Connection conn = connect(); 
+            PreparedStatement pstmt = conn.prepareStatement(query)) {
 
+            
+            int userId = loggedInUser.getId();
+            
+            userId++;
+            
+            pstmt.setInt(1, userId);
+            pstmt.setString(2, title);
+            pstmt.setString(3, content);
+            pstmt.setString(4, date);
+            pstmt.executeUpdate();         
+           
+        
+    }   catch (SQLException ex) {
+            Logger.getLogger(FileStorage.class.getName()).log(Level.SEVERE, null, ex);
+        }
+            
+    }
 }
