@@ -34,6 +34,11 @@
                 <Property name="text" type="java.lang.String" value="L&#xe4;gg till ny bloggkategori"/>
               </Properties>
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="mnuAdministrationEditUser">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Redigera anv&#xe4;ndare"/>
+              </Properties>
+            </MenuItem>
           </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="mnuAccount">
