@@ -24,8 +24,6 @@ public class User implements Entity {
         public static int MAX_LENGTH_EMAIL = 128;
 
 	
-
-
 	@Override
 	public int getId() {
 		return this.id;
