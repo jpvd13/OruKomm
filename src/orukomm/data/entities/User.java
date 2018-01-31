@@ -14,14 +14,16 @@ public class User implements Entity {
 	private String passwordHash;
 	private String salt;
 	private int role;
+        private String email;
 
         
         public static int MAX_LENGTH_FIRST_NAME = 32;
         public static int MAX_LENGTH_SURNAME = 32;
         public static int MAX_LENGTH_USERNAME = 64;
         public static int MAX_LENGTH_PASSWORDHASH = 128;
+        public static int MAX_LENGTH_EMAIL = 128;
 
-	private String email;
+	
 
 
 	@Override
