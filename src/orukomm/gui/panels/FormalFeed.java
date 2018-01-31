@@ -21,7 +21,7 @@ public class FormalFeed extends javax.swing.JPanel {
      */
     public FormalFeed() {
         initComponents();
-        //fillTable();
+        
     }
 
     public void fillTable()
@@ -32,7 +32,7 @@ public class FormalFeed extends javax.swing.JPanel {
         Object[] row = new Object[3];    // Använder Object klassen så att Arrayn kan ta in vilka object som helst
         for (int i = 0; i < postList.size(); i++) {  
             row[0] = postList.get(i).getTitle();
-            row[1] = postList.get(i).getPoster();
+            row[1] = postList.get(i).getUsername();
             row[2] = postList.get(i).getDate();
             model.addRow(row);
         }
@@ -91,7 +91,7 @@ public class FormalFeed extends javax.swing.JPanel {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 323, Short.MAX_VALUE)
+            .addGap(0, 362, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -112,7 +112,7 @@ public class FormalFeed extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(141, Short.MAX_VALUE))
+                .addContainerGap(102, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 

@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 
 import orukomm.data.DataInitializer;
@@ -46,7 +47,7 @@ public class PostRepository {
                 // Username exists.
                 post.setId(rs.getInt("id"));
                 post.setTitel(rs.getString("titel"));
-                post.setPoster(rs.getString("poster"));
+                post.setUsername(rs.getString("poster"));
                 post.setDate(rs.getString("date"));
 
             }
@@ -66,16 +67,15 @@ public class PostRepository {
         PreparedStatement ps = null;
         ResultSet rs = null;
 
-        String query = String.format("SELECT * FROM post ORDER BY date DESC");
+        String query = String.format("SELECT username, title, date FROM posts, user WHERE user.id = poster");
 
         try {
             ps = db.getConnection().prepareStatement(query);
             rs = ps.executeQuery();
 
             while (rs.next()) {
-                post.setId(rs.getInt("id"));
-                post.setTitel(rs.getString("title"));
-                post.setPoster(rs.getString("poster"));
+                post.setUsername(rs.getString("username"));
+                post.setTitel(rs.getString("title"));                
                 post.setDate(rs.getString("date"));
                 
                 postList.add(post);
@@ -83,10 +83,11 @@ public class PostRepository {
 
         } catch (SQLException ex) {
             Logger.getLogger(DataInitializer.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "databasfel");
         }
-        finally {
-            close(rs, ps, null);
-        }
+        //finally {
+        //    close(rs, ps, null);
+       // }
         return postList;
 
     }
