@@ -7,6 +7,8 @@ package orukomm;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
@@ -30,10 +32,22 @@ public class CreatePost extends javax.swing.JFrame {
     private static String fileURL3;
     private static String textPost;
     private static String textHeading;
-
+    private FileStorage fs;
+    private String date;
 
     public CreatePost() {
         initComponents();
+        fs = new FileStorage();
+        getDate();
+        
+        
+    }
+    
+    private void getDate(){        
+        
+        LocalDate localDate = LocalDate.now();
+        date = localDate.toString();       
+        
     }
     
     private void setTextPost(){
@@ -70,22 +84,21 @@ public class CreatePost extends javax.swing.JFrame {
     }
     
     public void insertAttachedFiles(){
-        FileStorage fs = new FileStorage();
-        
+                
         if(!lblURL1.getText().isEmpty() && !lblURL2.getText().isEmpty() && !lblURL3.getText().isEmpty())
         {
-        fs.insertFile(1, 1, fileURL);
-        fs.insertFile(2, 2, fileURL2);
-        fs.insertFile(3, 3, fileURL3);
+        fs.insertFile(fileURL);
+        fs.insertFile(fileURL2);
+        fs.insertFile(fileURL3);
     }
         else if (!lblURL1.getText().isEmpty() && !lblURL2.getText().isEmpty())
                 {
-        fs.insertFile(4, 4, fileURL);
-        fs.insertFile(5, 5, fileURL2); 
+        fs.insertFile(fileURL);
+        fs.insertFile(fileURL2); 
                 }
         else if (!lblURL1.getText().isEmpty())
         {
-        fs.insertFile(6, 6, fileURL);
+        fs.insertFile(fileURL);
         }
         else {
            
@@ -93,11 +106,11 @@ public class CreatePost extends javax.swing.JFrame {
     }
     public void insertAttachedPicture()
     {
-             FileStorage fs = new FileStorage();
+            
     
             if(!lblImageURL.getText().isEmpty())
             {
-                fs.insertFile(7, 7, bildURL);
+                fs.insertFile(bildURL);
                 
             }
     } 
@@ -324,9 +337,13 @@ public class CreatePost extends javax.swing.JFrame {
      
         setTextPost();
         setHeadingPost();
-
+        
+        fs.insertPost(textHeading, textPost, date);  
+              
+        
         try {
             buildFrame();
+            
         } catch (IOException ex) {
             Logger.getLogger(CreatePost.class.getName()).log(Level.SEVERE, null, ex);
         }

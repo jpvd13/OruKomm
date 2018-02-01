@@ -34,7 +34,7 @@ public class FileStorage {
     private final String connectionString = "jdbc:mysql://localhost:3306/oru_komm?autoReconnect=true&useSSL=false";
 
     private final String dbUser = "root";
-    private final String dbPassword = "masterkey";
+    private final String dbPassword = "admin";
 
     public User loggedInUser = new User();
     
@@ -84,12 +84,16 @@ public class FileStorage {
      */
     
     public int selectMax(){
-        String query ="SELECT MAX id FROM posts";
+        String query ="SELECT MAX(id) FROM posts";
         try (Connection conn = connect();
-                PreparedStatement pstmt = conn.prepareStatement(query)) {
-                ResultSet  rs = pstmt.executeQuery();
-                postId = rs.getInt("id");
-            
+                PreparedStatement ps = conn.prepareStatement(query)) {
+                ResultSet  rs = ps.executeQuery();
+                
+                if (Database.fetchedRows(rs) == 1) {
+                postId = rs.getInt("MAX(id)");
+                System.out.println(postId);
+                
+                }
         } catch (SQLException ex) {
             Logger.getLogger(FileStorage.class.getName()).log(Level.SEVERE, null, ex);
         } return postId;
@@ -187,7 +191,7 @@ public class FileStorage {
         
     }
     
-    public void insertPost(String content, String title, String date){
+    public void insertPost(String title, String content, String date){
         
         String query = "INSERT INTO posts values(null, ?, ?, ?, ?)";
                 
