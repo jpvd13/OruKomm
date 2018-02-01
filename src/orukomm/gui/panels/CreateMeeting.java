@@ -4,11 +4,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import orukomm.data.entities.Meeting;
 import orukomm.data.entities.User;
+import orukomm.data.repositories.MeetingRepository;
 import orukomm.data.repositories.UserRepository;
 import orukomm.gui.MainWindow;
+import orukomm.logic.Validation;
 
 public class CreateMeeting extends javax.swing.JPanel {
 
@@ -16,15 +20,22 @@ public class CreateMeeting extends javax.swing.JPanel {
 
     private ArrayList<User> users;
     private UserRepository userRepo;
+    private MeetingRepository meetingRepo;
+    
     private DefaultListModel<User> lstMdlAllUsers;
     private DefaultListModel<User> lstMdlAddedUsers;
     
     private User selectedUserFromAllUsers;
     private User selectedUserFromAddedUsers;
+    private ArrayList<User> invitedUsers;
+    private Meeting meeting;
 
     public CreateMeeting(MainWindow parentFrame) {
         initComponents();
         this.parentFrame = parentFrame;
+        meetingRepo = new MeetingRepository();
+        meeting = new Meeting();
+        invitedUsers = new ArrayList<>();
 
         userRepo = new UserRepository();
         
@@ -36,6 +47,42 @@ public class CreateMeeting extends javax.swing.JPanel {
 
         selectedUserFromAllUsers = lstAllUsers.getSelectedValue();
 
+        // Add meeting submit event.
+        btnCreate.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Validate fields and invited users.
+                if (Validation.isEmptyOrNull(txtfTitle.getText()) || Validation.isEmptyOrNull(txtaDescription.getText())) {
+                    JOptionPane.showMessageDialog(parentFrame, "Inga fält får lämnas tomma.", "Valideringsfel", JOptionPane.ERROR_MESSAGE);
+                    
+                    return;
+                }
+                
+                // Add all invited users to array list.
+                for (int i = 0; i < lstMdlAddedUsers.getSize(); i++)
+                    invitedUsers.add(lstMdlAddedUsers.getElementAt(i));
+                
+                if (invitedUsers.size() < 1) {
+                    JOptionPane.showMessageDialog(parentFrame, "Du måste bjuda in användare till mötet.", "Valideringsfel", JOptionPane.ERROR_MESSAGE);
+                
+                    return;
+                }
+                
+                // Survived validation: Create meeting and add it to database.
+                meeting.setMeetingCaller(parentFrame.loggedInUser.getId());
+                meeting.setTitle(txtfTitle.getText());
+                meeting.setDescription(txtaDescription.getText());
+                meeting.setInvitedUsers(invitedUsers);
+                
+                meetingRepo.add(meeting);
+                JOptionPane.showMessageDialog(parentFrame, "Mötet har skapats.", "Möte skapat", JOptionPane.INFORMATION_MESSAGE);
+                lstMdlAddedUsers.removeAllElements();
+                invitedUsers.removeAll(invitedUsers);
+                refreshAllUsersList();
+                clearFields();
+            }
+        });
+        
         // All users-list selection events.
         lstAllUsers.addListSelectionListener(new ListSelectionListener() {
             @Override
@@ -90,6 +137,11 @@ public class CreateMeeting extends javax.swing.JPanel {
             lstMdlAllUsers.addElement(user);
         }
     }
+    
+    private void clearFields() {
+        txtfTitle.setText("");
+        txtaDescription.setText("");
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -109,6 +161,8 @@ public class CreateMeeting extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         txtaDescription = new javax.swing.JTextArea();
         btnCreate = new javax.swing.JButton();
+        lblTitle = new javax.swing.JLabel();
+        txtfTitle = new javax.swing.JTextField();
 
         lblCreateMeetingHeading.setFont(new java.awt.Font("Noto Sans", 1, 14)); // NOI18N
         lblCreateMeetingHeading.setText("Skapa nytt möte");
@@ -121,7 +175,7 @@ public class CreateMeeting extends javax.swing.JPanel {
 
         lblAddedUsers.setText("Tillagda mötesdeltagare");
 
-        btnAddUser.setText("Lägg till");
+        btnAddUser.setText("Välj");
 
         btnRemoveUser.setText("Ta bort");
 
@@ -134,6 +188,8 @@ public class CreateMeeting extends javax.swing.JPanel {
 
         btnCreate.setText("Skapa möte");
 
+        lblTitle.setText("Mötestitel");
+
         javax.swing.GroupLayout pnlMeetingContainerLayout = new javax.swing.GroupLayout(pnlMeetingContainer);
         pnlMeetingContainer.setLayout(pnlMeetingContainerLayout);
         pnlMeetingContainerLayout.setHorizontalGroup(
@@ -142,15 +198,20 @@ public class CreateMeeting extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(pnlMeetingContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlMeetingContainerLayout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnCreate))
                     .addGroup(pnlMeetingContainerLayout.createSequentialGroup()
                         .addGroup(pnlMeetingContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblCreateMeetingHeading)
+                            .addComponent(lblMeetingDescription)
+                            .addComponent(lblTitle)
                             .addGroup(pnlMeetingContainerLayout.createSequentialGroup()
-                                .addGroup(pnlMeetingContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(pnlMeetingContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(txtfTitle, javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(btnAddUser)
-                                    .addGroup(pnlMeetingContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(scrLstAllUsers, javax.swing.GroupLayout.PREFERRED_SIZE, 302, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(lblChooseUsers)))
+                                    .addComponent(scrLstAllUsers, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE)
+                                    .addComponent(lblChooseUsers, javax.swing.GroupLayout.Alignment.LEADING))
                                 .addGroup(pnlMeetingContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(pnlMeetingContainerLayout.createSequentialGroup()
                                         .addGap(58, 58, 58)
@@ -159,12 +220,8 @@ public class CreateMeeting extends javax.swing.JPanel {
                                             .addComponent(scrLstAddedUsers, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)))
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlMeetingContainerLayout.createSequentialGroup()
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(btnRemoveUser))))
-                            .addComponent(lblMeetingDescription))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlMeetingContainerLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnCreate)))
+                                        .addComponent(btnRemoveUser)))))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         pnlMeetingContainerLayout.setVerticalGroup(
@@ -173,13 +230,17 @@ public class CreateMeeting extends javax.swing.JPanel {
                 .addContainerGap()
                 .addComponent(lblCreateMeetingHeading)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblTitle)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtfTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(pnlMeetingContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblChooseUsers)
                     .addComponent(lblAddedUsers))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlMeetingContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(scrLstAddedUsers, javax.swing.GroupLayout.DEFAULT_SIZE, 347, Short.MAX_VALUE)
-                    .addComponent(scrLstAllUsers))
+                    .addComponent(scrLstAddedUsers)
+                    .addComponent(scrLstAllUsers, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(pnlMeetingContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAddUser)
@@ -190,7 +251,7 @@ public class CreateMeeting extends javax.swing.JPanel {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnCreate)
-                .addContainerGap(75, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -207,7 +268,7 @@ public class CreateMeeting extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addComponent(pnlMeetingContainer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(36, Short.MAX_VALUE))
+                .addContainerGap(29, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -221,11 +282,13 @@ public class CreateMeeting extends javax.swing.JPanel {
     private javax.swing.JLabel lblChooseUsers;
     private javax.swing.JLabel lblCreateMeetingHeading;
     private javax.swing.JLabel lblMeetingDescription;
+    private javax.swing.JLabel lblTitle;
     private javax.swing.JList<User> lstAddedUsers;
     private javax.swing.JList<User> lstAllUsers;
     private javax.swing.JPanel pnlMeetingContainer;
     private javax.swing.JScrollPane scrLstAddedUsers;
     private javax.swing.JScrollPane scrLstAllUsers;
     private javax.swing.JTextArea txtaDescription;
+    private javax.swing.JTextField txtfTitle;
     // End of variables declaration//GEN-END:variables
 }

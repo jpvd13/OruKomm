@@ -28,7 +28,7 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
               <Component id="pnlMeetingContainer" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="36" max="32767" attributes="0"/>
+              <EmptySpace pref="29" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -43,16 +43,21 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="jScrollPane1" max="32767" attributes="0"/>
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          <Component id="btnCreate" min="-2" max="-2" attributes="0"/>
+                      </Group>
                       <Group type="102" attributes="0">
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="lblCreateMeetingHeading" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblMeetingDescription" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="lblTitle" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Group type="102" alignment="0" attributes="0">
-                                  <Group type="103" groupAlignment="1" attributes="0">
+                                  <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                                      <Component id="txtfTitle" alignment="0" max="32767" attributes="0"/>
                                       <Component id="btnAddUser" min="-2" max="-2" attributes="0"/>
-                                      <Group type="103" groupAlignment="0" attributes="0">
-                                          <Component id="scrLstAllUsers" alignment="0" min="-2" pref="302" max="-2" attributes="0"/>
-                                          <Component id="lblChooseUsers" alignment="0" min="-2" max="-2" attributes="0"/>
-                                      </Group>
+                                      <Component id="scrLstAllUsers" alignment="0" pref="302" max="32767" attributes="0"/>
+                                      <Component id="lblChooseUsers" alignment="0" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Group type="102" attributes="0">
@@ -68,13 +73,8 @@
                                       </Group>
                                   </Group>
                               </Group>
-                              <Component id="lblMeetingDescription" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="1" attributes="0">
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                          <Component id="btnCreate" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -87,14 +87,18 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="lblCreateMeetingHeading" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
+                  <Component id="lblTitle" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="txtfTitle" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
                       <Component id="lblChooseUsers" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="lblAddedUsers" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                      <Component id="scrLstAddedUsers" pref="347" max="32767" attributes="0"/>
-                      <Component id="scrLstAllUsers" max="32767" attributes="0"/>
+                      <Component id="scrLstAddedUsers" max="32767" attributes="0"/>
+                      <Component id="scrLstAllUsers" min="-2" pref="347" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="3" attributes="0">
@@ -107,7 +111,7 @@
                   <Component id="jScrollPane1" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="btnCreate" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace pref="75" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -171,7 +175,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnAddUser">
           <Properties>
-            <Property name="text" type="java.lang.String" value="L&#xe4;gg till"/>
+            <Property name="text" type="java.lang.String" value="V&#xe4;lj"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="btnRemoveUser">
@@ -204,6 +208,13 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="Skapa m&#xf6;te"/>
           </Properties>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblTitle">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="M&#xf6;testitel"/>
+          </Properties>
+        </Component>
+        <Component class="javax.swing.JTextField" name="txtfTitle">
         </Component>
       </SubComponents>
     </Container>

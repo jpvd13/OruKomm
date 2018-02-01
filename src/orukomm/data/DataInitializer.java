@@ -66,7 +66,8 @@ public class DataInitializer {
             psCrtAtts.executeUpdate();
 
             String createMeeting = "CREATE TABLE meeting ("
-                    + "id int(11) NOT NULL AUTO_INCREMENT, meeting_caller INT NOT NULL, description VARCHAR(512) NOT NULL,"
+                    + "id int(11) NOT NULL AUTO_INCREMENT, meeting_caller INT NOT NULL, title VARCHAR(64) NOT NULL,"
+                    + "description VARCHAR(512) NOT NULL,"
                     + "PRIMARY KEY (id), FOREIGN KEY (meeting_caller) REFERENCES user(id))"
                     + "ENGINE=InnoDB DEFAULT CHARSET=utf8";
 
@@ -85,8 +86,7 @@ public class DataInitializer {
 
             String createMeetingTimeSuggestion = "CREATE TABLE meeting_time_suggestion ("
                     + "id INT(11) NOT NULL, meeting_id INT NOT NULL, time DATE NOT NULL,"
-                    + "PRIMARY KEY (id), FOREIGN KEY (meeting_id) REFERENCES meeting(id),"
-                    + "FOREIGN KEY (suggested_by) REFERENCES user(id))"
+                    + "PRIMARY KEY (id), FOREIGN KEY (meeting_id) REFERENCES meeting(id))"
                     + "ENGINE=InnoDB DEFAULT CHARSET=utf8";
 
             PreparedStatement psCrtMeetingTime = db.getConnection().prepareStatement(createMeetingTimeSuggestion);
