@@ -7,7 +7,6 @@ import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import orukomm.Settings;
 import orukomm.data.entities.User;
 import orukomm.data.repositories.UserRepository;
 import orukomm.gui.MainWindow;
@@ -15,23 +14,20 @@ import orukomm.logic.Validation;
 import orukomm.logic.security.Encryption;
 
 public class AdminUpdateUsers extends javax.swing.JPanel {
-    
+
     private MainWindow parentFrame;
     private ArrayList<User> users;
     private UserRepository userRepo;
     private DefaultListModel<User> lstMdlUsers;
-    
-    private String newPassword = "";
-    private String newPasswordConfirmation = "";
-    
+
     public AdminUpdateUsers(MainWindow parentFrame) {
         initComponents();
         this.parentFrame = parentFrame;
         userRepo = new UserRepository();
-        
+
         refreshUsersList();
         lstUsers.setSelectedIndex(0);
-        
+
         User selectedUser = lstUsers.getSelectedValue();
         fillTextFields(selectedUser);
 
@@ -58,13 +54,13 @@ public class AdminUpdateUsers extends javax.swing.JPanel {
                         || Validation.isEmptyOrNull(txtfEmail.getText())
                         || Validation.isEmptyOrNull(txtfUsername.getText())) {
                     JOptionPane.showMessageDialog(parentFrame, "Inga fält får lämnas tomma.", "Valideringsfel", JOptionPane.ERROR_MESSAGE);
-                    
+
                     return;
                 }
-                
+
                 if (!pswPassword.getText().equals(pswPasswordConfirmation.getText())) {
                     JOptionPane.showMessageDialog(parentFrame, "Lösenorden du angav matchar inte varandra.", "Valideringsfel", JOptionPane.ERROR_MESSAGE);
-                    
+
                     return;
                 }
 
@@ -84,13 +80,6 @@ public class AdminUpdateUsers extends javax.swing.JPanel {
                     String passwordHash = Encryption.generatePasswordHash(pswPassword.getText(), salt);
                     editUser.setPassword(passwordHash);
                     editUser.setSalt(salt);
-
-                    // Validate the new password.
-                    if (!newPassword.equals(newPasswordConfirmation)) {
-                        JOptionPane.showMessageDialog(parentFrame, "Lösenorden du angav matchar inte varandra.", "Valideringsfel", JOptionPane.ERROR_MESSAGE);
-                        
-                        return;
-                    }
                 }
 
                 // Account update survived the validation: Write it to the data context and refresh user list with updated user.
@@ -100,7 +89,7 @@ public class AdminUpdateUsers extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(parentFrame, "Användaruppgifterna har ändrats.", "Användaruppgifter uppdaterade", JOptionPane.INFORMATION_MESSAGE);
             }
         });
-        
+
         pswPasswordConfirmation.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -113,15 +102,15 @@ public class AdminUpdateUsers extends javax.swing.JPanel {
     private void refreshUsersList() {
         lstMdlUsers = new DefaultListModel<>();
         lstUsers.setModel(lstMdlUsers);
-        
+
         users = userRepo.getAll();
         lstMdlUsers.removeAllElements();
-        
+
         for (User user : users) {
             lstMdlUsers.addElement(user);
         }
     }
-    
+
     private void fillTextFields(User user) {
         txtfFirstName.setText(user.getFirstName());
         txtfSurname.setText(user.getSurname());
@@ -130,7 +119,7 @@ public class AdminUpdateUsers extends javax.swing.JPanel {
         pswPassword.setText("");
         pswPasswordConfirmation.setText("");
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
