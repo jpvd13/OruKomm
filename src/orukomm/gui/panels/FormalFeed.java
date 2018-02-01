@@ -5,8 +5,14 @@
  */
 package orukomm.gui.panels;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
+import orukomm.CreatedPost;
+import orukomm.DisplayPostV;
 import orukomm.data.entities.Post;
 import orukomm.data.repositories.PostRepository;
 
@@ -19,22 +25,37 @@ public class FormalFeed extends javax.swing.JPanel {
     /**
      * Creates new form FormalFeed
      */
+    private ArrayList<Post> posts;
     public FormalFeed() {
         initComponents();
+        PostRepository pr = new PostRepository();
+        this.posts = pr.fillList();
+        initPanels();
 
     }
+    
+    private void initPanels() {
+		pnlFeed.setVisible(true);
+	}
+    
+    public void switchPanel(JPanel panel) {
+		pnlFeed.removeAll();
+		pnlFeed.repaint();
+		pnlFeed.revalidate();
+		pnlFeed.add(panel);
+		pnlFeed.repaint();
+		pnlFeed.revalidate();
+	}
 
     public void fillTable() {
-        PostRepository pr = new PostRepository();
-
-        ArrayList<Post> postList = pr.fillList();
+        
 
         DefaultTableModel model = (DefaultTableModel) tblFormalFeed.getModel();  //Typecastar JTablemodellen till en DefaultTableModel
         Object[] row = new Object[3];    // Använder Object klassen så att Arrayn kan ta in vilka object som helst
-        for (int i = 0; i < postList.size(); i++) {
-            row[0] = postList.get(i).getTitle();
-            row[1] = postList.get(i).getUsername();
-            row[2] = postList.get(i).getDate();
+        for (int i = 0; i < posts.size(); i++) {
+            row[0] = posts.get(i).getTitle();
+            row[1] = posts.get(i).getUsername();
+            row[2] = posts.get(i).getDate();
             model.addRow(row);
         }
 
@@ -50,7 +71,7 @@ public class FormalFeed extends javax.swing.JPanel {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         tblFormalFeed = new javax.swing.JTable();
-        jPanel1 = new javax.swing.JPanel();
+        pnlFeed = new javax.swing.JPanel();
 
         tblFormalFeed.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -68,7 +89,6 @@ public class FormalFeed extends javax.swing.JPanel {
                 return canEdit [columnIndex];
             }
         });
-        tblFormalFeed.setColumnSelectionAllowed(true);
         tblFormalFeed.getTableHeader().setReorderingAllowed(false);
         tblFormalFeed.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -76,21 +96,20 @@ public class FormalFeed extends javax.swing.JPanel {
             }
         });
         jScrollPane1.setViewportView(tblFormalFeed);
-        tblFormalFeed.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         if (tblFormalFeed.getColumnModel().getColumnCount() > 0) {
             tblFormalFeed.getColumnModel().getColumn(0).setResizable(false);
             tblFormalFeed.getColumnModel().getColumn(1).setResizable(false);
             tblFormalFeed.getColumnModel().getColumn(2).setResizable(false);
         }
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout pnlFeedLayout = new javax.swing.GroupLayout(pnlFeed);
+        pnlFeed.setLayout(pnlFeedLayout);
+        pnlFeedLayout.setHorizontalGroup(
+            pnlFeedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 430, Short.MAX_VALUE)
         );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        pnlFeedLayout.setVerticalGroup(
+            pnlFeedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 362, Short.MAX_VALUE)
         );
 
@@ -102,7 +121,7 @@ public class FormalFeed extends javax.swing.JPanel {
                 .addGap(13, 13, 13)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pnlFeed, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(15, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -111,19 +130,39 @@ public class FormalFeed extends javax.swing.JPanel {
                 .addGap(24, 24, 24)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(pnlFeed, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(102, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void tblFormalFeedMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblFormalFeedMouseClicked
-        //ändra
+        int columnTitle = 0;
+        int columnPoster = 1;
+        int row = tblFormalFeed.getSelectedRow();
+        String title = tblFormalFeed.getModel().getValueAt(row, columnTitle).toString();
+        String poster = tblFormalFeed.getModel().getValueAt(row, columnPoster).toString();
+        String description = "";
+       
+        for (Post post : posts) {
+            if (post.getUsername().equals(poster) && post.getTitle().equals(title)) {
+                description = post.getDescription();
+            }
+        }
+        //switchPanel(new DisplayPostV(title, description));
+        CreatedPost fitta;
+        try {
+            fitta = new CreatedPost(description, title);
+              fitta.setVisible(true);
+        } catch (IOException ex) {
+            Logger.getLogger(FormalFeed.class.getName()).log(Level.SEVERE, null, ex);
+        }
+      
     }//GEN-LAST:event_tblFormalFeedMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JPanel pnlFeed;
     public javax.swing.JTable tblFormalFeed;
     // End of variables declaration//GEN-END:variables
 }
