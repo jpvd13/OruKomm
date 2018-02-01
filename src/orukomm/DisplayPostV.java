@@ -30,12 +30,12 @@ public class DisplayPostV extends javax.swing.JPanel {
      */
     public DisplayPostV (String textPost, String title) throws IOException {
         initComponents();
-        bildURL = CreatePost.getBildURL();
-        fileURL = CreatePost.getFileURL();
-        fileURL2 = CreatePost.getFileURL2();
-        fileURL3 = CreatePost.getFileURL3();
+       // bildURL = CreatePost.getBildURL();
+       // fileURL = CreatePost.getFileURL();
+       // fileURL2 = CreatePost.getFileURL2();
+       // fileURL3 = CreatePost.getFileURL3();
          
-         //paintPicture(lblDisplay);
+        //paintPicture(lblDisplay);
         
         this.textPost = textPost;
         setTxtCreatedPost();
@@ -75,8 +75,8 @@ public class DisplayPostV extends javax.swing.JPanel {
     {
         ImageIcon MyImage = new ImageIcon(bildURL);
         Image img = MyImage.getImage();
-        Image newImg = img.getScaledInstance(label1.getWidth(), label1.getHeight(), Image.SCALE_SMOOTH);
-        ImageIcon image = new ImageIcon(img);
+       Image newImg = img.getScaledInstance(label1.getWidth(), label1.getHeight(), Image.SCALE_SMOOTH);
+        ImageIcon image = new ImageIcon(newImg);
         return image;
     }
     
