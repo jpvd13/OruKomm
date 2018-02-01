@@ -20,7 +20,8 @@ public class DataInitializer {
 
     private void createTables() {
         try {
-            PreparedStatement psDrp = db.getConnection().prepareStatement("DROP TABLE IF EXISTS `category`, `attachments`, `posts`, `user`");
+            PreparedStatement psDrp = db.getConnection().prepareStatement("DROP TABLE IF EXISTS `category`,"
+                    + "`attachments`, `posts`, `meeting_time_suggestion`, `user_meeting`, `meeting`, `user`");
             psDrp.executeUpdate();
 
             String createUserTable = "CREATE TABLE `user` ("
@@ -50,17 +51,45 @@ public class DataInitializer {
                     + "PRIMARY KEY (id),"
                     + "FOREIGN KEY (post_id) REFERENCES posts(id))"
                     + "ENGINE=InnoDB DEFAULT CHARSET=utf8";
-            
+
             PreparedStatement psCrtAtts = db.getConnection().prepareStatement(createAttTable);
             psCrtAtts.executeUpdate();
-            
+
             String createCategoryTable = "CREATE TABLE category ("
                     + "id int(11) NOT NULL AUTO_INCREMENT, category VARCHAR(64),"
                     + "PRIMARY KEY (id))"
                     + "ENGINE=InnoDB DEFAULT CHARSET=utf8";
-            
+
             PreparedStatement psCrtCat = db.getConnection().prepareStatement(createCategoryTable);
-            psCrtCat.executeUpdate();            
+            psCrtCat.executeUpdate();
+
+            String createMeeting = "CREATE TABLE meeting ("
+                    + "id int(11) NOT NULL AUTO_INCREMENT, meeting_caller INT NOT NULL, description VARCHAR(512) NOT NULL,"
+                    + "PRIMARY KEY (id), FOREIGN KEY (meeting_caller) REFERENCES user(id))"
+                    + "ENGINE=InnoDB DEFAULT CHARSET=utf8";
+
+            PreparedStatement psCrtMeeting = db.getConnection().prepareStatement(createMeeting);
+            psCrtMeeting.executeUpdate();
+
+            // Many-to-many relationship table between user and meeting.
+            String createUserMeeting = "CREATE TABLE user_meeting ("
+                    + "user_id INT(11) NOT NULL, meeting_id INT NOT NULL,"
+                    + "PRIMARY KEY (user_id, meeting_id), FOREIGN KEY (meeting_id) REFERENCES meeting(id),"
+                    + "FOREIGN KEY (user_id) REFERENCES user(id))"
+                    + "ENGINE=InnoDB DEFAULT CHARSET=utf8";
+
+            PreparedStatement psCrtUserMeeting = db.getConnection().prepareStatement(createUserMeeting);
+            psCrtUserMeeting.executeUpdate();
+
+            // Many-to-many relationship table between user and meeting.
+            String createMeetingTimeSuggestion = "CREATE TABLE meeting_time_suggestion ("
+                    + "id INT(11) NOT NULL, meeting_id INT NOT NULL, suggested_by INT NOT NULL,"
+                    + "PRIMARY KEY (id), FOREIGN KEY (meeting_id) REFERENCES meeting(id),"
+                    + "FOREIGN KEY (suggested_by) REFERENCES user(id))"
+                    + "ENGINE=InnoDB DEFAULT CHARSET=utf8";
+
+            PreparedStatement psCrtMeetingTime = db.getConnection().prepareStatement(createMeetingTimeSuggestion);
+            psCrtMeetingTime.executeUpdate();
 
         } catch (SQLException ex) {
             Logger.getLogger(DataInitializer.class.getName()).log(Level.SEVERE, null, ex);
@@ -78,14 +107,13 @@ public class DataInitializer {
 
             PreparedStatement ps = db.getConnection().prepareStatement(insertUserData);
             ps.executeUpdate();
-            
-            String insertPostsData = "INSERT INTO posts VALUES"
 
+            String insertPostsData = "INSERT INTO posts VALUES"
                     + " (null , 1, 'Bla', 'Bla', '2008-11-11')";
 
             PreparedStatement ps2 = db.getConnection().prepareStatement(insertPostsData);
             ps2.executeUpdate();
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(DataInitializer.class.getName()).log(Level.SEVERE, null, ex);
         }
