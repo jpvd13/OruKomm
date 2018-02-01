@@ -1,7 +1,11 @@
 package orukomm.gui.panels;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import orukomm.data.entities.User;
 import orukomm.data.repositories.UserRepository;
 import orukomm.gui.MainWindow;
@@ -9,27 +13,84 @@ import orukomm.gui.MainWindow;
 public class CreateMeeting extends javax.swing.JPanel {
 
     private MainWindow parentFrame;
-    
+
     private ArrayList<User> users;
     private UserRepository userRepo;
-    private DefaultListModel<User> lstMdlUsers;
+    private DefaultListModel<User> lstMdlAllUsers;
+    private DefaultListModel<User> lstMdlAddedUsers;
     
+    private User selectedUserFromAllUsers;
+    private User selectedUserFromAddedUsers;
+
     public CreateMeeting(MainWindow parentFrame) {
         initComponents();
         this.parentFrame = parentFrame;
-        
-        userRepo = new UserRepository();
 
-        refreshUsersList();
+        userRepo = new UserRepository();
+        
+        lstMdlAddedUsers = new DefaultListModel<>();
+        lstAddedUsers.setModel(lstMdlAddedUsers);
+
+        refreshAllUsersList();
         lstAllUsers.setSelectedIndex(0);
 
-        User selectedUser = lstAllUsers.getSelectedValue();
+        selectedUserFromAllUsers = lstAllUsers.getSelectedValue();
+
+        // All users-list selection events.
+        lstAllUsers.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                selectedUserFromAllUsers = lstAllUsers.getSelectedValue();
+            }
+        });
+        
+        // Added users-list selection event.
+        lstAddedUsers.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                selectedUserFromAddedUsers = lstAddedUsers.getSelectedValue();
+            }
+        });
+        
+        // Add user event.
+        btnAddUser.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Add new user to meeting.
+                if (selectedUserFromAllUsers != null) {
+                    // Move user from all users-list to added users-list.
+                    lstMdlAddedUsers.addElement(selectedUserFromAllUsers);
+                    lstMdlAllUsers.removeElement(selectedUserFromAllUsers);
+                }
+            }
+        });
+        
+        // Remove user event.
+        btnRemoveUser.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if (selectedUserFromAddedUsers != null) {
+                    // Move user from added users-list to all users-list.
+                    lstMdlAllUsers.addElement(selectedUserFromAddedUsers);
+                    lstMdlAddedUsers.removeElement(selectedUserFromAddedUsers);
+                }
+            }
+        });
     }
 
-    private void refreshUsersList() {
-        
+    // Fetches users from the database and populates the all users-list with them.
+    private void refreshAllUsersList() {
+        lstMdlAllUsers = new DefaultListModel<>();
+        lstAllUsers.setModel(lstMdlAllUsers);
+
+        users = userRepo.getAll();
+        lstMdlAllUsers.removeAllElements();
+
+        for (User user : users) {
+            lstMdlAllUsers.addElement(user);
+        }
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -136,17 +197,17 @@ public class CreateMeeting extends javax.swing.JPanel {
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(164, 164, 164)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(170, Short.MAX_VALUE)
                 .addComponent(pnlMeetingContainer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(172, Short.MAX_VALUE))
+                .addGap(166, 166, 166))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addGap(23, 23, 23)
                 .addComponent(pnlMeetingContainer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(47, Short.MAX_VALUE))
+                .addContainerGap(36, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
