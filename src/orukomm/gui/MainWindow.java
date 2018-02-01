@@ -133,7 +133,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
                 break;
 
             case "mnuFormalFeed":
-                FormalFeed formalFeed = new FormalFeed();
+                FormalFeed formalFeed = new FormalFeed(this);
                 formalFeed.fillTable();
                 switchPanel(formalFeed);
                 break;
