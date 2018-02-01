@@ -95,6 +95,23 @@
             </MenuItem>
           </SubComponents>
         </Menu>
+        <Menu class="javax.swing.JMenu" name="mnuMeetings">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="M&#xf6;ten"/>
+          </Properties>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="mnuMeetingCreate">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Skapa nytt m&#xf6;te"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="mnuMeetingsBooked">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Se inbokade m&#xf6;ten"/>
+              </Properties>
+            </MenuItem>
+          </SubComponents>
+        </Menu>
       </SubComponents>
     </Menu>
   </NonVisualComponents>
