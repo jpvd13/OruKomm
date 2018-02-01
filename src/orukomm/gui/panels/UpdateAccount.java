@@ -12,88 +12,77 @@ import orukomm.logic.security.Encryption;
 
 public class UpdateAccount extends javax.swing.JPanel {
 
-	private MainWindow parentFrame;
-	private UserRepository userRepo;
+    private MainWindow parentFrame;
+    private UserRepository userRepo;
 
-	private String newPassword = "";
-	private String newPasswordConfirmation = "";
+    public UpdateAccount(MainWindow parentFrame) {
+        this.parentFrame = parentFrame;
+        initComponents();
+        userRepo = new UserRepository();
+        fillTxtfields();
 
-	public UpdateAccount(MainWindow parentFrame) {
-		this.parentFrame = parentFrame;
-		initComponents();
-		userRepo = new UserRepository();
-		fillTxtfields();
+        // Update submit event.
+        btnUpdate.addActionListener((ActionEvent e) -> {
+            User editUser = new User();
 
-		// Update submit event.
-		btnUpdate.addActionListener((ActionEvent e) -> {
-			User editUser = new User();
+            // Validate user's properties.
+            if (Validation.isEmptyOrNull(txtfFirstName.getText())
+                    || Validation.isEmptyOrNull(txtfSurname.getText())
+                    || Validation.isEmptyOrNull(txtfEmail.getText())) {
+                JOptionPane.showMessageDialog(parentFrame, "Inga fält får lämnas tomma.", "Valideringsfel", JOptionPane.ERROR_MESSAGE);
 
-			// Validate user's properties.
-			if (Validation.isEmptyOrNull(txtfFirstName.getText())
-					|| Validation.isEmptyOrNull(txtfSurname.getText())
-					|| Validation.isEmptyOrNull(txtfEmail.getText())) {
-				JOptionPane.showMessageDialog(parentFrame, "Inga fält får lämnas tomma.", "Valideringsfel", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
-				return;
-			}
+            if (!pswPassword.getText().equals(pswPasswordConfirmation.getText())) {
+                JOptionPane.showMessageDialog(parentFrame, "Lösenorden du angav matchar inte varandra.", "Valideringsfel", JOptionPane.ERROR_MESSAGE);
 
-			if (!pswPassword.getText().equals(pswPasswordConfirmation.getText())) {
-				JOptionPane.showMessageDialog(parentFrame, "Lösenorden du angav matchar inte varandra.", "Valideringsfel", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
-				return;
-			}
+            // Set new user object and write it to the data context.
+            editUser.setId(parentFrame.loggedInUser.getId());
+            editUser.setFirstName(txtfFirstName.getText());
+            editUser.setSurname(txtfSurname.getText());
+            editUser.setUsername(this.parentFrame.loggedInUser.getUsername());
+            editUser.setPassword(parentFrame.loggedInUser.getPassword());
+            editUser.setSalt(parentFrame.loggedInUser.getSalt());
+            editUser.setEmail(txtfEmail.getText());
+            editUser.setRole(parentFrame.loggedInUser.getRole());
 
-			// Set new user object and write it to the data context.
-			editUser.setId(parentFrame.loggedInUser.getId());
-			editUser.setFirstName(txtfFirstName.getText());
-			editUser.setSurname(txtfSurname.getText());
-			editUser.setUsername(this.parentFrame.loggedInUser.getUsername());
-			editUser.setPassword(parentFrame.loggedInUser.getPassword());
-			editUser.setSalt(parentFrame.loggedInUser.getSalt());
-			editUser.setEmail(txtfEmail.getText());
-			editUser.setRole(parentFrame.loggedInUser.getRole());
+            // Check if password should be updated.
+            if (!Validation.isEmptyOrNull(pswPassword.getText()) || !Validation.isEmptyOrNull(pswPasswordConfirmation.getText())) {
+                String salt = Encryption.generateSalt();
+                String passwordHash = Encryption.generatePasswordHash(pswPassword.getText(), salt);
+                editUser.setPassword(passwordHash);
+                editUser.setSalt(salt);
+            }
 
-			// Check if password should be updated.
-			if (!Validation.isEmptyOrNull(pswPassword.getText()) || !Validation.isEmptyOrNull(pswPasswordConfirmation.getText())) {
-				String salt = Encryption.generateSalt();
-				String passwordHash = Encryption.generatePasswordHash(pswPassword.getText(), salt);
-				editUser.setPassword(passwordHash);
-				editUser.setSalt(salt);
+            // Account update survived the validation: Write it to the data context.
+            parentFrame.loggedInUser = editUser;
+            userRepo.update(editUser);
+            String windowTitle = String.format("%s [inloggad som %s %s]", Settings.WINDOW_TITLE, parentFrame.loggedInUser.getFirstName(), parentFrame.loggedInUser.getSurname());
+            parentFrame.setTitle(windowTitle);
+            parentFrame.switchPanel(new Index(parentFrame));
+            JOptionPane.showMessageDialog(parentFrame, "Användaruppgifterna har ändrats.", "Användaruppgifter uppdaterade", JOptionPane.INFORMATION_MESSAGE);
+        });
 
-				// Validate the new password.
-				if (!newPassword.equals(newPasswordConfirmation)) {
-					JOptionPane.showMessageDialog(parentFrame, "Lösenorden du angav matchar inte varandra.", "Valideringsfel", JOptionPane.ERROR_MESSAGE);
+        pswPasswordConfirmation.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                btnUpdate.doClick();
+            }
+        });
+    }
 
-					return;
-				}
+    private void fillTxtfields() {
+        txtfFirstName.setText(parentFrame.loggedInUser.getFirstName());
+        txtfSurname.setText(parentFrame.loggedInUser.getSurname());
+        txtfEmail.setText(parentFrame.loggedInUser.getEmail());
 
-			}
+    }
 
-			// Account update survived the validation: Write it to the data context.
-			parentFrame.loggedInUser = editUser;
-			userRepo.update(editUser);
-			String windowTitle = String.format("%s [inloggad som %s %s]", Settings.WINDOW_TITLE, parentFrame.loggedInUser.getFirstName(), parentFrame.loggedInUser.getSurname());
-			parentFrame.setTitle(windowTitle);
-			parentFrame.switchPanel(new Index(parentFrame));
-			JOptionPane.showMessageDialog(parentFrame, "Användaruppgifterna har ändrats.", "Användaruppgifter uppdaterade", JOptionPane.INFORMATION_MESSAGE);
-		});
-
-		pswPasswordConfirmation.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				btnUpdate.doClick();
-			}
-		});
-	}
-
-	private void fillTxtfields() {
-		txtfFirstName.setText(parentFrame.loggedInUser.getFirstName());
-		txtfSurname.setText(parentFrame.loggedInUser.getSurname());
-		txtfEmail.setText(parentFrame.loggedInUser.getEmail());
-
-	}
-
-	@SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
@@ -221,7 +210,7 @@ public class UpdateAccount extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-		// TODO add your handling code here:
+        // TODO add your handling code here:
     }//GEN-LAST:event_btnUpdateActionPerformed
 
 
