@@ -33,13 +33,25 @@ public class DataInitializer {
 
             PreparedStatement psCrtUser = db.getConnection().prepareStatement(createUserTable);
             psCrtUser.executeUpdate();
-
+            
+            
+            String createCategoryTable = "CREATE TABLE category ("
+                    + "id int(11) NOT NULL AUTO_INCREMENT, category VARCHAR(64),"
+                    + "PRIMARY KEY (id))"
+                    + "ENGINE=InnoDB DEFAULT CHARSET=utf8";
+            
+            PreparedStatement psCrtCat = db.getConnection().prepareStatement(createCategoryTable);
+            psCrtCat.executeUpdate();   
+            
+            
             String createPostsTable = "CREATE TABLE posts ("
                     + "id int(11) NOT NULL AUTO_INCREMENT, poster int,"
                     + "title VARCHAR(50) NOT NULL, description TEXT,"
+                    + "category int,"
                     + "date DATE,"
                     + "PRIMARY KEY (id),"
-                    + "FOREIGN KEY (poster) REFERENCES `user`(`id`))"
+                    + "FOREIGN KEY (poster) REFERENCES `user`(`id`),"
+                    + "FOREIGN KEY (category) REFERENCES category(id))"
                     + "ENGINE=InnoDB DEFAULT CHARSET=utf8";
 
             PreparedStatement psCrtPosts = db.getConnection().prepareStatement(createPostsTable);
@@ -55,41 +67,6 @@ public class DataInitializer {
             PreparedStatement psCrtAtts = db.getConnection().prepareStatement(createAttTable);
             psCrtAtts.executeUpdate();
 
-            String createCategoryTable = "CREATE TABLE category ("
-                    + "id int(11) NOT NULL AUTO_INCREMENT, category VARCHAR(64),"
-                    + "PRIMARY KEY (id))"
-                    + "ENGINE=InnoDB DEFAULT CHARSET=utf8";
-
-            PreparedStatement psCrtCat = db.getConnection().prepareStatement(createCategoryTable);
-            psCrtCat.executeUpdate();
-
-            String createMeeting = "CREATE TABLE meeting ("
-                    + "id int(11) NOT NULL AUTO_INCREMENT, meeting_caller INT NOT NULL, description VARCHAR(512) NOT NULL,"
-                    + "PRIMARY KEY (id), FOREIGN KEY (meeting_caller) REFERENCES user(id))"
-                    + "ENGINE=InnoDB DEFAULT CHARSET=utf8";
-
-            PreparedStatement psCrtMeeting = db.getConnection().prepareStatement(createMeeting);
-            psCrtMeeting.executeUpdate();
-
-            // Many-to-many relationship table between user and meeting.
-            String createUserMeeting = "CREATE TABLE user_meeting ("
-                    + "user_id INT(11) NOT NULL, meeting_id INT NOT NULL,"
-                    + "PRIMARY KEY (user_id, meeting_id), FOREIGN KEY (meeting_id) REFERENCES meeting(id),"
-                    + "FOREIGN KEY (user_id) REFERENCES user(id))"
-                    + "ENGINE=InnoDB DEFAULT CHARSET=utf8";
-
-            PreparedStatement psCrtUserMeeting = db.getConnection().prepareStatement(createUserMeeting);
-            psCrtUserMeeting.executeUpdate();
-
-            // Many-to-many relationship table between user and meeting.
-            String createMeetingTimeSuggestion = "CREATE TABLE meeting_time_suggestion ("
-                    + "id INT(11) NOT NULL, meeting_id INT NOT NULL, suggested_by INT NOT NULL,"
-                    + "PRIMARY KEY (id), FOREIGN KEY (meeting_id) REFERENCES meeting(id),"
-                    + "FOREIGN KEY (suggested_by) REFERENCES user(id))"
-                    + "ENGINE=InnoDB DEFAULT CHARSET=utf8";
-
-            PreparedStatement psCrtMeetingTime = db.getConnection().prepareStatement(createMeetingTimeSuggestion);
-            psCrtMeetingTime.executeUpdate();
 
         } catch (SQLException ex) {
             Logger.getLogger(DataInitializer.class.getName()).log(Level.SEVERE, null, ex);
@@ -108,11 +85,19 @@ public class DataInitializer {
             PreparedStatement ps = db.getConnection().prepareStatement(insertUserData);
             ps.executeUpdate();
 
-            String insertPostsData = "INSERT INTO posts VALUES"
-                    + " (null , 1, 'Bla', 'Bla', '2008-11-11')";
+            
+            String insertCategoryData = "INSERT INTO category VALUES(null, 'Kul')";
 
-            PreparedStatement ps2 = db.getConnection().prepareStatement(insertPostsData);
-            ps2.executeUpdate();
+            PreparedStatement ps2 = db.getConnection().prepareStatement(insertCategoryData);
+            ps2.executeUpdate();            
+            
+            String insertPostsData = "INSERT INTO posts VALUES"
+                    + " (null , 1, 'Bla', 'Bla', 1, '2008-11-11')";
+
+            PreparedStatement ps3 = db.getConnection().prepareStatement(insertPostsData);
+            ps3.executeUpdate();
+                        
+            
 
         } catch (SQLException ex) {
             Logger.getLogger(DataInitializer.class.getName()).log(Level.SEVERE, null, ex);
