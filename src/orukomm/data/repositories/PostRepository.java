@@ -46,7 +46,7 @@ public class PostRepository {
             if (Database.fetchedRows(rs) == 1) {
                 // Username exists.
                 post.setId(rs.getInt("id"));
-                post.setTitel(rs.getString("titel"));
+                post.setTitle(rs.getString("titel"));
                 post.setUsername(rs.getString("poster"));
                 post.setDate(rs.getString("date"));
 
@@ -67,7 +67,7 @@ public class PostRepository {
         PreparedStatement ps = null;
         ResultSet rs = null;
 
-        String query = String.format("SELECT username, title, date FROM posts, user WHERE user.id = poster");
+        String query = String.format("SELECT username, title, date, description, posts.id  FROM posts, user WHERE user.id = poster");
 
         try {
             ps = db.getConnection().prepareStatement(query);
@@ -75,8 +75,11 @@ public class PostRepository {
 
             while (rs.next()) {
                 post.setUsername(rs.getString("username"));
-                post.setTitel(rs.getString("title"));                
+                post.setTitle(rs.getString("title"));                
                 post.setDate(rs.getString("date"));
+                post.setDescription(rs.getString("description"));
+                post.setId(rs.getInt("id"));
+                        
                 
                 postList.add(post);
             }
