@@ -69,38 +69,38 @@ public class CreatePost extends javax.swing.JFrame {
         return frame;
     }
     
-    public void insertAttachedFiles(){
-        FileStorage fs = new FileStorage();
-        
-        if(!lblURL1.getText().isEmpty() && !lblURL2.getText().isEmpty() && !lblURL3.getText().isEmpty())
-        {
-        fs.insertFile(1, 1, fileURL);
-        fs.insertFile(2, 2, fileURL2);
-        fs.insertFile(3, 3, fileURL3);
-    }
-        else if (!lblURL1.getText().isEmpty() && !lblURL2.getText().isEmpty())
-                {
-        fs.insertFile(4, 4, fileURL);
-        fs.insertFile(5, 5, fileURL2); 
-                }
-        else if (!lblURL1.getText().isEmpty())
-        {
-        fs.insertFile(6, 6, fileURL);
-        }
-        else {
-           
-        }
-    }
-    public void insertAttachedPicture()
-    {
-             FileStorage fs = new FileStorage();
-    
-            if(!lblImageURL.getText().isEmpty())
-            {
-                fs.insertFile(7, 7, bildURL);
-                
-            }
-    } 
+//    public void insertAttachedFiles(){
+//        FileStorage fs = new FileStorage();
+//        
+//        if(!lblURL1.getText().isEmpty() && !lblURL2.getText().isEmpty() && !lblURL3.getText().isEmpty())
+//        {
+//        fs.insertFile(1, 1, fileURL);
+//        fs.insertFile(2, 2, fileURL2);
+//        fs.insertFile(3, 3, fileURL3);
+//    }
+//        else if (!lblURL1.getText().isEmpty() && !lblURL2.getText().isEmpty())
+//                {
+//        fs.insertFile(4, 4, fileURL);
+//        fs.insertFile(5, 5, fileURL2); 
+//                }
+//        else if (!lblURL1.getText().isEmpty())
+//        {
+//        fs.insertFile(6, 6, fileURL);
+//        }
+//        else {
+//           
+//        }
+//    }
+//    public void insertAttachedPicture()
+//    {
+//             FileStorage fs = new FileStorage();
+//    
+//            if(!lblImageURL.getText().isEmpty())
+//            {
+//                fs.insertFile(7, 7, bildURL);
+//                
+//            }
+//    } 
     
     public void insertAttachedText()
     {
@@ -330,8 +330,8 @@ public class CreatePost extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(CreatePost.class.getName()).log(Level.SEVERE, null, ex);
         }
-        insertAttachedPicture();
-        insertAttachedFiles();
+//        insertAttachedPicture();
+//        insertAttachedFiles();
         
        
        
