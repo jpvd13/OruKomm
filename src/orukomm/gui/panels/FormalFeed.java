@@ -60,6 +60,26 @@ public class FormalFeed extends javax.swing.JPanel {
         }
 
     }
+    
+    private void selectPost(){
+        int columnTitle = 0;
+        int columnPoster = 1;
+        int row = tblFormalFeed.getSelectedRow();
+        String title = tblFormalFeed.getModel().getValueAt(row, columnTitle).toString();
+        String poster = tblFormalFeed.getModel().getValueAt(row, columnPoster).toString();
+        String description = "";
+       
+        for (Post post : posts) {
+            if (post.getUsername().equals(poster) && post.getTitle().equals(title)) {
+                description = post.getDescription();
+            }
+        }
+        try {
+            switchPanel(new DisplayPostV(title, description));
+        } catch (IOException ex) {
+            Logger.getLogger(FormalFeed.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     /**
      * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The
@@ -136,26 +156,7 @@ public class FormalFeed extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void tblFormalFeedMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblFormalFeedMouseClicked
-        int columnTitle = 0;
-        int columnPoster = 1;
-        int row = tblFormalFeed.getSelectedRow();
-        String title = tblFormalFeed.getModel().getValueAt(row, columnTitle).toString();
-        String poster = tblFormalFeed.getModel().getValueAt(row, columnPoster).toString();
-        String description = "";
-       
-        for (Post post : posts) {
-            if (post.getUsername().equals(poster) && post.getTitle().equals(title)) {
-                description = post.getDescription();
-            }
-        }
-        //switchPanel(new DisplayPostV(title, description));
-        CreatedPost fitta;
-        try {
-            fitta = new CreatedPost(description, title);
-              fitta.setVisible(true);
-        } catch (IOException ex) {
-            Logger.getLogger(FormalFeed.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        selectPost();     
       
     }//GEN-LAST:event_tblFormalFeedMouseClicked
 
