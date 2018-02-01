@@ -20,7 +20,8 @@ public class DataInitializer {
 
     private void createTables() {
         try {
-            PreparedStatement psDrp = db.getConnection().prepareStatement("DROP TABLE IF EXISTS `category`, `attachments`, `posts`, `user`");
+            PreparedStatement psDrp = db.getConnection().prepareStatement("DROP TABLE IF EXISTS `category`,"
+                    + "`attachments`, `posts`, `meeting_time_suggestion`, `user_meeting`, `meeting`, `user`");
             psDrp.executeUpdate();
 
             String createUserTable = "CREATE TABLE `user` ("
@@ -32,13 +33,25 @@ public class DataInitializer {
 
             PreparedStatement psCrtUser = db.getConnection().prepareStatement(createUserTable);
             psCrtUser.executeUpdate();
-
+            
+            
+            String createCategoryTable = "CREATE TABLE category ("
+                    + "id int(11) NOT NULL AUTO_INCREMENT, category VARCHAR(64),"
+                    + "PRIMARY KEY (id))"
+                    + "ENGINE=InnoDB DEFAULT CHARSET=utf8";
+            
+            PreparedStatement psCrtCat = db.getConnection().prepareStatement(createCategoryTable);
+            psCrtCat.executeUpdate();   
+            
+            
             String createPostsTable = "CREATE TABLE posts ("
                     + "id int(11) NOT NULL AUTO_INCREMENT, poster int,"
                     + "title VARCHAR(50) NOT NULL, description TEXT,"
+                    + "category int,"
                     + "date DATE,"
                     + "PRIMARY KEY (id),"
-                    + "FOREIGN KEY (poster) REFERENCES `user`(`id`))"
+                    + "FOREIGN KEY (poster) REFERENCES `user`(`id`),"
+                    + "FOREIGN KEY (category) REFERENCES category(id))"
                     + "ENGINE=InnoDB DEFAULT CHARSET=utf8";
 
             PreparedStatement psCrtPosts = db.getConnection().prepareStatement(createPostsTable);
@@ -50,17 +63,10 @@ public class DataInitializer {
                     + "PRIMARY KEY (id),"
                     + "FOREIGN KEY (post_id) REFERENCES posts(id))"
                     + "ENGINE=InnoDB DEFAULT CHARSET=utf8";
-            
+
             PreparedStatement psCrtAtts = db.getConnection().prepareStatement(createAttTable);
             psCrtAtts.executeUpdate();
-            
-            String createCategoryTable = "CREATE TABLE category ("
-                    + "id int(11) NOT NULL AUTO_INCREMENT, category VARCHAR(64),"
-                    + "PRIMARY KEY (id))"
-                    + "ENGINE=InnoDB DEFAULT CHARSET=utf8";
-            
-            PreparedStatement psCrtCat = db.getConnection().prepareStatement(createCategoryTable);
-            psCrtCat.executeUpdate();            
+
 
         } catch (SQLException ex) {
             Logger.getLogger(DataInitializer.class.getName()).log(Level.SEVERE, null, ex);
@@ -78,14 +84,21 @@ public class DataInitializer {
 
             PreparedStatement ps = db.getConnection().prepareStatement(insertUserData);
             ps.executeUpdate();
+
+            
+            String insertCategoryData = "INSERT INTO category VALUES(null, 'Kul')";
+
+            PreparedStatement ps2 = db.getConnection().prepareStatement(insertCategoryData);
+            ps2.executeUpdate();            
             
             String insertPostsData = "INSERT INTO posts VALUES"
+                    + " (null , 1, 'Bla', 'Bla', 1, '2008-11-11')";
 
-                    + " (null , 1, 'Bla', 'Bla', '2008-11-11')";
-
-            PreparedStatement ps2 = db.getConnection().prepareStatement(insertPostsData);
-            ps2.executeUpdate();
+            PreparedStatement ps3 = db.getConnection().prepareStatement(insertPostsData);
+            ps3.executeUpdate();
+                        
             
+
         } catch (SQLException ex) {
             Logger.getLogger(DataInitializer.class.getName()).log(Level.SEVERE, null, ex);
         }

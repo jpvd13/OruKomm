@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package orukomm;
+package orukomm.gui.panels;
 
 import java.awt.Image;
 import java.io.IOException;
@@ -11,6 +11,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.WindowConstants;
+import orukomm.CreatePost;
+import orukomm.data.FileStorage;
+import orukomm.gui.MainWindow;
 
 /**
  *
@@ -25,22 +28,24 @@ public class DisplayPost extends javax.swing.JPanel {
     private static String fileURL2;
     private static String fileURL3;
     private static ImageIcon attachedImage;
+    private MainWindow parentFrame;
+    private FileStorage fs;
+    
     /**
      * Creates new form CreatedPost
      */
-    public DisplayPost (String textPost, String textHeading) throws IOException {
+    public DisplayPost (MainWindow parentFrame, String textPost, String textHeading) throws IOException {
         initComponents();
+        fs = new FileStorage();
+        getDate(); this.parentFrame = parentFrame;
         
         bildURL = CreatePost.getBildURL();
         fileURL = CreatePost.getFileURL();
         fileURL2 = CreatePost.getFileURL2();
         fileURL3 = CreatePost.getFileURL3();
         
-        CreatePost cp = new CreatePost();
-        
-        
-        
-        
+        CreatePost cp = new CreatePost();     
+               
         this.textPost = textPost;
         setTxtCreatedPost();
         
@@ -182,4 +187,8 @@ public class DisplayPost extends javax.swing.JPanel {
     private javax.swing.JLabel lblURL2;
     private javax.swing.JLabel lblURL3;
     // End of variables declaration//GEN-END:variables
+
+    private void getDate() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
