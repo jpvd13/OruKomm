@@ -34,7 +34,7 @@ public class FileStorage {
     private final String connectionString = "jdbc:mysql://localhost:3306/oru_komm?autoReconnect=true&useSSL=false";
 
     private final String dbUser = "root";
-    private final String dbPassword = "admin";
+    private final String dbPassword = "masterkey";
 
     public User loggedInUser = new User();
     
@@ -101,10 +101,12 @@ public class FileStorage {
         String updateSQL = "INSERT INTO attachments values(null, ?, ?)";
 
         try (Connection conn = connect();
+
             PreparedStatement pstmt = conn.prepareStatement(updateSQL)) {            
            
             pstmt.setInt(1, postId);
             pstmt.setBytes(2, FileStorage.this.readFile(filename));
+
             pstmt.executeUpdate();
             System.out.println("Stored file as BLOB in attachments column.");            
 
