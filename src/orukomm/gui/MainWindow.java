@@ -13,6 +13,7 @@ import orukomm.data.entities.User;
 import orukomm.data.entities.User.PermissionFlag;
 import orukomm.gui.dialogs.AddCategory;
 import orukomm.gui.panels.AdminUpdateUsers;
+import orukomm.gui.panels.CreatePostPanel;
 import orukomm.gui.panels.FormalFeed;
 import orukomm.gui.panels.Login;
 import orukomm.gui.panels.Register;
@@ -33,6 +34,8 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 		switchPanel(new Login(this));
 		addActionListeners();
 		enableLoggedInInterface(Settings.LOGGED_OUT_ROLE);
+                FileStorage fs = new FileStorage();
+                
 	}
 
 	private void initPanels() {
@@ -135,8 +138,8 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
                             break;
                             
                         case "mnuNewPost":
-                            CreatePost post = new CreatePost();
-                            post.setVisible(true);
+                            switchPanel(new CreatePostPanel((this)));
+                            break;
 		}
 	}
 

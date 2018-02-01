@@ -176,7 +176,7 @@ public class FileStorage {
     }
     
 
-    public void getBlob(int attachmentId) throws SQLException, IOException {
+    public void getBlobImage(int attachmentId) throws SQLException, IOException {
         String selectSQL = "SELECT file FROM attachments WHERE id=?";
         
         PreparedStatement pstmt = connection.prepareStatement(selectSQL);
@@ -191,22 +191,19 @@ public class FileStorage {
         
     }
     
-    public void insertPost(String title, String content, String date){
+    public void insertPost(int userId, String title, String content, int category, String date){
         
-        String query = "INSERT INTO posts values(null, ?, ?, ?, ?)";
+        String query = "INSERT INTO posts values(null, ?, ?, ?, ?, ?)";
                 
         try (Connection conn = connect(); 
             PreparedStatement pstmt = conn.prepareStatement(query)) {
-
-            
-            int userId = loggedInUser.getId();
-            
-            userId++;
-            
+           
+                       
             pstmt.setInt(1, userId);
             pstmt.setString(2, title);
             pstmt.setString(3, content);
-            pstmt.setString(4, date);
+            pstmt.setInt(4, category);
+            pstmt.setString(5, date);
             pstmt.executeUpdate();         
            
         

@@ -338,8 +338,7 @@ public class CreatePost extends javax.swing.JFrame {
         setTextPost();
         setHeadingPost();
         
-        fs.insertPost(textHeading, textPost, date);  
-              
+       
         
         try {
             buildFrame();
