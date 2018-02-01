@@ -15,6 +15,7 @@ import orukomm.CreatedPost;
 import orukomm.DisplayPostV;
 import orukomm.data.entities.Post;
 import orukomm.data.repositories.PostRepository;
+import orukomm.gui.MainWindow;
 
 /**
  *
@@ -26,7 +27,8 @@ public class FormalFeed extends javax.swing.JPanel {
      * Creates new form FormalFeed
      */
     private ArrayList<Post> posts;
-    public FormalFeed() {
+    
+    public FormalFeed(MainWindow parentFrame) {
         initComponents();
         PostRepository pr = new PostRepository();
         this.posts = pr.fillList();
@@ -75,7 +77,7 @@ public class FormalFeed extends javax.swing.JPanel {
             }
         }
         try {
-            switchPanel(new DisplayPostV(title, description));
+            switchPanel(new DisplayPostV((this), description, title));
         } catch (IOException ex) {
             Logger.getLogger(FormalFeed.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -122,16 +124,7 @@ public class FormalFeed extends javax.swing.JPanel {
             tblFormalFeed.getColumnModel().getColumn(2).setResizable(false);
         }
 
-        javax.swing.GroupLayout pnlFeedLayout = new javax.swing.GroupLayout(pnlFeed);
-        pnlFeed.setLayout(pnlFeedLayout);
-        pnlFeedLayout.setHorizontalGroup(
-            pnlFeedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 430, Short.MAX_VALUE)
-        );
-        pnlFeedLayout.setVerticalGroup(
-            pnlFeedLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 362, Short.MAX_VALUE)
-        );
+        pnlFeed.setLayout(new java.awt.CardLayout());
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -142,7 +135,7 @@ public class FormalFeed extends javax.swing.JPanel {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(pnlFeed, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(445, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -151,7 +144,7 @@ public class FormalFeed extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(pnlFeed, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(102, Short.MAX_VALUE))
+                .addContainerGap(198, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 

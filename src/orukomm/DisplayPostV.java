@@ -11,6 +11,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.WindowConstants;
+import orukomm.gui.panels.FormalFeed;
 
 /**
  *
@@ -25,10 +26,11 @@ public class DisplayPostV extends javax.swing.JPanel {
     private static String fileURL2;
     private static String fileURL3;
     private static ImageIcon attachedImage;
+    private FormalFeed panel;
     /**
      * Creates new form CreatedPost
      */
-    public DisplayPostV (String textPost, String title) throws IOException {
+    public DisplayPostV (FormalFeed panel, String textPost, String title) throws IOException {
         initComponents();
        // bildURL = CreatePost.getBildURL();
        // fileURL = CreatePost.getFileURL();
@@ -36,7 +38,7 @@ public class DisplayPostV extends javax.swing.JPanel {
        // fileURL3 = CreatePost.getFileURL3();
          
         //paintPicture(lblDisplay);
-        
+        this.panel = panel;
         this.textPost = textPost;
         setTxtCreatedPost();
         

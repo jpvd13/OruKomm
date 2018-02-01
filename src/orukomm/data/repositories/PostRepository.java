@@ -62,18 +62,19 @@ public class PostRepository {
 
     public ArrayList<Post> fillList() {
         ArrayList<Post> postList = new ArrayList<>();
-        Post post = new Post();
+        Post post;
 
         PreparedStatement ps = null;
         ResultSet rs = null;
 
-        String query = String.format("SELECT username, title, date, description, posts.id  FROM posts, user WHERE user.id = poster");
+        String query = String.format("SELECT username, title, date, description, posts.id  FROM posts, user WHERE user.id = poster ORDER BY date DESC");
 
         try {
             ps = db.getConnection().prepareStatement(query);
             rs = ps.executeQuery();
 
             while (rs.next()) {
+                post = new Post();
                 post.setUsername(rs.getString("username"));
                 post.setTitle(rs.getString("title"));                
                 post.setDate(rs.getString("date"));
