@@ -20,8 +20,8 @@ public class DataInitializer {
 
     private void createTables() {
         try {
-            PreparedStatement psDrp = db.getConnection().prepareStatement("DROP TABLE IF EXISTS `category`,"
-                    + "`attachments`, `posts`, `meeting_time_suggestion`, `user_meeting`, `meeting`, `user`");
+            PreparedStatement psDrp = db.getConnection().prepareStatement("DROP TABLE IF EXISTS"
+                    + "`attachments`, `meeting_time_suggestion`, `user_meeting`, `meeting`, `posts`, `category`, `user`");
             psDrp.executeUpdate();
 
             String createUserTable = "CREATE TABLE `user` ("
