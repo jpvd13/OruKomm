@@ -2,18 +2,21 @@ package orukomm.gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.EnumSet;
 import javax.swing.JPanel;
 import orukomm.CreatePost;
 import orukomm.Settings;
 import orukomm.data.FileStorage;
+import orukomm.data.entities.Entity;
 import orukomm.data.entities.User;
 import orukomm.data.entities.User.PermissionFlag;
 import orukomm.gui.dialogs.AddCategory;
+import orukomm.gui.panels.AdminUpdateUsers;
 import orukomm.gui.panels.FormalFeed;
 import orukomm.gui.panels.Login;
 import orukomm.gui.panels.Register;
-import orukomm.gui.panels.Update;
+import orukomm.gui.panels.UpdateAccount;
 
 public class MainWindow extends javax.swing.JFrame implements ActionListener {
 
@@ -45,8 +48,12 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 		boolean hasSuperadminPermission = userRole.contains(PermissionFlag.SUPERADMIN);
 
 		mnuAccount.setVisible(hasUserPermission);
-		mnuAdministration.setVisible(hasSuperadminPermission);
+		
+                mnuAdministration.setVisible(hasSuperadminPermission);
 		mnuAdministrationAddCategory.setVisible(hasSuperadminPermission);
+                
+                mnuAdministrationEditUser.setVisible(hasAdminPermission);
+                
                 mnuAccountEdit.setVisible(hasUserPermission);
                 mnuFeed.setVisible(hasUserPermission);
                 mnuPost.setVisible(hasUserPermission);
@@ -73,6 +80,9 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
                 
                 mnuAdministrationAddCategory.setActionCommand("mnuAdministrationAddCategory");
                 mnuAdministrationAddCategory.addActionListener(this);
+                
+                mnuAdministrationEditUser.setActionCommand("mnuAdministrationEditUser");
+                mnuAdministrationEditUser.addActionListener(this);
 
 		mnuAccountLogout.setActionCommand("mnuAccountLogout");
 		mnuAccountLogout.addActionListener(this);
@@ -105,12 +115,16 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
                             new AddCategory(this, true).setVisible(true);
                             break;
 
+                        case "mnuAdministrationEditUser":
+                            switchPanel(new AdminUpdateUsers(this));
+                            break;
+                            
 			case "mnuAccountLogout":
 				logout();
 				break;
 
 			case "mnuAccountEdit":
-				switchPanel(new Update((this)));
+				switchPanel(new UpdateAccount((this)));
 				break;
                                 
                         case "mnuFormalFeed":
@@ -136,7 +150,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 		setTitle(Settings.WINDOW_TITLE);
 		switchPanel(new Login((this)));
 	}
-
+        
 	@SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -146,11 +160,13 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
         mnuArchive = new javax.swing.JMenu();
         mnuArchiveExit = new javax.swing.JMenuItem();
         mnuAdministration = new javax.swing.JMenu();
+        mnuAdministrationUsers = new javax.swing.JMenu();
         mnuAdministrationRegister = new javax.swing.JMenuItem();
+        mnuAdministrationEditUser = new javax.swing.JMenuItem();
         mnuAdministrationAddCategory = new javax.swing.JMenuItem();
         mnuAccount = new javax.swing.JMenu();
-        mnuAccountLogout = new javax.swing.JMenuItem();
         mnuAccountEdit = new javax.swing.JMenuItem();
+        mnuAccountLogout = new javax.swing.JMenuItem();
         mnuFeed = new javax.swing.JMenu();
         mnuFormalFeed = new javax.swing.JMenuItem();
         mnuPost = new javax.swing.JMenu();
@@ -171,8 +187,15 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 
         mnuAdministration.setText("Administration");
 
-        mnuAdministrationRegister.setText("Registrera användare");
-        mnuAdministration.add(mnuAdministrationRegister);
+        mnuAdministrationUsers.setText("Användare");
+
+        mnuAdministrationRegister.setText("Registrera");
+        mnuAdministrationUsers.add(mnuAdministrationRegister);
+
+        mnuAdministrationEditUser.setText("Redigera");
+        mnuAdministrationUsers.add(mnuAdministrationEditUser);
+
+        mnuAdministration.add(mnuAdministrationUsers);
 
         mnuAdministrationAddCategory.setText("Lägg till ny bloggkategori");
         mnuAdministration.add(mnuAdministrationAddCategory);
@@ -181,12 +204,12 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 
         mnuAccount.setText("Konto");
 
+        mnuAccountEdit.setText("Ändra kontouppgifter");
+        mnuAccount.add(mnuAccountEdit);
+
         mnuAccountLogout.setAccelerator(javax.swing.KeyStroke.getKeyStroke(java.awt.event.KeyEvent.VK_L, java.awt.event.InputEvent.ALT_MASK | java.awt.event.InputEvent.CTRL_MASK));
         mnuAccountLogout.setText("Logga ut");
         mnuAccount.add(mnuAccountLogout);
-
-        mnuAccountEdit.setText("Redigera användare");
-        mnuAccount.add(mnuAccountEdit);
 
         mnubMain.add(mnuAccount);
 
@@ -235,7 +258,9 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
     private javax.swing.JMenuItem mnuAccountLogout;
     private javax.swing.JMenu mnuAdministration;
     private javax.swing.JMenuItem mnuAdministrationAddCategory;
+    private javax.swing.JMenuItem mnuAdministrationEditUser;
     private javax.swing.JMenuItem mnuAdministrationRegister;
+    private javax.swing.JMenu mnuAdministrationUsers;
     private javax.swing.JMenu mnuArchive;
     private javax.swing.JMenuItem mnuArchiveExit;
     private javax.swing.JMenu mnuFeed;

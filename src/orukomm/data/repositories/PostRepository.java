@@ -60,7 +60,7 @@ public class PostRepository {
         return post;
     }
 
-    public static ArrayList<Post> fillList() {
+    public ArrayList<Post> fillList() {
         ArrayList<Post> postList = new ArrayList<>();
         Post post = new Post();
 
