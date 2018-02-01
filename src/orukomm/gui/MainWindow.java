@@ -51,7 +51,8 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 		
                 mnuAdministration.setVisible(hasSuperadminPermission);
 		mnuAdministrationAddCategory.setVisible(hasSuperadminPermission);
-                mnuAdministrationEditUser.setVisible(hasSuperadminPermission);
+                
+                mnuAdministrationEditUser.setVisible(hasAdminPermission);
                 
                 mnuAccountEdit.setVisible(hasUserPermission);
                 mnuFeed.setVisible(hasUserPermission);
