@@ -84,8 +84,8 @@ public class DataInitializer {
             psCrtUserMeeting.executeUpdate();
 
             String createMeetingTimeSuggestion = "CREATE TABLE meeting_time_suggestion ("
-                    + "id INT(11) NOT NULL, meeting_id INT NOT NULL, suggested_by INT NOT NULL,"
-                    + "time DATE NOT NULL, PRIMARY KEY (id), FOREIGN KEY (meeting_id) REFERENCES meeting(id),"
+                    + "id INT(11) NOT NULL, meeting_id INT NOT NULL, time DATE NOT NULL,"
+                    + "PRIMARY KEY (id), FOREIGN KEY (meeting_id) REFERENCES meeting(id),"
                     + "FOREIGN KEY (suggested_by) REFERENCES user(id))"
                     + "ENGINE=InnoDB DEFAULT CHARSET=utf8";
 
