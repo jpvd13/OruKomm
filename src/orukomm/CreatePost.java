@@ -83,6 +83,7 @@ public class CreatePost extends javax.swing.JFrame {
         return frame;
     }
     
+
     public void insertAttachedFiles(){
                 
         if(!lblURL1.getText().isEmpty() && !lblURL2.getText().isEmpty() && !lblURL3.getText().isEmpty())
@@ -114,6 +115,7 @@ public class CreatePost extends javax.swing.JFrame {
                 
             }
     } 
+
     
     public void insertAttachedText()
     {
@@ -346,8 +348,8 @@ public class CreatePost extends javax.swing.JFrame {
         } catch (IOException ex) {
             Logger.getLogger(CreatePost.class.getName()).log(Level.SEVERE, null, ex);
         }
-        insertAttachedPicture();
-        insertAttachedFiles();
+//        insertAttachedPicture();
+//        insertAttachedFiles();
         
        
        
