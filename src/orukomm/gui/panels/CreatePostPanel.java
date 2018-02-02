@@ -8,15 +8,20 @@ package orukomm.gui.panels;
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.WindowConstants;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import orukomm.CreatedPost;
 import orukomm.data.FileStorage;
 import orukomm.data.entities.User;
+import orukomm.data.repositories.CategoryRepository;
 import orukomm.gui.MainWindow;
 
 /**
@@ -26,6 +31,9 @@ import orukomm.gui.MainWindow;
 public class CreatePostPanel extends javax.swing.JPanel {
 
     private MainWindow parentFrame;
+    private ArrayList<String> Category;
+    private CategoryRepository categoryRepo;
+    private DefaultListModel<String> lstCategories;
     private FileStorage fs;
     private String date;
 
@@ -42,12 +50,36 @@ public class CreatePostPanel extends javax.swing.JPanel {
     public CreatePostPanel(MainWindow parentFrame) {
 
         initComponents();
-        fs = new FileStorage();
-        getDate();
         this.parentFrame = parentFrame;
-        hideButtons();
+        fs = new FileStorage();
+        categoryRepo = new CategoryRepository(); 
+        getDate();
+        refreshCategoryList();
+        lstCategory.setSelectedIndex(0);
         
+        hideButtons();
+        lstCategory.addListSelectionListener(new ListSelectionListener() {
+            @Override
+            public void valueChanged(ListSelectionEvent e) {
+                String selectedCategory = lstCategory.getSelectedValue();
+                if (selectedCategory != null) {
+                    
+                }
+            }
+        });
     }
+    
+       public void refreshCategoryList() {
+        lstCategories = new DefaultListModel<>();
+        lstCategory.setModel(lstCategories);
+        Category = categoryRepo.getAll();
+        lstCategories.removeAllElements();
+
+        for(String cats : Category) {
+            lstCategories.addElement(cats);
+        }
+    }
+    
     private void hideButtons() {
         btnClearImage.setVisible(false);
         btnClearURL1.setVisible(false);
@@ -58,6 +90,7 @@ public class CreatePostPanel extends javax.swing.JPanel {
     public CreatePostPanel() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    
 
     public void getDate() {
 
@@ -158,6 +191,9 @@ public class CreatePostPanel extends javax.swing.JPanel {
         lblImageURL = new javax.swing.JLabel();
         lblBifogadBild = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        lstCategory = new javax.swing.JList<>();
+        jLabel1 = new javax.swing.JLabel();
 
         setPreferredSize(new java.awt.Dimension(1024, 768));
         setLayout(new java.awt.CardLayout());
@@ -217,6 +253,15 @@ public class CreatePostPanel extends javax.swing.JPanel {
 
         jLabel2.setText("Rubrik");
 
+        lstCategory.addContainerListener(new java.awt.event.ContainerAdapter() {
+            public void componentAdded(java.awt.event.ContainerEvent evt) {
+                lstCategoryComponentAdded(evt);
+            }
+        });
+        jScrollPane2.setViewportView(lstCategory);
+
+        jLabel1.setText("Kategori");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -226,13 +271,6 @@ public class CreatePostPanel extends javax.swing.JPanel {
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(15, 15, 15)
                         .addComponent(jLabel2))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(15, 15, 15)
-                        .addComponent(TxtHeading, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(178, 178, 178)
-                        .addComponent(jButton3)
-                        .addGap(9, 9, 9)
-                        .addComponent(jButton2))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(15, 15, 15)
                         .addComponent(jButton1))
@@ -270,23 +308,39 @@ public class CreatePostPanel extends javax.swing.JPanel {
                         .addComponent(lblURL2, javax.swing.GroupLayout.PREFERRED_SIZE, 344, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(15, 15, 15)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 487, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(569, Short.MAX_VALUE))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addComponent(TxtHeading, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(178, 178, 178)
+                                .addComponent(jButton3)
+                                .addGap(9, 9, 9)
+                                .addComponent(jButton2))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 487, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(51, 51, 51)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel1))))
+                .addContainerGap(382, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(113, 113, 113)
                 .addComponent(jLabel2)
-                .addGap(9, 9, 9)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(1, 1, 1)
-                        .addComponent(TxtHeading, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jButton3)
-                    .addComponent(jButton2))
-                .addGap(16, 16, 16)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(1, 1, 1)
+                                .addComponent(TxtHeading, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jButton3)
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jButton2)
+                                .addComponent(jLabel1)))
+                        .addGap(16, 16, 16)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(12, 12, 12)
                 .addComponent(jButton1)
                 .addGap(32, 32, 32)
@@ -325,6 +379,7 @@ public class CreatePostPanel extends javax.swing.JPanel {
         fs.insertPost(parentFrame.loggedInUser.getId(), textHeading, textPost, 1, date);
         insertAttachedPicture();
         insertAttachedFiles();
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -414,6 +469,10 @@ public class CreatePostPanel extends javax.swing.JPanel {
         btnClearImage.setVisible(false);
     }//GEN-LAST:event_btnClearImageActionPerformed
 
+    private void lstCategoryComponentAdded(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_lstCategoryComponentAdded
+            refreshCategoryList(); 
+    }//GEN-LAST:event_lstCategoryComponentAdded
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField TxtHeading;
@@ -425,9 +484,11 @@ public class CreatePostPanel extends javax.swing.JPanel {
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblBifogad;
     private javax.swing.JLabel lblBifogad2;
     private javax.swing.JLabel lblBifogad3;
@@ -436,5 +497,6 @@ public class CreatePostPanel extends javax.swing.JPanel {
     private javax.swing.JLabel lblURL1;
     private javax.swing.JLabel lblURL2;
     private javax.swing.JLabel lblURL3;
+    private javax.swing.JList<String> lstCategory;
     // End of variables declaration//GEN-END:variables
 }
