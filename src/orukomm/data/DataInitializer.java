@@ -68,7 +68,7 @@ public class DataInitializer {
             // Meeting tables.
             String createMeeting = "CREATE TABLE meeting ("
                     + "id int(11) NOT NULL AUTO_INCREMENT, meeting_caller INT NOT NULL, title VARCHAR(64) NOT NULL,"
-                    + "description VARCHAR(512) NOT NULL, date DATE NOT NULL,"
+                    + "description VARCHAR(512), date DATE NOT NULL,"
                     + "PRIMARY KEY (id), FOREIGN KEY (meeting_caller) REFERENCES user(id))"
                     + "ENGINE=InnoDB DEFAULT CHARSET=utf8";
 

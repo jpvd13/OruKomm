@@ -2,7 +2,6 @@ package orukomm.gui.panels;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Date;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
@@ -55,8 +54,8 @@ public class CreateMeeting extends javax.swing.JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // Validate fields and invited users.
-                if (Validation.isEmptyOrNull(txtfTitle.getText()) || Validation.isEmptyOrNull(txtaDescription.getText())) {
-                    JOptionPane.showMessageDialog(parentFrame, "Inga fält får lämnas tomma.", "Valideringsfel", JOptionPane.ERROR_MESSAGE);
+                if (Validation.isEmptyOrNull(txtfTitle.getText())) {
+                    JOptionPane.showMessageDialog(parentFrame, "Ange en mötestitel.", "Valideringsfel", JOptionPane.ERROR_MESSAGE);
 
                     return;
                 }
