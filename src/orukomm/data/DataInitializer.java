@@ -65,9 +65,10 @@ public class DataInitializer {
             PreparedStatement psCrtAtts = db.getConnection().prepareStatement(createAttTable);
             psCrtAtts.executeUpdate();
 
+            // Meeting tables.
             String createMeeting = "CREATE TABLE meeting ("
                     + "id int(11) NOT NULL AUTO_INCREMENT, meeting_caller INT NOT NULL, title VARCHAR(64) NOT NULL,"
-                    + "description VARCHAR(512) NOT NULL,"
+                    + "description VARCHAR(512) NOT NULL, date DATE NOT NULL,"
                     + "PRIMARY KEY (id), FOREIGN KEY (meeting_caller) REFERENCES user(id))"
                     + "ENGINE=InnoDB DEFAULT CHARSET=utf8";
 
@@ -127,10 +128,10 @@ public class DataInitializer {
             ps3.executeUpdate();
             
             // Meeting data.
-            String insertMeetingsData = "INSERT INTO meeting VALUES (null, 1, 'Möte #1',  'Lorem ipsum'),"
-                    + "(null, 1, 'Möte #2',  'Dolor sit amet.'), (null, 3, 'Fooo',  'Consectetur adipiscing elit.'),"
-                    + "(null, 2, 'Baar',  'Curabitur sed sapien.'), (null, 5, 'Baaz',  'Lobortis, elementum dolor.'),"
-                     + "(null, 2, 'Quuuz',  'Rutrum sem.'), (null, 5, 'Quuuz qux',  'Pellentesque viverra, nulla vel posuere vestibulum.')";
+            String insertMeetingsData = "INSERT INTO meeting VALUES (null, 1, 'Ett möte',  'Lorem ipsum', '2018-01-02'),"
+                    + "(null, 1, 'Ett annat möte',  'Dolor sit amet.', '2018-01-02'), (null, 3, 'Fooo',  'Consectetur adipiscing elit.', '2018-01-02'),"
+                    + "(null, 2, 'Baar',  'Curabitur sed sapien.', '2018-01-02'), (null, 5, 'Baaz',  'Lobortis, elementum dolor.', '2018-01-02'),"
+                     + "(null, 2, 'Quuuz',  'Rutrum sem.', '2018-01-02'), (null, 5, 'Quuuz qux',  'Pellentesque viverra, nulla vel posuere vestibulum.', '2018-01-02')";
             
             ps = db.getConnection().prepareStatement(insertMeetingsData);
             ps.executeUpdate();

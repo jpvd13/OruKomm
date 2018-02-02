@@ -8,6 +8,15 @@ public class Meeting implements Entity {
     private int id;
     private int meetingCaller;
     private String title;
+    private Date date;
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
     private ArrayList<User> invitedUsers;
     private ArrayList<Date> timeSuggestions;
 

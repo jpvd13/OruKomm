@@ -43,6 +43,8 @@ public class CreateMeeting extends javax.swing.JPanel {
         lstAddedUsers.setModel(lstMdlAddedUsers);
         lstMdlAllUsers = new DefaultListModel<>();
         lstAllUsers.setModel(lstMdlAllUsers);
+        
+//        System.out.println(clnDatePicker.getDate());
 
         refreshAllUsersList();
         lstAllUsers.setSelectedIndex(0);
@@ -165,6 +167,12 @@ public class CreateMeeting extends javax.swing.JPanel {
         btnCreate = new javax.swing.JButton();
         lblTitle = new javax.swing.JLabel();
         txtfTitle = new javax.swing.JTextField();
+        lblDate = new javax.swing.JLabel();
+        jCalendar1 = new com.toedter.calendar.JCalendar();
+
+        setPreferredSize(new java.awt.Dimension(1024, 768));
+
+        pnlMeetingContainer.setPreferredSize(new java.awt.Dimension(919, 768));
 
         lblCreateMeetingHeading.setFont(new java.awt.Font("Noto Sans", 1, 14)); // NOI18N
         lblCreateMeetingHeading.setText("Skapa nytt möte");
@@ -192,6 +200,8 @@ public class CreateMeeting extends javax.swing.JPanel {
 
         lblTitle.setText("Mötestitel");
 
+        lblDate.setText("Datum för möte");
+
         javax.swing.GroupLayout pnlMeetingContainerLayout = new javax.swing.GroupLayout(pnlMeetingContainer);
         pnlMeetingContainer.setLayout(pnlMeetingContainerLayout);
         pnlMeetingContainerLayout.setHorizontalGroup(
@@ -199,32 +209,46 @@ public class CreateMeeting extends javax.swing.JPanel {
             .addGroup(pnlMeetingContainerLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(pnlMeetingContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlMeetingContainerLayout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnCreate))
                     .addGroup(pnlMeetingContainerLayout.createSequentialGroup()
-                        .addGroup(pnlMeetingContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblCreateMeetingHeading)
-                            .addComponent(lblMeetingDescription)
-                            .addComponent(lblTitle)
-                            .addGroup(pnlMeetingContainerLayout.createSequentialGroup()
-                                .addGroup(pnlMeetingContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                    .addComponent(txtfTitle, javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnAddUser)
-                                    .addComponent(scrLstAllUsers, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 302, Short.MAX_VALUE)
-                                    .addComponent(lblChooseUsers, javax.swing.GroupLayout.Alignment.LEADING))
-                                .addGroup(pnlMeetingContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(pnlMeetingContainerLayout.createSequentialGroup()
-                                        .addGap(58, 58, 58)
-                                        .addGroup(pnlMeetingContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(lblAddedUsers)
-                                            .addComponent(scrLstAddedUsers, javax.swing.GroupLayout.PREFERRED_SIZE, 304, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlMeetingContainerLayout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(btnRemoveUser)))))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addComponent(lblMeetingDescription)
+                        .addGap(808, 808, 808))
+                    .addGroup(pnlMeetingContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(pnlMeetingContainerLayout.createSequentialGroup()
+                            .addGroup(pnlMeetingContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(lblTitle)
+                                .addComponent(lblCreateMeetingHeading))
+                            .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlMeetingContainerLayout.createSequentialGroup()
+                            .addGroup(pnlMeetingContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlMeetingContainerLayout.createSequentialGroup()
+                                    .addGroup(pnlMeetingContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(lblChooseUsers)
+                                        .addComponent(txtfTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGap(30, 30, 30)
+                                    .addComponent(lblAddedUsers)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlMeetingContainerLayout.createSequentialGroup()
+                                    .addGroup(pnlMeetingContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addGroup(pnlMeetingContainerLayout.createSequentialGroup()
+                                            .addGap(224, 224, 224)
+                                            .addComponent(btnAddUser))
+                                        .addComponent(scrLstAllUsers))
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                                    .addGroup(pnlMeetingContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(btnRemoveUser, javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(scrLstAddedUsers, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGap(33, 33, 33))
+                                .addGroup(pnlMeetingContainerLayout.createSequentialGroup()
+                                    .addGroup(pnlMeetingContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(pnlMeetingContainerLayout.createSequentialGroup()
+                                            .addGap(0, 0, Short.MAX_VALUE)
+                                            .addComponent(btnCreate)))
+                                    .addGap(35, 35, 35)))
+                            .addGroup(pnlMeetingContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(lblDate)
+                                .addComponent(jCalendar1, javax.swing.GroupLayout.PREFERRED_SIZE, 365, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(33, 33, 33)))))
         );
         pnlMeetingContainerLayout.setVerticalGroup(
             pnlMeetingContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -236,24 +260,32 @@ public class CreateMeeting extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtfTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addGroup(pnlMeetingContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblChooseUsers)
-                    .addComponent(lblAddedUsers))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlMeetingContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(scrLstAddedUsers)
-                    .addComponent(scrLstAllUsers, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(pnlMeetingContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnAddUser)
-                    .addComponent(btnRemoveUser))
+                .addGroup(pnlMeetingContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(pnlMeetingContainerLayout.createSequentialGroup()
+                        .addComponent(lblChooseUsers)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(scrLstAllUsers, javax.swing.GroupLayout.PREFERRED_SIZE, 347, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnAddUser))
+                    .addGroup(pnlMeetingContainerLayout.createSequentialGroup()
+                        .addGroup(pnlMeetingContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(pnlMeetingContainerLayout.createSequentialGroup()
+                                .addComponent(lblAddedUsers)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(scrLstAddedUsers, javax.swing.GroupLayout.PREFERRED_SIZE, 345, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(pnlMeetingContainerLayout.createSequentialGroup()
+                                .addComponent(lblDate)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jCalendar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGap(18, 18, 18)
+                        .addComponent(btnRemoveUser)))
                 .addGap(18, 18, 18)
                 .addComponent(lblMeetingDescription)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(btnCreate)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(40, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -261,16 +293,16 @@ public class CreateMeeting extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(170, Short.MAX_VALUE)
-                .addComponent(pnlMeetingContainer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(166, 166, 166))
+                .addContainerGap()
+                .addComponent(pnlMeetingContainer, javax.swing.GroupLayout.DEFAULT_SIZE, 1000, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(23, 23, 23)
-                .addComponent(pnlMeetingContainer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(pnlMeetingContainer, javax.swing.GroupLayout.DEFAULT_SIZE, 744, Short.MAX_VALUE)
+                .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -279,10 +311,12 @@ public class CreateMeeting extends javax.swing.JPanel {
     private javax.swing.JButton btnAddUser;
     private javax.swing.JButton btnCreate;
     private javax.swing.JButton btnRemoveUser;
+    private com.toedter.calendar.JCalendar jCalendar1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblAddedUsers;
     private javax.swing.JLabel lblChooseUsers;
     private javax.swing.JLabel lblCreateMeetingHeading;
+    private javax.swing.JLabel lblDate;
     private javax.swing.JLabel lblMeetingDescription;
     private javax.swing.JLabel lblTitle;
     private javax.swing.JList<User> lstAddedUsers;
