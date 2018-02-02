@@ -100,11 +100,17 @@ public class DataInitializer {
 
     private void seedData() {
         try {
-            // Cols: id, email, first_name, surname, password_hash, salt, role, email.
+            // User data.
             String insertUserData = "INSERT INTO user VALUES"
                     + "(1, 'Foo', 'Bar', 'foo', 'foo@bar.com', 'oEs4nBWAs6OxlaK/oG+bTlBW+LJ1VvuvMFsR7dWg3Dg=', 'Kg+R+prTBxLg3Q==', '14'),"
                     + "(2, 'Bar', 'Baz', 'bar', 'foo@bar.com', 'xZ+21vhC9MOCXqD6xvFuP/N98bVbk3LlJpw0ItS65pg=', 'hDMxhhcEqiG1gw==', '6'),"
-                    + "(3, 'Baz', 'Quuz', 'baz', 'foo@bar.com', 'Clv2a/V++MNDfaIylfpxp8b6KvHeK7ts7t3nCGeFv9o=', '8LM/8OOc5zvjew==', '2')";
+                    + "(3, 'Baz', 'Quuz', 'baz', 'foo@bar.com', 'Clv2a/V++MNDfaIylfpxp8b6KvHeK7ts7t3nCGeFv9o=', '8LM/8OOc5zvjew==', '2'),"
+                    + "(4, 'Anders', 'Anka', 'ankan', 'foo@bar.com', 'Clv2a/V++MNDfaIylfpxp8b6KvHeK7ts7t3nCGeFv9o=', '8LM/8OOc5zvjew==', '2')," // pw == hejsan
+                    + "(5, 'Bertil', 'Böna', 'bönan', 'foo@bar.com', 'Clv2a/V++MNDfaIylfpxp8b6KvHeK7ts7t3nCGeFv9o=', '8LM/8OOc5zvjew==', '2')," // ...
+                    + "(6, 'Cecilia', 'Citron', 'citronen', 'foo@bar.com', 'Clv2a/V++MNDfaIylfpxp8b6KvHeK7ts7t3nCGeFv9o=', '8LM/8OOc5zvjew==', '2'),"
+                    + "(7, 'Daniel', 'Duva', 'duvan', 'foo@bar.com', 'Clv2a/V++MNDfaIylfpxp8b6KvHeK7ts7t3nCGeFv9o=', '8LM/8OOc5zvjew==', '2'),"
+                    + "(8, 'Erik', 'Elefant', 'elefanten', 'foo@bar.com', 'Clv2a/V++MNDfaIylfpxp8b6KvHeK7ts7t3nCGeFv9o=', '8LM/8OOc5zvjew==', '2')";
+                    
 
             PreparedStatement ps = db.getConnection().prepareStatement(insertUserData);
             ps.executeUpdate();
@@ -119,6 +125,15 @@ public class DataInitializer {
 
             PreparedStatement ps3 = db.getConnection().prepareStatement(insertPostsData);
             ps3.executeUpdate();
+            
+            // Meeting data.
+            String insertMeetingsData = "INSERT INTO meeting VALUES (null, 1, 'Möte #1',  'Lorem ipsum'),"
+                    + "(null, 1, 'Möte #2',  'Dolor sit amet.'), (null, 3, 'Fooo',  'Consectetur adipiscing elit.'),"
+                    + "(null, 2, 'Baar',  'Curabitur sed sapien.'), (null, 5, 'Baaz',  'Lobortis, elementum dolor.'),"
+                     + "(null, 2, 'Quuuz',  'Rutrum sem.'), (null, 5, 'Quuuz qux',  'Pellentesque viverra, nulla vel posuere vestibulum.')";
+            
+            ps = db.getConnection().prepareStatement(insertMeetingsData);
+            ps.executeUpdate();
 
         } catch (SQLException ex) {
             Logger.getLogger(DataInitializer.class.getName()).log(Level.SEVERE, null, ex);

@@ -3,6 +3,7 @@ package orukomm.data.repositories;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import orukomm.data.Database;
@@ -60,6 +61,36 @@ public class MeetingRepository implements Repository<Meeting> {
         // TODO implement.
     }
 
+    public ArrayList<Meeting> getInvitations(int userId) {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        ArrayList<Meeting> meetings = new ArrayList<>();
+        String query = String.format("SELECT * FROM meeting WHERE meeting_caller = %d", userId);
+
+        try {
+            ps = db.getConnection().prepareStatement(query);
+            rs = ps.executeQuery();
+            
+            // Create meetings array.
+            while (rs.next()) {
+                Meeting meeting = new Meeting();
+                meeting.setId(rs.getInt("id"));
+                meeting.setMeetingCaller(rs.getInt("meeting_caller"));
+                meeting.setTitle(rs.getString("title"));
+                meeting.setDescription(rs.getString("description"));
+                
+                meetings.add(meeting);
+            }
+                
+        } catch (SQLException ex) {
+            Logger.getLogger(MeetingRepository.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            close(null, ps, null);
+        }
+        
+        return meetings;
+    }
+    
     @Override
     public void remove(Meeting entity) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
