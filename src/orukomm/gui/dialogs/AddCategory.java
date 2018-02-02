@@ -37,6 +37,14 @@ public class AddCategory extends javax.swing.JDialog {
             }
         });
 
+        // Cancel event.
+        btnCancel.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+            }
+        });
+        
         txtfCategory.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -49,48 +57,50 @@ public class AddCategory extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        lblAddCategoryHeading = new javax.swing.JLabel();
         lblCategory = new javax.swing.JLabel();
         txtfCategory = new javax.swing.JTextField();
         btnAddCategory = new javax.swing.JButton();
+        btnCancel = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-
-        lblAddCategoryHeading.setFont(new java.awt.Font("Noto Sans", 1, 14)); // NOI18N
-        lblAddCategoryHeading.setText("Lägg til ny kategori");
+        setTitle("Lägg till kategori");
+        setResizable(false);
 
         lblCategory.setText("Kategori");
 
         btnAddCategory.setText("Lägg till");
 
+        btnCancel.setText("Avbryt");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblAddCategoryHeading)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(btnAddCategory)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(lblCategory)
-                            .addGap(18, 18, 18)
-                            .addComponent(txtfCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 202, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addContainerGap(23, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(23, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnCancel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnAddCategory))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(lblCategory)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtfCategory, javax.swing.GroupLayout.PREFERRED_SIZE, 193, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(21, 21, 21))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(lblAddCategoryHeading)
-                .addGap(18, 18, 18)
+                .addGap(27, 27, 27)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblCategory)
                     .addComponent(txtfCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(btnAddCategory)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnAddCategory)
+                    .addComponent(btnCancel))
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         pack();
@@ -140,7 +150,7 @@ public class AddCategory extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAddCategory;
-    private javax.swing.JLabel lblAddCategoryHeading;
+    private javax.swing.JButton btnCancel;
     private javax.swing.JLabel lblCategory;
     private javax.swing.JTextField txtfCategory;
     // End of variables declaration//GEN-END:variables
