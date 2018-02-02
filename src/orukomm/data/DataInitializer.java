@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static orukomm.data.Database.close;
 
 /**
  * Initializes test data for the oru_komm database.
@@ -100,6 +101,7 @@ public class DataInitializer {
     }
 
     private void seedData() {
+        PreparedStatement ps = null;
         try {
             // User data.
             String insertUserData = "INSERT INTO user VALUES"
@@ -113,7 +115,7 @@ public class DataInitializer {
                     + "(8, 'Erik', 'Elefant', 'elefanten', 'foo@bar.com', 'Clv2a/V++MNDfaIylfpxp8b6KvHeK7ts7t3nCGeFv9o=', '8LM/8OOc5zvjew==', '2')";
                     
 
-            PreparedStatement ps = db.getConnection().prepareStatement(insertUserData);
+            ps = db.getConnection().prepareStatement(insertUserData);
             ps.executeUpdate();
 
             String insertCategoryData = "INSERT INTO category VALUES(null, 'Kul')";
@@ -129,15 +131,23 @@ public class DataInitializer {
             
             // Meeting data.
             String insertMeetingsData = "INSERT INTO meeting VALUES (null, 1, 'Ett möte',  'Lorem ipsum', '2018-01-02'),"
-                    + "(null, 1, 'Ett annat möte',  'Dolor sit amet.', '2018-01-02'), (null, 3, 'Fooo',  'Consectetur adipiscing elit.', '2018-01-02'),"
-                    + "(null, 2, 'Baar',  'Curabitur sed sapien.', '2018-01-02'), (null, 5, 'Baaz',  'Lobortis, elementum dolor.', '2018-01-02'),"
-                     + "(null, 2, 'Quuuz',  'Rutrum sem.', '2018-01-02'), (null, 5, 'Quuuz qux',  'Pellentesque viverra, nulla vel posuere vestibulum.', '2018-01-02')";
+                    + "(null, 1, 'Ett annat möte',  'Dolor sit amet.', '2018-01-02'), (null, 3, 'Möte foo',  'Consectetur adipiscing elit.', '2018-01-02'),"
+                    + "(null, 2, 'Möte bar',  'Curabitur sed sapien.', '2018-01-02'), (null, 5, 'Möte baz',  'Lobortis, elementum dolor.', '2018-01-02'),"
+                     + "(null, 2, 'Möte quuz',  'Rutrum sem.', '2018-01-02'), (null, 5, 'Möte quuz qux',  'Pellentesque viverra, nulla vel posuere vestibulum.', '2018-01-02')";
             
             ps = db.getConnection().prepareStatement(insertMeetingsData);
             ps.executeUpdate();
 
+            String userMeetingData = "INSERT INTO user_meeting VALUES (1, 3), (1, 4), (2, 5), (1, 6), (2, 7), (2, 4),"
+                    + "(3, 4), (2, 1), (3, 1), (2, 2), (3, 2)";
+            
+            ps = db.getConnection().prepareStatement(userMeetingData);
+            ps.executeUpdate();
+            
         } catch (SQLException ex) {
             Logger.getLogger(DataInitializer.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            close(null, ps, null);
         }
     }
 }
