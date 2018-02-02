@@ -21,10 +21,10 @@ public class CreateMeeting extends javax.swing.JPanel {
     private ArrayList<User> users;
     private UserRepository userRepo;
     private MeetingRepository meetingRepo;
-    
+
     private DefaultListModel<User> lstMdlAllUsers;
     private DefaultListModel<User> lstMdlAddedUsers;
-    
+
     private User selectedUserFromAllUsers;
     private User selectedUserFromAddedUsers;
     private ArrayList<User> invitedUsers;
@@ -38,9 +38,11 @@ public class CreateMeeting extends javax.swing.JPanel {
         invitedUsers = new ArrayList<>();
 
         userRepo = new UserRepository();
-        
+
         lstMdlAddedUsers = new DefaultListModel<>();
         lstAddedUsers.setModel(lstMdlAddedUsers);
+        lstMdlAllUsers = new DefaultListModel<>();
+        lstAllUsers.setModel(lstMdlAllUsers);
 
         refreshAllUsersList();
         lstAllUsers.setSelectedIndex(0);
@@ -54,26 +56,27 @@ public class CreateMeeting extends javax.swing.JPanel {
                 // Validate fields and invited users.
                 if (Validation.isEmptyOrNull(txtfTitle.getText()) || Validation.isEmptyOrNull(txtaDescription.getText())) {
                     JOptionPane.showMessageDialog(parentFrame, "Inga fält får lämnas tomma.", "Valideringsfel", JOptionPane.ERROR_MESSAGE);
-                    
+
                     return;
                 }
-                
+
                 // Add all invited users to array list.
-                for (int i = 0; i < lstMdlAddedUsers.getSize(); i++)
+                for (int i = 0; i < lstMdlAddedUsers.getSize(); i++) {
                     invitedUsers.add(lstMdlAddedUsers.getElementAt(i));
-                
+                }
+
                 if (invitedUsers.size() < 1) {
                     JOptionPane.showMessageDialog(parentFrame, "Du måste bjuda in användare till mötet.", "Valideringsfel", JOptionPane.ERROR_MESSAGE);
-                
+
                     return;
                 }
-                
+
                 // Survived validation: Create meeting and add it to database.
                 meeting.setMeetingCaller(parentFrame.loggedInUser.getId());
                 meeting.setTitle(txtfTitle.getText());
                 meeting.setDescription(txtaDescription.getText());
                 meeting.setInvitedUsers(invitedUsers);
-                
+
                 meetingRepo.add(meeting);
                 JOptionPane.showMessageDialog(parentFrame, "Mötet har skapats.", "Möte skapat", JOptionPane.INFORMATION_MESSAGE);
                 lstMdlAddedUsers.removeAllElements();
@@ -82,7 +85,7 @@ public class CreateMeeting extends javax.swing.JPanel {
                 clearFields();
             }
         });
-        
+
         // All users-list selection events.
         lstAllUsers.addListSelectionListener(new ListSelectionListener() {
             @Override
@@ -90,7 +93,7 @@ public class CreateMeeting extends javax.swing.JPanel {
                 selectedUserFromAllUsers = lstAllUsers.getSelectedValue();
             }
         });
-        
+
         // Added users-list selection event.
         lstAddedUsers.addListSelectionListener(new ListSelectionListener() {
             @Override
@@ -98,7 +101,7 @@ public class CreateMeeting extends javax.swing.JPanel {
                 selectedUserFromAddedUsers = lstAddedUsers.getSelectedValue();
             }
         });
-        
+
         // Add user event.
         btnAddUser.addActionListener(new ActionListener() {
             @Override
@@ -111,7 +114,7 @@ public class CreateMeeting extends javax.swing.JPanel {
                 }
             }
         });
-        
+
         // Remove user event.
         btnRemoveUser.addActionListener(new ActionListener() {
             @Override
@@ -127,17 +130,16 @@ public class CreateMeeting extends javax.swing.JPanel {
 
     // Fetches users from the database and populates the all users-list with them.
     private void refreshAllUsersList() {
-        lstMdlAllUsers = new DefaultListModel<>();
-        lstAllUsers.setModel(lstMdlAllUsers);
-
         users = userRepo.getAll();
         lstMdlAllUsers.removeAllElements();
 
         for (User user : users) {
-            lstMdlAllUsers.addElement(user);
+            // Don't add the logged in user to the list.
+            if (user.getId() != parentFrame.loggedInUser.getId())
+                lstMdlAllUsers.addElement(user);
         }
     }
-    
+
     private void clearFields() {
         txtfTitle.setText("");
         txtaDescription.setText("");

@@ -27,15 +27,19 @@ public class Meetings extends javax.swing.JPanel {
 
         meetingRepo = new MeetingRepository();
 
+        lstMdlCreatedMeeting = new DefaultListModel<>();
+        lstMeetingsCreated.setModel(lstMdlCreatedMeeting);
+        lstMdlInvitations = new DefaultListModel<>();
+        lstMeetingInvitations.setModel(lstMdlInvitations);
+
         refreshInvitedMeetingsList();
         refreshCreatedMeetingsList();
     }
 
     private void refreshInvitedMeetingsList() {
-        lstMdlInvitations = new DefaultListModel<>();
-        lstMeetingInvitations.setModel(lstMdlInvitations);
         lstMdlInvitations.removeAllElements();
-        meetingInvitations = meetingRepo.getInvitations(parentFrame.loggedInUser.getId());
+
+        meetingInvitations = meetingRepo.getMeetingInvitations(parentFrame.loggedInUser.getId());
 
         if (meetingInvitations.size() > 0) {
             for (Meeting meeting : meetingInvitations) {
@@ -47,10 +51,9 @@ public class Meetings extends javax.swing.JPanel {
     }
 
     private void refreshCreatedMeetingsList() {
-        lstMdlCreatedMeeting = new DefaultListModel<>();
-        lstMeetingsCreated.setModel(lstMdlCreatedMeeting);
         lstMdlCreatedMeeting.removeAllElements();
-        meetingsCreated = meetingRepo.getInvitations(parentFrame.loggedInUser.getId());
+
+        meetingsCreated = meetingRepo.getCreatedMeetings(parentFrame.loggedInUser.getId());
 
         if (meetingsCreated.size() > 0) {
             for (Meeting meeting : meetingsCreated) {
@@ -97,31 +100,32 @@ public class Meetings extends javax.swing.JPanel {
             pnlMeetingsContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlMeetingsContainerLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnlMeetingsContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(lblHeading)
-                    .addGroup(pnlMeetingsContainerLayout.createSequentialGroup()
-                        .addGroup(pnlMeetingsContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(btnInvitationsShow)
-                            .addGroup(pnlMeetingsContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(lblInvitations)
-                                .addComponent(scrLstInvitations1, javax.swing.GroupLayout.PREFERRED_SIZE, 365, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGroup(pnlMeetingsContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(pnlMeetingsContainerLayout.createSequentialGroup()
-                                .addGap(59, 59, 59)
-                                .addGroup(pnlMeetingsContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(scrLstInvitations, javax.swing.GroupLayout.PREFERRED_SIZE, 365, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(lblCreated)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlMeetingsContainerLayout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnCreatedShow)))))
+                .addComponent(lblHeading)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlMeetingsContainerLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(pnlMeetingsContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btnInvitationsShow)
+                    .addGroup(pnlMeetingsContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(lblInvitations)
+                        .addComponent(scrLstInvitations1, javax.swing.GroupLayout.PREFERRED_SIZE, 365, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(pnlMeetingsContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlMeetingsContainerLayout.createSequentialGroup()
+                        .addGap(59, 59, 59)
+                        .addGroup(pnlMeetingsContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(scrLstInvitations, javax.swing.GroupLayout.PREFERRED_SIZE, 365, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblCreated)))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, pnlMeetingsContainerLayout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnCreatedShow)))
+                .addContainerGap())
         );
         pnlMeetingsContainerLayout.setVerticalGroup(
             pnlMeetingsContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlMeetingsContainerLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblHeading)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlMeetingsContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblCreated)
                     .addComponent(lblInvitations))
@@ -133,7 +137,7 @@ public class Meetings extends javax.swing.JPanel {
                 .addGroup(pnlMeetingsContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnInvitationsShow)
                     .addComponent(btnCreatedShow))
-                .addContainerGap(58, Short.MAX_VALUE))
+                .addContainerGap(70, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
