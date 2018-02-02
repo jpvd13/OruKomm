@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 import orukomm.data.entities.Category;
 import orukomm.data.repositories.CategoryRepository;
+import orukomm.gui.panels.CreatePostPanel;
 import orukomm.logic.Validation;
 
 public class AddCategory extends javax.swing.JDialog {
@@ -42,7 +43,7 @@ public class AddCategory extends javax.swing.JDialog {
             public void actionPerformed(ActionEvent e) {
                 btnAddCategory.doClick();
             }
-        });
+        }); 
     }
 
     @SuppressWarnings("unchecked")
@@ -90,7 +91,7 @@ public class AddCategory extends javax.swing.JDialog {
                     .addComponent(txtfCategory, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(btnAddCategory)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(167, Short.MAX_VALUE))
         );
 
         pack();
