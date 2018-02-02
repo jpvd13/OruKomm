@@ -102,59 +102,66 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
         mnuMeetingsBooked.addActionListener(this);
     }
 
-	/*
-	 * Handle menu events.
-	 */
-	@Override
-	public void actionPerformed(ActionEvent e) {
-		switch (e.getActionCommand()) {
-			case "mnuArchiveExit":
-				this.dispatchEvent(new java.awt.event.WindowEvent(this, java.awt.event.WindowEvent.WINDOW_CLOSING));
-				break;
+    /*
+     * Handle menu events.
+     */
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        switch (e.getActionCommand()) {
+            case "mnuArchiveExit":
+                this.dispatchEvent(new java.awt.event.WindowEvent(this, java.awt.event.WindowEvent.WINDOW_CLOSING));
+                break;
 
-			case "mnuAdministrationRegister":
-				switchPanel(new Register((this)));
-				break;
-                                
-                        case "mnuAdministrationAddCategory":
-                            new AddCategory(this, true).setVisible(true);
-                            break;
+            case "mnuAdministrationRegister":
+                switchPanel(new Register((this)));
+                break;
 
-                        case "mnuAdministrationEditUser":
-                            switchPanel(new AdminUpdateUsers(this));
-                            break;
-                            
-			case "mnuAccountLogout":
-				logout();
-				break;
+            case "mnuAdministrationAddCategory":
+                new AddCategory(this, true).setVisible(true);
+                break;
 
-			case "mnuAccountEdit":
-				switchPanel(new UpdateAccount((this)));
-				break;
-                                
-                        case "mnuFormalFeed":
-                            FormalFeed formalFeed = new FormalFeed(this);
-                            formalFeed.fillTable();
-                            switchPanel(formalFeed);
-                            
-                            break;
-                            
-                        case "mnuNewPost":
-                            switchPanel(new CreatePostPanel((this)));
-                            break;
-		}
-	}
+            case "mnuAdministrationEditUser":
+                switchPanel(new AdminUpdateUsers(this));
+                break;
 
-	/*
-	 * Reset logged in user object, wipe out the old one, and set the appropriate GUI.
-	 */
-	private void logout() {
-		loggedInUser = new User();
-		System.gc();
-		enableLoggedInInterface(Settings.LOGGED_OUT_ROLE);
-		setTitle(Settings.WINDOW_TITLE);
-		switchPanel(new Login((this)));
-	}
+            case "mnuAccountLogout":
+                logout();
+                break;
+
+            case "mnuAccountEdit":
+                switchPanel(new UpdateAccount((this)));
+                break;
+
+            case "mnuFormalFeed":
+                FormalFeed formalFeed = new FormalFeed(this);
+                formalFeed.fillTable();
+                switchPanel(formalFeed);
+                break;
+
+            case "mnuNewPost":
+                switchPanel(new CreatePostPanel((this)));
+                break;
+                
+            case "mnuMeetingCreate":
+                switchPanel(new CreateMeeting(this));
+                break;
+                
+            case "mnuMeetingBooked":
+                switchPanel(new Meetings(this));
+                break;
+        }
+    }
+
+    /*
+     * Reset logged in user object, wipe out the old one, and set the appropriate GUI.
+     */
+    private void logout() {
+        loggedInUser = new User();
+        System.gc();
+        enableLoggedInInterface(Settings.LOGGED_OUT_ROLE);
+        setTitle(Settings.WINDOW_TITLE);
+        switchPanel(new Login((this)));
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
