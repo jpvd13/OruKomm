@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 import orukomm.data.entities.Category;
 import orukomm.data.repositories.CategoryRepository;
-import orukomm.logic.Validation;
+import orukomm.logic.security.Validation;
 
 public class AddCategory extends javax.swing.JDialog {
 

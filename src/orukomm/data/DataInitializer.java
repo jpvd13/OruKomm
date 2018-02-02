@@ -130,15 +130,15 @@ public class DataInitializer {
             ps3.executeUpdate();
             
             // Meeting data.
-            String insertMeetingsData = "INSERT INTO meeting VALUES (null, 1, 'Ett möte',  'Lorem ipsum', '2018-01-02'),"
-                    + "(null, 1, 'Ett annat möte',  'Dolor sit amet.', '2018-01-02'), (null, 3, 'Möte foo',  'Consectetur adipiscing elit.', '2018-01-02'),"
-                    + "(null, 2, 'Möte bar',  'Curabitur sed sapien.', '2018-01-02'), (null, 5, 'Möte baz',  'Lobortis, elementum dolor.', '2018-01-02'),"
-                     + "(null, 2, 'Möte quuz',  'Rutrum sem.', '2018-01-02'), (null, 5, 'Möte quuz qux',  'Pellentesque viverra, nulla vel posuere vestibulum.', '2018-01-02')";
+            String insertMeetingsData = "INSERT INTO meeting VALUES (null, 1, 'Ett möte',  'Lorem ipsum', '2018-03-10'),"
+                    + "(null, 1, 'Ett annat möte',  'Dolor sit amet.', '2018-03-12'), (null, 3, 'Möte foo',  'Consectetur adipiscing elit.', '2018-03-16'),"
+                    + "(null, 2, 'Möte bar',  'Curabitur sed sapien.', '2018-03-25'), (null, 5, 'Möte baz',  'Lobortis, elementum dolor.', '2018-04-21'),"
+                     + "(null, 2, 'Möte quuz',  'Rutrum sem.', '2018-04-22'), (null, 5, 'Möte quuz qux',  'Pellentesque viverra, nulla vel posuere vestibulum.', '2018-04-29')";
             
             ps = db.getConnection().prepareStatement(insertMeetingsData);
             ps.executeUpdate();
 
-            String userMeetingData = "INSERT INTO user_meeting VALUES (1, 3), (1, 4), (2, 5), (1, 6), (2, 7), (2, 4),"
+            String userMeetingData = "INSERT INTO user_meeting VALUES (1, 3), (1, 4), (2, 5), (1, 6), (2, 7), (4, 4),"
                     + "(3, 4), (2, 1), (3, 1), (2, 2), (3, 2)";
             
             ps = db.getConnection().prepareStatement(userMeetingData);

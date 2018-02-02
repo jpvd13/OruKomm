@@ -10,7 +10,7 @@ import javax.swing.event.ListSelectionListener;
 import orukomm.data.entities.User;
 import orukomm.data.repositories.UserRepository;
 import orukomm.gui.MainWindow;
-import orukomm.logic.Validation;
+import orukomm.logic.security.Validation;
 import orukomm.logic.security.Encryption;
 
 public class AdminUpdateUsers extends javax.swing.JPanel {

@@ -68,8 +68,10 @@ public class MeetingRepository implements Repository<Meeting> {
         PreparedStatement ps = null;
         ResultSet rs = null;
         ArrayList<Meeting> meetings = new ArrayList<>();
+        
         String query = String.format("SELECT * FROM meeting JOIN user_meeting " 
-                + "ON user_meeting.meeting_id = meeting.id WHERE user_meeting.user_id = %d", userId);
+                + "ON user_meeting.meeting_id = meeting.id WHERE user_meeting.user_id = %d "
+                + "AND date >= CURDATE() ORDER BY date", userId);
 
         try {
             ps = db.getConnection().prepareStatement(query);
@@ -82,6 +84,7 @@ public class MeetingRepository implements Repository<Meeting> {
                 meeting.setMeetingCaller(rs.getInt("meeting_caller"));
                 meeting.setTitle(rs.getString("title"));
                 meeting.setDescription(rs.getString("description"));
+                meeting.setDate(rs.getDate("date"));
                 
                 meetings.add(meeting);
             }
@@ -99,7 +102,8 @@ public class MeetingRepository implements Repository<Meeting> {
         PreparedStatement ps = null;
         ResultSet rs = null;
         ArrayList<Meeting> meetings = new ArrayList<>();
-        String query = String.format("SELECT * FROM meeting WHERE meeting_caller = %d", userId);
+        String query = String.format("SELECT * FROM meeting WHERE meeting_caller = %d "
+                + "AND date >= CURDATE() ORDER BY date", userId);
 
         try {
             ps = db.getConnection().prepareStatement(query);
@@ -112,6 +116,7 @@ public class MeetingRepository implements Repository<Meeting> {
                 meeting.setMeetingCaller(rs.getInt("meeting_caller"));
                 meeting.setTitle(rs.getString("title"));
                 meeting.setDescription(rs.getString("description"));
+                meeting.setDate(rs.getDate("date"));
                 
                 meetings.add(meeting);
             }

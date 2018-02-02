@@ -1,12 +1,16 @@
 package orukomm.gui.panels;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import orukomm.data.entities.Meeting;
-import orukomm.data.entities.User;
 import orukomm.data.repositories.MeetingRepository;
 import orukomm.gui.MainWindow;
 
+/*
+ * Panel that displays all meetings related to the logged in user.
+ */
 public class Meetings extends javax.swing.JPanel {
 
     private MainWindow parentFrame;
@@ -34,6 +38,16 @@ public class Meetings extends javax.swing.JPanel {
 
         refreshInvitedMeetingsList();
         refreshCreatedMeetingsList();
+        
+        // Show invited meeting event.
+        btnInvitationsShow.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                parentFrame.switchPanel(new MeetingResponse(lstMeetingInvitations.getSelectedValue(), parentFrame));
+            }
+        });
+        
+        // Show created meeting event.
     }
 
     private void refreshInvitedMeetingsList() {
@@ -41,13 +55,9 @@ public class Meetings extends javax.swing.JPanel {
 
         meetingInvitations = meetingRepo.getMeetingInvitations(parentFrame.loggedInUser.getId());
 
-        if (meetingInvitations.size() > 0) {
-            for (Meeting meeting : meetingInvitations) {
+        if (meetingInvitations.size() > 0)
+            for (Meeting meeting : meetingInvitations)
                 lstMdlInvitations.addElement(meeting);
-            }
-        } else {
-            System.out.println("no meetings for id " + parentFrame.loggedInUser.getId());
-        }
     }
 
     private void refreshCreatedMeetingsList() {
@@ -55,13 +65,9 @@ public class Meetings extends javax.swing.JPanel {
 
         meetingsCreated = meetingRepo.getCreatedMeetings(parentFrame.loggedInUser.getId());
 
-        if (meetingsCreated.size() > 0) {
-            for (Meeting meeting : meetingsCreated) {
+        if (meetingsCreated.size() > 0)
+            for (Meeting meeting : meetingsCreated)
                 lstMdlCreatedMeeting.addElement(meeting);
-            }
-        } else {
-            System.out.println("no meetings for id " + parentFrame.loggedInUser.getId());
-        }
     }
 
     @SuppressWarnings("unchecked")
@@ -152,9 +158,9 @@ public class Meetings extends javax.swing.JPanel {
                 layout.setVerticalGroup(
                         layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
-                                .addGap(32, 32, 32)
+                                .addContainerGap()
                                 .addComponent(pnlMeetingsContainer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(126, Short.MAX_VALUE))
+                                .addContainerGap(146, Short.MAX_VALUE))
                 );
         }// </editor-fold>//GEN-END:initComponents
 

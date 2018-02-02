@@ -1,4 +1,4 @@
-package orukomm.logic;
+package orukomm.logic.security;
 
 public class Validation {
 

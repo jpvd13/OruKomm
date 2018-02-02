@@ -73,7 +73,7 @@ public class Meeting implements Entity {
     
     @Override
     public String toString() {
-        return title;
+        return String.format("%s [%tF]", title, date);
     }
     
 }

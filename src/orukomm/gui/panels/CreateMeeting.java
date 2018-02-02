@@ -12,7 +12,7 @@ import orukomm.data.entities.User;
 import orukomm.data.repositories.MeetingRepository;
 import orukomm.data.repositories.UserRepository;
 import orukomm.gui.MainWindow;
-import orukomm.logic.Validation;
+import orukomm.logic.security.Validation;
 
 public class CreateMeeting extends javax.swing.JPanel {
 
@@ -83,6 +83,9 @@ public class CreateMeeting extends javax.swing.JPanel {
 
                 meetingRepo.add(meeting);
                 JOptionPane.showMessageDialog(parentFrame, "Mötet har skapats.", "Möte skapat", JOptionPane.INFORMATION_MESSAGE);
+
+                // TODO send email notifications to users that wants to receive them.
+
                 lstMdlAddedUsers.removeAllElements();
                 invitedUsers.removeAll(invitedUsers);
                 refreshAllUsersList();
