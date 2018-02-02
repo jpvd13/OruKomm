@@ -54,7 +54,7 @@ public class CreatePostPanel extends javax.swing.JPanel {
         fs = new FileStorage();
         categoryRepo = new CategoryRepository(); 
         getDate();
-        refreshCategoryList();
+//        refreshCategoryList();
         lstCategory.setSelectedIndex(0);
         
         hideButtons();
@@ -69,16 +69,16 @@ public class CreatePostPanel extends javax.swing.JPanel {
         });
     }
     
-       public void refreshCategoryList() {
-        lstCategories = new DefaultListModel<>();
-        lstCategory.setModel(lstCategories);
-        Category = categoryRepo.getAll();
-        lstCategories.removeAllElements();
-
-        for(String cats : Category) {
-            lstCategories.addElement(cats);
-        }
-    }
+//       public void refreshCategoryList() {
+//        lstCategories = new DefaultListModel<>();
+//        lstCategory.setModel(lstCategories);
+//        Category = categoryRepo.getAll();
+//        lstCategories.removeAllElements();
+//
+//        for(String cats : Category) {
+//            lstCategories.addElement(cats);
+//        }
+//    }
     
     private void hideButtons() {
         btnClearImage.setVisible(false);
@@ -470,7 +470,7 @@ public class CreatePostPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnClearImageActionPerformed
 
     private void lstCategoryComponentAdded(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_lstCategoryComponentAdded
-            refreshCategoryList(); 
+//            refreshCategoryList(); 
     }//GEN-LAST:event_lstCategoryComponentAdded
 
 

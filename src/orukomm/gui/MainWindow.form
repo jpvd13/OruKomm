@@ -105,9 +105,9 @@
                 <Property name="text" type="java.lang.String" value="Skapa nytt m&#xf6;te"/>
               </Properties>
             </MenuItem>
-            <MenuItem class="javax.swing.JMenuItem" name="mnuMeetingsBooked">
+            <MenuItem class="javax.swing.JMenuItem" name="mnuMyMeetings">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Se inbokade m&#xf6;ten"/>
+                <Property name="text" type="java.lang.String" value="Mina m&#xf6;ten"/>
               </Properties>
             </MenuItem>
           </SubComponents>

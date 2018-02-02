@@ -3,6 +3,7 @@ package orukomm.data.repositories;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import orukomm.data.Database;
@@ -24,7 +25,7 @@ public class MeetingRepository implements Repository<Meeting> {
     public void add(Meeting meeting) {
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String query = String.format("INSERT INTO meeting VALUES (null, %d, ?, ?)", meeting.getMeetingCaller());
+        String query = String.format("INSERT INTO meeting VALUES (null, %d, ?, ?, '%tF')", meeting.getMeetingCaller(), meeting.getDate());
 
         // Insert into `meeting`.
         try {
@@ -60,6 +61,75 @@ public class MeetingRepository implements Repository<Meeting> {
         // TODO implement.
     }
 
+    /*
+     * Returns all meetings where the provided userId is invited to.
+     */
+    public ArrayList<Meeting> getMeetingInvitations(int userId) {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        ArrayList<Meeting> meetings = new ArrayList<>();
+        
+        String query = String.format("SELECT * FROM meeting JOIN user_meeting " 
+                + "ON user_meeting.meeting_id = meeting.id WHERE user_meeting.user_id = %d "
+                + "AND date >= CURDATE() ORDER BY date", userId);
+
+        try {
+            ps = db.getConnection().prepareStatement(query);
+            rs = ps.executeQuery();
+            
+            // Create meetings array.
+            while (rs.next()) {
+                Meeting meeting = new Meeting();
+                meeting.setId(rs.getInt("id"));
+                meeting.setMeetingCaller(rs.getInt("meeting_caller"));
+                meeting.setTitle(rs.getString("title"));
+                meeting.setDescription(rs.getString("description"));
+                meeting.setDate(rs.getDate("date"));
+                
+                meetings.add(meeting);
+            }
+                
+        } catch (SQLException ex) {
+            Logger.getLogger(MeetingRepository.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            close(null, ps, null);
+        }
+        
+        return meetings;
+    }
+    
+    public ArrayList<Meeting> getCreatedMeetings(int userId) {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        ArrayList<Meeting> meetings = new ArrayList<>();
+        String query = String.format("SELECT * FROM meeting WHERE meeting_caller = %d "
+                + "AND date >= CURDATE() ORDER BY date", userId);
+
+        try {
+            ps = db.getConnection().prepareStatement(query);
+            rs = ps.executeQuery();
+            
+            // Create meetings array.
+            while (rs.next()) {
+                Meeting meeting = new Meeting();
+                meeting.setId(rs.getInt("id"));
+                meeting.setMeetingCaller(rs.getInt("meeting_caller"));
+                meeting.setTitle(rs.getString("title"));
+                meeting.setDescription(rs.getString("description"));
+                meeting.setDate(rs.getDate("date"));
+                
+                meetings.add(meeting);
+            }
+                
+        } catch (SQLException ex) {
+            Logger.getLogger(MeetingRepository.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            close(null, ps, null);
+        }
+        
+        return meetings;
+    }
+    
     @Override
     public void remove(Meeting entity) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

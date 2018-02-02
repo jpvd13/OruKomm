@@ -4,6 +4,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import static orukomm.data.Database.close;
 
 /**
  * Initializes test data for the oru_komm database.
@@ -65,9 +66,10 @@ public class DataInitializer {
             PreparedStatement psCrtAtts = db.getConnection().prepareStatement(createAttTable);
             psCrtAtts.executeUpdate();
 
+            // Meeting tables.
             String createMeeting = "CREATE TABLE meeting ("
                     + "id int(11) NOT NULL AUTO_INCREMENT, meeting_caller INT NOT NULL, title VARCHAR(64) NOT NULL,"
-                    + "description VARCHAR(512) NOT NULL,"
+                    + "description VARCHAR(512), date DATE NOT NULL,"
                     + "PRIMARY KEY (id), FOREIGN KEY (meeting_caller) REFERENCES user(id))"
                     + "ENGINE=InnoDB DEFAULT CHARSET=utf8";
 
@@ -99,14 +101,21 @@ public class DataInitializer {
     }
 
     private void seedData() {
+        PreparedStatement ps = null;
         try {
-            // Cols: id, email, first_name, surname, password_hash, salt, role, email.
+            // User data.
             String insertUserData = "INSERT INTO user VALUES"
                     + "(1, 'Foo', 'Bar', 'foo', 'foo@bar.com', 'oEs4nBWAs6OxlaK/oG+bTlBW+LJ1VvuvMFsR7dWg3Dg=', 'Kg+R+prTBxLg3Q==', '14'),"
                     + "(2, 'Bar', 'Baz', 'bar', 'foo@bar.com', 'xZ+21vhC9MOCXqD6xvFuP/N98bVbk3LlJpw0ItS65pg=', 'hDMxhhcEqiG1gw==', '6'),"
-                    + "(3, 'Baz', 'Quuz', 'baz', 'foo@bar.com', 'Clv2a/V++MNDfaIylfpxp8b6KvHeK7ts7t3nCGeFv9o=', '8LM/8OOc5zvjew==', '2')";
+                    + "(3, 'Baz', 'Quuz', 'baz', 'foo@bar.com', 'Clv2a/V++MNDfaIylfpxp8b6KvHeK7ts7t3nCGeFv9o=', '8LM/8OOc5zvjew==', '2'),"
+                    + "(4, 'Anders', 'Anka', 'ankan', 'foo@bar.com', 'Clv2a/V++MNDfaIylfpxp8b6KvHeK7ts7t3nCGeFv9o=', '8LM/8OOc5zvjew==', '2')," // pw == hejsan
+                    + "(5, 'Bertil', 'Böna', 'bönan', 'foo@bar.com', 'Clv2a/V++MNDfaIylfpxp8b6KvHeK7ts7t3nCGeFv9o=', '8LM/8OOc5zvjew==', '2')," // ...
+                    + "(6, 'Cecilia', 'Citron', 'citronen', 'foo@bar.com', 'Clv2a/V++MNDfaIylfpxp8b6KvHeK7ts7t3nCGeFv9o=', '8LM/8OOc5zvjew==', '2'),"
+                    + "(7, 'Daniel', 'Duva', 'duvan', 'foo@bar.com', 'Clv2a/V++MNDfaIylfpxp8b6KvHeK7ts7t3nCGeFv9o=', '8LM/8OOc5zvjew==', '2'),"
+                    + "(8, 'Erik', 'Elefant', 'elefanten', 'foo@bar.com', 'Clv2a/V++MNDfaIylfpxp8b6KvHeK7ts7t3nCGeFv9o=', '8LM/8OOc5zvjew==', '2')";
+                    
 
-            PreparedStatement ps = db.getConnection().prepareStatement(insertUserData);
+            ps = db.getConnection().prepareStatement(insertUserData);
             ps.executeUpdate();
 
             String insertCategoryData = "INSERT INTO category VALUES(null, 'Kul')";
@@ -119,9 +128,26 @@ public class DataInitializer {
 
             PreparedStatement ps3 = db.getConnection().prepareStatement(insertPostsData);
             ps3.executeUpdate();
+            
+            // Meeting data.
+            String insertMeetingsData = "INSERT INTO meeting VALUES (null, 1, 'Ett möte',  'Lorem ipsum', '2018-03-10'),"
+                    + "(null, 1, 'Ett annat möte',  'Dolor sit amet.', '2018-03-12'), (null, 3, 'Möte foo',  'Consectetur adipiscing elit.', '2018-03-16'),"
+                    + "(null, 2, 'Möte bar',  'Curabitur sed sapien.', '2018-03-25'), (null, 5, 'Möte baz',  'Lobortis, elementum dolor.', '2018-04-21'),"
+                     + "(null, 2, 'Möte quuz',  'Rutrum sem.', '2018-04-22'), (null, 5, 'Möte quuz qux',  'Pellentesque viverra, nulla vel posuere vestibulum.', '2018-04-29')";
+            
+            ps = db.getConnection().prepareStatement(insertMeetingsData);
+            ps.executeUpdate();
 
+            String userMeetingData = "INSERT INTO user_meeting VALUES (1, 3), (1, 4), (2, 5), (1, 6), (2, 7), (4, 4),"
+                    + "(3, 4), (2, 1), (3, 1), (2, 2), (3, 2)";
+            
+            ps = db.getConnection().prepareStatement(userMeetingData);
+            ps.executeUpdate();
+            
         } catch (SQLException ex) {
             Logger.getLogger(DataInitializer.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            close(null, ps, null);
         }
     }
 }
