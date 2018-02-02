@@ -2,6 +2,7 @@ package orukomm.gui.panels;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Date;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
@@ -44,8 +45,6 @@ public class CreateMeeting extends javax.swing.JPanel {
         lstMdlAllUsers = new DefaultListModel<>();
         lstAllUsers.setModel(lstMdlAllUsers);
         
-//        System.out.println(clnDatePicker.getDate());
-
         refreshAllUsersList();
         lstAllUsers.setSelectedIndex(0);
 
@@ -73,10 +72,14 @@ public class CreateMeeting extends javax.swing.JPanel {
                     return;
                 }
 
+                // Convert calendar to sql.Date.
+                java.sql.Date date = new java.sql.Date(clnDatePicker.getCalendar().getTime().getTime());
+                
                 // Survived validation: Create meeting and add it to database.
                 meeting.setMeetingCaller(parentFrame.loggedInUser.getId());
                 meeting.setTitle(txtfTitle.getText());
                 meeting.setDescription(txtaDescription.getText());
+                meeting.setDate(date);
                 meeting.setInvitedUsers(invitedUsers);
 
                 meetingRepo.add(meeting);
@@ -168,7 +171,7 @@ public class CreateMeeting extends javax.swing.JPanel {
         lblTitle = new javax.swing.JLabel();
         txtfTitle = new javax.swing.JTextField();
         lblDate = new javax.swing.JLabel();
-        jCalendar1 = new com.toedter.calendar.JCalendar();
+        clnDatePicker = new com.toedter.calendar.JCalendar();
 
         setPreferredSize(new java.awt.Dimension(1024, 768));
 
@@ -235,7 +238,7 @@ public class CreateMeeting extends javax.swing.JPanel {
                                             .addComponent(scrLstAddedUsers, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 258, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                             .addGap(25, 25, 25)
                             .addGroup(pnlMeetingContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(jCalendar1, javax.swing.GroupLayout.PREFERRED_SIZE, 397, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(clnDatePicker, javax.swing.GroupLayout.PREFERRED_SIZE, 397, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addComponent(lblDate))
                             .addGap(23, 23, 23))
                         .addGroup(pnlMeetingContainerLayout.createSequentialGroup()
@@ -271,7 +274,7 @@ public class CreateMeeting extends javax.swing.JPanel {
                             .addGroup(pnlMeetingContainerLayout.createSequentialGroup()
                                 .addComponent(lblDate)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jCalendar1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addComponent(clnDatePicker, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                         .addGap(18, 18, 18)
                         .addComponent(btnRemoveUser)))
                 .addGap(18, 18, 18)
@@ -306,7 +309,7 @@ public class CreateMeeting extends javax.swing.JPanel {
     private javax.swing.JButton btnAddUser;
     private javax.swing.JButton btnCreate;
     private javax.swing.JButton btnRemoveUser;
-    private com.toedter.calendar.JCalendar jCalendar1;
+    private com.toedter.calendar.JCalendar clnDatePicker;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblAddedUsers;
     private javax.swing.JLabel lblChooseUsers;

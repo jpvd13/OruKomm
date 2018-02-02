@@ -87,7 +87,7 @@
                               </Group>
                               <EmptySpace min="-2" pref="25" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="jCalendar1" min="-2" pref="397" max="-2" attributes="0"/>
+                                  <Component id="clnDatePicker" min="-2" pref="397" max="-2" attributes="0"/>
                                   <Component id="lblDate" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
@@ -133,7 +133,7 @@
                               <Group type="102" attributes="0">
                                   <Component id="lblDate" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace max="-2" attributes="0"/>
-                                  <Component id="jCalendar1" max="32767" attributes="0"/>
+                                  <Component id="clnDatePicker" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                           <EmptySpace type="separate" max="-2" attributes="0"/>
@@ -256,7 +256,7 @@
             <Property name="text" type="java.lang.String" value="Datum f&#xf6;r m&#xf6;te"/>
           </Properties>
         </Component>
-        <Component class="com.toedter.calendar.JCalendar" name="jCalendar1">
+        <Component class="com.toedter.calendar.JCalendar" name="clnDatePicker">
         </Component>
       </SubComponents>
     </Container>

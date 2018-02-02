@@ -25,7 +25,7 @@ public class MeetingRepository implements Repository<Meeting> {
     public void add(Meeting meeting) {
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String query = String.format("INSERT INTO meeting VALUES (null, %d, ?, ?)", meeting.getMeetingCaller());
+        String query = String.format("INSERT INTO meeting VALUES (null, %d, ?, ?, '%tF')", meeting.getMeetingCaller(), meeting.getDate());
 
         // Insert into `meeting`.
         try {
