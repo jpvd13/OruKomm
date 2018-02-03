@@ -117,7 +117,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
                 break;
 
             case "mnuAdministrationAddCategory":
-                new AddCategory(this, false).setVisible(true);
+                new AddCategory(this, true).setVisible(true);
                 break;
 
             case "mnuAdministrationEditUser":
