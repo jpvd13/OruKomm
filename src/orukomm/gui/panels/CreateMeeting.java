@@ -4,7 +4,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.sql.Time;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
@@ -31,10 +39,18 @@ public class CreateMeeting extends javax.swing.JPanel {
     private User selectedUserFromAddedUsers;
     private ArrayList<User> invitedUsers;
     private Meeting meeting;
-
+    private ArrayList<Time> timeSuggestions;
+    
+    private Time timeSuggestion;
+    private DateFormat dateFormat;
+    private String timeInput;
+    
     public CreateMeeting(MainWindow parentFrame) {
         initComponents();
         this.parentFrame = parentFrame;
+        dateFormat = new SimpleDateFormat("HH:mm");
+        timeSuggestions = new ArrayList<>();
+        
         meetingRepo = new MeetingRepository();
         meeting = new Meeting();
         invitedUsers = new ArrayList<>();
@@ -45,7 +61,7 @@ public class CreateMeeting extends javax.swing.JPanel {
         lstAddedUsers.setModel(lstMdlAddedUsers);
         lstMdlAllUsers = new DefaultListModel<>();
         lstAllUsers.setModel(lstMdlAllUsers);
-        
+
         refreshAllUsersList();
         lstAllUsers.setSelectedIndex(0);
 
@@ -75,7 +91,7 @@ public class CreateMeeting extends javax.swing.JPanel {
 
                 // Convert calendar to sql.Date.
                 java.sql.Date date = new java.sql.Date(clnDatePicker.getCalendar().getTime().getTime());
-                
+
                 // Survived validation: Create meeting and add it to database.
                 meeting.setMeetingCaller(parentFrame.loggedInUser.getId());
                 meeting.setTitle(txtfTitle.getText());
@@ -87,7 +103,6 @@ public class CreateMeeting extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(parentFrame, "Mötet har skapats.", "Möte skapat", JOptionPane.INFORMATION_MESSAGE);
 
                 // TODO send email notifications to users that wants to receive them.
-
                 lstMdlAddedUsers.removeAllElements();
                 invitedUsers.removeAll(invitedUsers);
                 refreshAllUsersList();
@@ -135,7 +150,7 @@ public class CreateMeeting extends javax.swing.JPanel {
                 }
             }
         });
-        
+
         // Time suggestion focus events.
         txtfTimeSuggestion.addFocusListener(new FocusListener() {
             @Override
@@ -145,7 +160,37 @@ public class CreateMeeting extends javax.swing.JPanel {
 
             @Override
             public void focusLost(FocusEvent e) {
-                txtfTimeSuggestion.setText("HH:MM");
+            }
+        });
+
+        // Validate and constrain time suggestion input.
+        txtfTimeSuggestion.addKeyListener(new KeyAdapter() {
+            public void keyTyped(KeyEvent e) {
+                char input = e.getKeyChar();
+                // Only allow digits and colon as input, no longer than 5 chars.
+                if (!((input >= '0') && (input <= '9') || input == ':') || txtfTimeSuggestion.getText().length() > 4) {
+                    e.consume();
+                }
+            }
+        });
+
+        // Add time suggestion event.
+        btnAddTimeSuggestion.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Validate time input and add it to the list.
+                if (!Validation.is24HourFormat(txtfTimeSuggestion.getText())) {
+                    JOptionPane.showMessageDialog(parentFrame, "Ange tiden enligt 24-timmarsformatet HH:SS.", "Valideringsfel", JOptionPane.ERROR_MESSAGE);
+                } else {
+                     try {
+                        timeSuggestion = new Time(dateFormat.parse(txtfTimeSuggestion.getText()).getTime());
+                        System.out.println(timeSuggestion);
+                    } catch (ParseException ex) {
+                        Logger.getLogger(CreateMeeting.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                    // Add time suggestion to meeting and display it in the GUI.
+                    timeSuggestions.add(timeSuggestion);
+                }
             }
         });
     }
@@ -155,11 +200,10 @@ public class CreateMeeting extends javax.swing.JPanel {
         users = userRepo.getAll();
         lstMdlAllUsers.removeAllElements();
 
-        for (User user : users) {
+        for (User user : users)
             // Don't add the logged in user to the list.
             if (user.getId() != parentFrame.loggedInUser.getId())
                 lstMdlAllUsers.addElement(user);
-        }
     }
 
     private void clearFields() {
