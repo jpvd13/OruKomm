@@ -5,6 +5,9 @@
  */
 package orukomm.data.entities;
 
+import java.io.File;
+import orukomm.data.FileStorage;
+
 /**
  *
  * @author Ludvig
@@ -15,8 +18,17 @@ public class Post {
     private String username;
     private String date;
     private String description;
+    private File attachedFile1;
+    private File attachedFile2;
+    private File attachedFile3;
+    private FileStorage fs = new FileStorage();
     
-
+    public void fileFiller(){
+        
+        
+        
+    }
+    
     public String getDescription() {
         return description;
     }

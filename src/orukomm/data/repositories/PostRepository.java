@@ -37,7 +37,8 @@ public class PostRepository {
         PreparedStatement ps = null;
         ResultSet rs = null;
 
-        String query = String.format("SELECT * FROM user WHERE id = '%d'", id); // måste ändras när tabellen är skapad.
+        String query = String.format("SELECT * FROM posts WHERE id = '%d'", id); // måste ändras när tabellen är skapad. 
+                                                                                //ändrade från user till posts. 
 
         try {
             ps = db.getConnection().prepareStatement(query);
@@ -49,7 +50,9 @@ public class PostRepository {
                 post.setTitle(rs.getString("titel"));
                 post.setUsername(rs.getString("poster"));
                 post.setDate(rs.getString("date"));
-
+                
+                System.out.println(rs.getInt("titel"));                
+                System.out.println(rs.getInt("id"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(UserRepository.class.getName()).log(Level.SEVERE, null, ex);
