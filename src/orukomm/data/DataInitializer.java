@@ -59,6 +59,7 @@ public class DataInitializer {
             String createAttTable = "CREATE TABLE attachments ("
                     + "id int(11) NOT NULL AUTO_INCREMENT, post_id int,"
                     + "file MEDIUMBLOB,"
+                    + "name VARCHAR(100),"
                     + "PRIMARY KEY (id),"
                     + "FOREIGN KEY (post_id) REFERENCES posts(id))"
                     + "ENGINE=InnoDB DEFAULT CHARSET=utf8";
