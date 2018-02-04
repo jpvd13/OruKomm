@@ -92,7 +92,7 @@ public class CreateMeeting extends javax.swing.JPanel {
                 java.sql.Date date = new java.sql.Date(clnDatePicker.getCalendar().getTime().getTime());
 
                 // Survived validation: Create meeting and add it to database.
-                meeting.setMeetingCaller(parentFrame.loggedInUser.getId());
+                meeting.setMeetingCallerUserId(parentFrame.loggedInUser.getId());
                 meeting.setTitle(txtfTitle.getText());
                 meeting.setDescription(txtaDescription.getText());
                 meeting.setDate(date);
@@ -251,6 +251,7 @@ public class CreateMeeting extends javax.swing.JPanel {
 
         setPreferredSize(new java.awt.Dimension(1024, 768));
 
+        pnlMeetingContainer.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(193, 193, 193)));
         pnlMeetingContainer.setPreferredSize(new java.awt.Dimension(919, 768));
 
         lblCreateMeetingHeading.setFont(new java.awt.Font("Noto Sans", 1, 14)); // NOI18N
@@ -312,7 +313,7 @@ public class CreateMeeting extends javax.swing.JPanel {
                                                 .addGap(224, 224, 224)
                                                 .addComponent(btnAddUser))
                                             .addComponent(scrLstAllUsers)))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
                                     .addGroup(pnlMeetingContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addComponent(lblAddedUsers, javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlMeetingContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -380,7 +381,7 @@ public class CreateMeeting extends javax.swing.JPanel {
                         .addComponent(lblAddedTimeSuggestions)))
                 .addGap(18, 18, 18)
                 .addComponent(btnCreate)
-                .addContainerGap(40, Short.MAX_VALUE))
+                .addContainerGap(38, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);

@@ -26,7 +26,7 @@ public class MeetingRepository implements Repository<Meeting> {
         PreparedStatement ps = null;
         ResultSet rs = null;
         String query = String.format("INSERT INTO meeting VALUES (null, %d, ?, ?, '%tF')",
-                meeting.getMeetingCaller(), meeting.getDate());
+                meeting.getMeetingCallerUserId(), meeting.getDate());
 
         // Insert into `meeting`.
         try {
@@ -98,7 +98,7 @@ public class MeetingRepository implements Repository<Meeting> {
             while (rs.next()) {
                 Meeting meeting = new Meeting();
                 meeting.setId(rs.getInt("id"));
-                meeting.setMeetingCaller(rs.getInt("meeting_caller"));
+                meeting.setMeetingCallerUserId(rs.getInt("meeting_caller"));
                 meeting.setTitle(rs.getString("title"));
                 meeting.setDescription(rs.getString("description"));
                 meeting.setDate(rs.getDate("date"));
@@ -130,7 +130,7 @@ public class MeetingRepository implements Repository<Meeting> {
             while (rs.next()) {
                 Meeting meeting = new Meeting();
                 meeting.setId(rs.getInt("id"));
-                meeting.setMeetingCaller(rs.getInt("meeting_caller"));
+                meeting.setMeetingCallerUserId(rs.getInt("meeting_caller"));
                 meeting.setTitle(rs.getString("title"));
                 meeting.setDescription(rs.getString("description"));
                 meeting.setDate(rs.getDate("date"));
