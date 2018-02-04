@@ -3,6 +3,7 @@ package orukomm.data.repositories;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -102,6 +103,20 @@ public class MeetingRepository implements Repository<Meeting> {
                 meeting.setTitle(rs.getString("title"));
                 meeting.setDescription(rs.getString("description"));
                 meeting.setDate(rs.getDate("date"));
+                
+                // Get time suggestions for meeting.
+                ArrayList<Time> timeSuggestions = new ArrayList<>();
+                PreparedStatement psTime = null;
+                ResultSet rsTime = null;
+                String getTimeSuggestions = String.format("SELECT time FROM meeting_time_suggestion WHERE meeting_id = %d", meeting.getId());                
+                
+                psTime = db.getConnection().prepareStatement(getTimeSuggestions);
+                rsTime = psTime.executeQuery();
+                
+                while (rsTime.next()) {
+                    timeSuggestions.add(rsTime.getTime("time"));
+                }
+                meeting.setTimeSuggestions(timeSuggestions);
                 
                 meetings.add(meeting);
             }

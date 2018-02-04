@@ -1,7 +1,10 @@
 package orukomm.gui.panels;
 
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Time;
+import javax.swing.JCheckBox;
 import orukomm.data.entities.Meeting;
 import orukomm.data.entities.User;
 import orukomm.data.repositories.UserRepository;
@@ -14,29 +17,55 @@ import orukomm.gui.MainWindow;
 public class MeetingResponse extends javax.swing.JPanel {
 
     private UserRepository userRepo;
-    
+
     private Meeting meeting;
     private User createdBy;
-    
+
     public MeetingResponse(Meeting meeting, MainWindow parentFrame) {
         initComponents();
         this.meeting = meeting;
         userRepo = new UserRepository();
         createdBy = userRepo.getById(meeting.getMeetingCallerUserId());
-        
-        
+
         // Set meeting info.
         lblMeetingTitle.setText(meeting.getTitle());
         lblDataData.setText(meeting.getDate().toString());
         lblCreatedByUser.setText(createdBy.toString());
-        
-        // Back to my meetings panel button event.
+
+        // Back to meetings panel button event.
         btnBack.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 parentFrame.switchPanel(new Meetings((parentFrame)));
             }
         });
+
+        // Add time suggestion checkboxes if exists.
+        if (meeting.getTimeSuggestions().size() > 0) {
+            lblChooseTime.setVisible(true);
+            pnlCheckBoxes.setLayout(new GridLayout(0, 5, 20, 20));
+
+            for (Time time : meeting.getTimeSuggestions()) {
+                JCheckBox cb = new JCheckBox(time.toString());
+                
+                // Set checked status for checkbox depending on what's registred in database.
+                
+                pnlCheckBoxes.add(cb);
+                pnlCheckBoxes.revalidate();
+                pnlCheckBoxes.repaint();
+            }
+        } else {
+            lblChooseTime.setVisible(false);
+        }
+        
+        // Attendance confirmation event.
+        btnConfirm.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Check selected time suggestion and write to database.
+            }
+        });
+        
     }
 
     @SuppressWarnings("unchecked")
@@ -52,6 +81,10 @@ public class MeetingResponse extends javax.swing.JPanel {
         lblDate = new javax.swing.JLabel();
         lblDataData = new javax.swing.JLabel();
         btnBack = new javax.swing.JButton();
+        pnlCheckBoxes = new javax.swing.JPanel();
+        lblChooseTime = new javax.swing.JLabel();
+        btnConfirm = new javax.swing.JButton();
+        btnCancel = new javax.swing.JButton();
 
         setPreferredSize(new java.awt.Dimension(1024, 768));
 
@@ -61,7 +94,7 @@ public class MeetingResponse extends javax.swing.JPanel {
         lblMeetingTitle.setText("Mötestitel");
 
         lblCreatedBy.setFont(new java.awt.Font("Noto Sans", 1, 12)); // NOI18N
-        lblCreatedBy.setText("Möte skapat av");
+        lblCreatedBy.setText("Skapat av");
 
         lblCreatedByUser.setText("User");
 
@@ -77,6 +110,24 @@ public class MeetingResponse extends javax.swing.JPanel {
 
         btnBack.setText("Tillbaka");
 
+        javax.swing.GroupLayout pnlCheckBoxesLayout = new javax.swing.GroupLayout(pnlCheckBoxes);
+        pnlCheckBoxes.setLayout(pnlCheckBoxesLayout);
+        pnlCheckBoxesLayout.setHorizontalGroup(
+            pnlCheckBoxesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 537, Short.MAX_VALUE)
+        );
+        pnlCheckBoxesLayout.setVerticalGroup(
+            pnlCheckBoxesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 30, Short.MAX_VALUE)
+        );
+
+        lblChooseTime.setFont(new java.awt.Font("Noto Sans", 1, 12)); // NOI18N
+        lblChooseTime.setText("Välj passande tider");
+
+        btnConfirm.setText("Bekräfta deltagande");
+
+        btnCancel.setText("Avbryt");
+
         javax.swing.GroupLayout pnlMeetingContainerLayout = new javax.swing.GroupLayout(pnlMeetingContainer);
         pnlMeetingContainer.setLayout(pnlMeetingContainerLayout);
         pnlMeetingContainerLayout.setHorizontalGroup(
@@ -85,15 +136,16 @@ public class MeetingResponse extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(pnlMeetingContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlMeetingContainerLayout.createSequentialGroup()
-                        .addComponent(lblMeetingTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(pnlMeetingContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblMeetingTitle, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(pnlMeetingContainerLayout.createSequentialGroup()
+                                .addComponent(lblDate)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(lblDataData, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnBack))
                     .addGroup(pnlMeetingContainerLayout.createSequentialGroup()
                         .addGroup(pnlMeetingContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(pnlMeetingContainerLayout.createSequentialGroup()
-                                .addComponent(lblDate)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lblDataData, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(pnlMeetingContainerLayout.createSequentialGroup()
                                 .addComponent(lblCreatedBy)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -101,21 +153,30 @@ public class MeetingResponse extends javax.swing.JPanel {
                             .addGroup(pnlMeetingContainerLayout.createSequentialGroup()
                                 .addComponent(lblDuration)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(lblDurationData, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 437, Short.MAX_VALUE)))
+                                .addComponent(lblDurationData, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(pnlMeetingContainerLayout.createSequentialGroup()
+                                .addComponent(lblChooseTime)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(pnlCheckBoxes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(pnlMeetingContainerLayout.createSequentialGroup()
+                                .addComponent(btnConfirm)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(btnCancel)))
+                        .addGap(0, 139, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         pnlMeetingContainerLayout.setVerticalGroup(
             pnlMeetingContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlMeetingContainerLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(pnlMeetingContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblMeetingTitle)
+                .addGroup(pnlMeetingContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlMeetingContainerLayout.createSequentialGroup()
+                        .addComponent(lblMeetingTitle)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(pnlMeetingContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(lblDate)
+                            .addComponent(lblDataData)))
                     .addComponent(btnBack))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlMeetingContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(lblDate)
-                    .addComponent(lblDataData))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlMeetingContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblCreatedBy)
@@ -124,7 +185,15 @@ public class MeetingResponse extends javax.swing.JPanel {
                 .addGroup(pnlMeetingContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblDuration)
                     .addComponent(lblDurationData))
-                .addContainerGap(501, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlMeetingContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblChooseTime)
+                    .addComponent(pnlCheckBoxes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlMeetingContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnConfirm)
+                    .addComponent(btnCancel))
+                .addContainerGap(441, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -132,22 +201,25 @@ public class MeetingResponse extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(104, 104, 104)
+                .addGap(94, 94, 94)
                 .addComponent(pnlMeetingContainer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(91, Short.MAX_VALUE))
+                .addContainerGap(101, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(pnlMeetingContainer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(141, Short.MAX_VALUE))
+                .addContainerGap(139, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
+    private javax.swing.JButton btnCancel;
+    private javax.swing.JButton btnConfirm;
+    private javax.swing.JLabel lblChooseTime;
     private javax.swing.JLabel lblCreatedBy;
     private javax.swing.JLabel lblCreatedByUser;
     private javax.swing.JLabel lblDataData;
@@ -155,6 +227,7 @@ public class MeetingResponse extends javax.swing.JPanel {
     private javax.swing.JLabel lblDuration;
     private javax.swing.JLabel lblDurationData;
     private javax.swing.JLabel lblMeetingTitle;
+    private javax.swing.JPanel pnlCheckBoxes;
     private javax.swing.JPanel pnlMeetingContainer;
     // End of variables declaration//GEN-END:variables
 }
