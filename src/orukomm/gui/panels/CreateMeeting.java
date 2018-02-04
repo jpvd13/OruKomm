@@ -103,10 +103,13 @@ public class CreateMeeting extends javax.swing.JPanel {
                 JOptionPane.showMessageDialog(parentFrame, "Mötet har skapats.", "Möte skapat", JOptionPane.INFORMATION_MESSAGE);
 
                 // TODO send email notifications to users that wants to receive them.
+                
+                // Reset and update panel components.
                 lstMdlAddedUsers.removeAllElements();
                 invitedUsers.removeAll(invitedUsers);
                 refreshAllUsersList();
                 clearFields();
+                lblAddedTimeSuggestions.setText("");
             }
         });
 
@@ -184,7 +187,6 @@ public class CreateMeeting extends javax.swing.JPanel {
                 } else {
                      try {
                         timeSuggestion = new Time(dateFormat.parse(txtfTimeSuggestion.getText()).getTime());
-                        System.out.println(timeSuggestion);
                     } catch (ParseException ex) {
                         Logger.getLogger(CreateMeeting.class.getName()).log(Level.SEVERE, null, ex);
                     }

@@ -25,7 +25,8 @@ public class MeetingRepository implements Repository<Meeting> {
     public void add(Meeting meeting) {
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String query = String.format("INSERT INTO meeting VALUES (null, %d, ?, ?, '%tF')", meeting.getMeetingCaller(), meeting.getDate());
+        String query = String.format("INSERT INTO meeting VALUES (null, %d, ?, ?, '%tF')",
+                meeting.getMeetingCaller(), meeting.getDate());
 
         // Insert into `meeting`.
         try {
@@ -47,8 +48,10 @@ public class MeetingRepository implements Repository<Meeting> {
         // Insert invited users into `user_meeting`.
         try {
             for (int i = 0; i < meeting.getInvitedUsers().size(); i++) {
-                query = String.format("INSERT INTO user_meeting VALUES (%d, %d)", meeting.getInvitedUsers().get(i).getId(), meeting.getId());
+                query = String.format("INSERT INTO user_meeting VALUES (%d, %d)",
+                        meeting.getInvitedUsers().get(i).getId(), meeting.getId());
                 ps = db.getConnection().prepareStatement(query);
+                
                 ps.executeUpdate();
             }
         } catch (SQLException ex) {
@@ -58,8 +61,20 @@ public class MeetingRepository implements Repository<Meeting> {
         }
 
         if (meeting.getTimeSuggestions().size() > 0) {
-        // Insert time sugesstions into `meeting_time_suggestion`.
-            
+            // Insert time sugesstions into `meeting_time_suggestion`.
+            try {
+                for (int i = 0; i < meeting.getTimeSuggestions().size(); i++) {
+                    query = String.format("INSERT INTO meeting_time_suggestion VALUES (null, '%s', '%s')",
+                            meeting.getId(), meeting.getTimeSuggestions().get(i).toString());
+                    
+                    ps = db.getConnection().prepareStatement(query);
+                    ps.executeUpdate();
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(MeetingRepository.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                close(null, ps, null);
+            }
         }
     }
 

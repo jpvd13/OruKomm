@@ -88,7 +88,7 @@ public class DataInitializer {
             psCrtUserMeeting.executeUpdate();
 
             String createMeetingTimeSuggestion = "CREATE TABLE meeting_time_suggestion ("
-                    + "id INT(11) NOT NULL, meeting_id INT NOT NULL, time TIME NOT NULL,"
+                    + "id INT(11) NOT NULL AUTO_INCREMENT, meeting_id INT NOT NULL, time TIME NOT NULL,"
                     + "PRIMARY KEY (id), FOREIGN KEY (meeting_id) REFERENCES meeting(id))"
                     + "ENGINE=InnoDB DEFAULT CHARSET=utf8";
 
@@ -140,10 +140,16 @@ public class DataInitializer {
             ps.executeUpdate();
 
             String userMeetingData = "INSERT INTO user_meeting VALUES (1, 3), (1, 4), (2, 5), (1, 6), (2, 7), (4, 4),"
-                    + "(3, 4), (2, 1), (3, 1), (2, 2), (3, 2)";
+                    + "(3, 4), (2, 1), (3, 1), (2, 2), (3, 2), (1, 7)";
             
             ps = db.getConnection().prepareStatement(userMeetingData);
             ps.executeUpdate();
+            
+            String insertMeetingTimeSuggestions = "INSERT INTO meeting_time_suggestion VALUES "
+                    + "(null, 1, '10:30:00'), (null, 1, '12:00:00'), (null, 1, '14:00:00'), (null, 2, '10:00:00'),"
+                    + "(null, 2, '12:00:00'), (null, 3, '19:15:00'), (null, 3, '17:15:00'), (null, 4, '10:00:00'),"
+                    + "(null, 4, '21:15:00'), (null, 6, '12:00:00'), (null, 6, '15:00:00')";
+            ps = db.getConnection().prepareStatement(insertMeetingTimeSuggestions);
             
         } catch (SQLException ex) {
             Logger.getLogger(DataInitializer.class.getName()).log(Level.SEVERE, null, ex);
