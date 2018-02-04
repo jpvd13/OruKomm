@@ -57,8 +57,10 @@ public class MeetingRepository implements Repository<Meeting> {
             close(null, ps, null);
         }
 
-        // Insert to `meeting_time_suggestion`.
-        // TODO implement.
+        if (meeting.getTimeSuggestions().size() > 0) {
+        // Insert time sugesstions into `meeting_time_suggestion`.
+            
+        }
     }
 
     /*

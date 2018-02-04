@@ -6,7 +6,7 @@ public class Validation {
         return input == null || input.isEmpty();
     }
 
-    // Check if input matches format 24-hour time format, i.e. HH:SS.
+    // Check if input matches format 24-hour time format, i.e. HH:mm.
     public static boolean is24HourFormat(String time) {
         return time.matches("(([0-1]?[0-9])|(2[0-3])):[0-5][0-9]");
     }
