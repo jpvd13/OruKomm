@@ -78,6 +78,11 @@
                 <Property name="text" type="java.lang.String" value="Formellt fl&#xf6;de"/>
               </Properties>
             </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="mnuInformalFeed">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Informellt fl&#xf6;de"/>
+              </Properties>
+            </MenuItem>
           </SubComponents>
         </Menu>
         <Menu class="javax.swing.JMenu" name="mnuPost">

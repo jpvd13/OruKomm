@@ -26,7 +26,8 @@ public class DisplayPostV extends javax.swing.JPanel {
     private static String fileName2;
     private static String fileName3;
     private static ImageIcon attachedImage;
-    private FormalFeed panel; 
+    private FormalFeed panel;
+    private InformalFeed panels;
     private FileStorage fs = new FileStorage();
     private ArrayList<String> fileNames = new ArrayList<String>(); 
 
@@ -44,6 +45,33 @@ public class DisplayPostV extends javax.swing.JPanel {
 
         //paintPicture(lblDisplay);
         this.panel = panel;
+        this.textPost = textPost;
+        setTxtCreatedPost();
+
+        this.title = title;
+        setTxtHeadingPost();
+
+        setAttachedFilesTxt();
+
+        txtUserOutput.setEditable(false);
+
+        txtUserOutput.setLineWrap(true);
+
+        txtUserOutput.setWrapStyleWord(true);
+
+    }
+    
+     public DisplayPostV(InformalFeed panel, String textPost, String title) throws IOException {
+        initComponents();
+        // bildURL = CreatePost.getBildURL();
+        // fileName = CreatePost.getFileURL();
+        // fileName2 = CreatePost.getFileURL2();
+        // fileURL3 = CreatePost.getFileURL3();      
+
+        fileNames = fs.getFileName();        
+
+        //paintPicture(lblDisplay);
+        this.panels = panel;
         this.textPost = textPost;
         setTxtCreatedPost();
 
