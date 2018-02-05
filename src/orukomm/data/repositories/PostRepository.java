@@ -70,19 +70,60 @@ public class PostRepository {
         PreparedStatement ps = null;
         ResultSet rs = null;
 
-        String query = String.format("SELECT username, title, date, description, posts.id  FROM posts, user WHERE user.id = poster ORDER BY date DESC");
+        String query = String.format("SELECT username, title, date, description, flow, posts.id  FROM posts, user WHERE user.id = poster AND flow = 0 ORDER BY date DESC");
 
         try {
             ps = db.getConnection().prepareStatement(query);
             rs = ps.executeQuery();
-
+ 
             while (rs.next()) {
+                
                 post = new Post();
                 post.setUsername(rs.getString("username"));
                 post.setTitle(rs.getString("title"));                
                 post.setDate(rs.getString("date"));
                 post.setDescription(rs.getString("description"));
+                post.setFlow(rs.getInt("flow"));
                 post.setId(rs.getInt("id"));
+                
+                        
+                
+                postList.add(post);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(DataInitializer.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "databasfel");
+        }
+        //finally {
+        //    close(rs, ps, null);
+       // }
+        return postList;
+
+    }
+        public ArrayList<Post> fillList2() {
+        ArrayList<Post> postList = new ArrayList<>();
+        Post post;
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        String query = String.format("SELECT username, title, date, description, flow, posts.id  FROM posts, user WHERE user.id = poster AND flow = 1 ORDER BY date DESC");
+
+        try {
+            ps = db.getConnection().prepareStatement(query);
+            rs = ps.executeQuery();
+ 
+            while (rs.next()) {
+                
+                post = new Post();
+                post.setUsername(rs.getString("username"));
+                post.setTitle(rs.getString("title"));                
+                post.setDate(rs.getString("date"));
+                post.setDescription(rs.getString("description"));
+                post.setFlow(rs.getInt("flow"));
+                post.setId(rs.getInt("id"));
+                
                         
                 
                 postList.add(post);
