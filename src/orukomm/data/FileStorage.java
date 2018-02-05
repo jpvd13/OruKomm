@@ -214,9 +214,9 @@ public class FileStorage {
         BufferedImage image = ImageIO.read(in);
 
     } */
-    public void insertPost(int userId, String title, String content, int category, String date) {
+    public void insertPost(int userId, String title, String content, int category, int flow, String date) {
 
-        String query = "INSERT INTO posts values(null, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO posts values(null, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = connect();
                 PreparedStatement pstmt = conn.prepareStatement(query)) {
@@ -225,7 +225,8 @@ public class FileStorage {
             pstmt.setString(2, title);
             pstmt.setString(3, content);
             pstmt.setInt(4, category);
-            pstmt.setString(5, date);
+            pstmt.setInt(5, flow);
+            pstmt.setString(6, date);
             pstmt.executeUpdate();
 
         } catch (SQLException ex) {

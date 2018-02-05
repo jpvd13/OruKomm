@@ -16,6 +16,7 @@ public class Post {
     private int id;
     private String title;
     private String username;
+    private int flow;
     private String date;
     private String description;
     private File attachedFile1;
@@ -27,6 +28,14 @@ public class Post {
         
         
         
+    }
+
+    public int getFlow() {
+        return flow;
+    }
+
+    public void setFlow(int flow) {
+        this.flow = flow;
     }
     
     public String getDescription() {
