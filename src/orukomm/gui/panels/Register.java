@@ -156,6 +156,8 @@ public class Register extends javax.swing.JPanel {
 
         setPreferredSize(new java.awt.Dimension(1024, 768));
 
+        pnlRegisterContainer.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(193, 193, 193), 1, true));
+
         lblFirstName.setText("Förnamn");
 
         lblSurname.setText("Efternamn");
@@ -255,7 +257,7 @@ public class Register extends javax.swing.JPanel {
                     .addComponent(lblUserRole))
                 .addGap(18, 18, 18)
                 .addComponent(btnRegister)
-                .addContainerGap(55, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -263,16 +265,16 @@ public class Register extends javax.swing.JPanel {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(315, Short.MAX_VALUE)
+                .addContainerGap(309, Short.MAX_VALUE)
                 .addComponent(pnlRegisterContainer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(271, 271, 271))
+                .addGap(275, 275, 275))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(202, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(pnlRegisterContainer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(101, 101, 101))
+                .addContainerGap(332, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 

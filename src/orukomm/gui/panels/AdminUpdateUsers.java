@@ -142,6 +142,8 @@ public class AdminUpdateUsers extends javax.swing.JPanel {
         lblUsername = new javax.swing.JLabel();
         txtfUsername = new javax.swing.JTextField();
 
+        pnlEditUsersContainer.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(193, 193, 193), 1, true));
+
         scrLstUsers.setViewportView(lstUsers);
 
         lblUpdateUserHeading.setFont(new java.awt.Font("Noto Sans", 1, 14)); // NOI18N
@@ -207,9 +209,6 @@ public class AdminUpdateUsers extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(pnlEditUsersContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(pnlEditUsersContainerLayout.createSequentialGroup()
-                        .addComponent(scrLstUsers, javax.swing.GroupLayout.DEFAULT_SIZE, 548, Short.MAX_VALUE)
-                        .addGap(36, 36, 36))
-                    .addGroup(pnlEditUsersContainerLayout.createSequentialGroup()
                         .addGroup(pnlEditUsersContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtfFirstName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblFirstName))
@@ -235,24 +234,26 @@ public class AdminUpdateUsers extends javax.swing.JPanel {
                             .addComponent(lblPasswordConfirmation))
                         .addGap(18, 18, 18)
                         .addComponent(btnUpdate)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addGap(0, 266, Short.MAX_VALUE))
+                    .addComponent(scrLstUsers))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(117, 117, 117)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(100, Short.MAX_VALUE)
                 .addComponent(pnlEditUsersContainer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(82, Short.MAX_VALUE))
+                .addGap(97, 97, 97))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(22, 22, 22)
+                .addContainerGap()
                 .addComponent(pnlEditUsersContainer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(136, Short.MAX_VALUE))
+                .addContainerGap(137, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 

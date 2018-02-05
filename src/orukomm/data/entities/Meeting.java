@@ -1,14 +1,17 @@
 package orukomm.data.entities;
 
 import java.sql.Date;
+import java.sql.Time;
 import java.util.ArrayList;
 
 public class Meeting implements Entity {
 
     private int id;
-    private int meetingCaller;
+    private int meetingCallerUserId;
     private String title;
     private Date date;
+    private ArrayList<User> invitedUsers;
+    private ArrayList<Time> timeSuggestions;
 
     public Date getDate() {
         return date;
@@ -17,14 +20,12 @@ public class Meeting implements Entity {
     public void setDate(Date date) {
         this.date = date;
     }
-    private ArrayList<User> invitedUsers;
-    private ArrayList<Date> timeSuggestions;
 
-    public ArrayList<Date> getTimeSuggestions() {
+    public ArrayList<Time> getTimeSuggestions() {
         return timeSuggestions;
     }
 
-    public void setTimeSuggestions(ArrayList<Date> timeSuggestions) {
+    public void setTimeSuggestions(ArrayList<Time> timeSuggestions) {
         this.timeSuggestions = timeSuggestions;
     }
 
@@ -45,12 +46,12 @@ public class Meeting implements Entity {
     }
     private String description;
 
-    public int getMeetingCaller() {
-        return meetingCaller;
+    public int getMeetingCallerUserId() {
+        return meetingCallerUserId;
     }
 
-    public void setMeetingCaller(int meetingCaller) {
-        this.meetingCaller = meetingCaller;
+    public void setMeetingCallerUserId(int meetingCaller) {
+        this.meetingCallerUserId = meetingCaller;
     }
 
     public String getDescription() {

@@ -19,7 +19,7 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="101" max="-2" attributes="0"/>
               <Component id="pnlMeetingsContainer" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="110" max="32767" attributes="0"/>
+              <EmptySpace pref="108" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -28,13 +28,22 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace max="-2" attributes="0"/>
               <Component id="pnlMeetingsContainer" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="146" max="32767" attributes="0"/>
+              <EmptySpace pref="202" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
   </Layout>
   <SubComponents>
     <Container class="javax.swing.JPanel" name="pnlMeetingsContainer">
+      <Properties>
+        <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
+          <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
+            <LineBorder roundedCorners="true">
+              <Color PropertyName="color" blue="c1" green="c1" red="c1" type="rgb"/>
+            </LineBorder>
+          </Border>
+        </Property>
+      </Properties>
 
       <Layout>
         <DimensionLayout dim="0">
@@ -90,7 +99,7 @@
                       <Component id="btnInvitationsShow" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btnCreatedShow" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="70" max="32767" attributes="0"/>
+                  <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>

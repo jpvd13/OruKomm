@@ -3,6 +3,7 @@ package orukomm.data.repositories;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,7 +26,8 @@ public class MeetingRepository implements Repository<Meeting> {
     public void add(Meeting meeting) {
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String query = String.format("INSERT INTO meeting VALUES (null, %d, ?, ?, '%tF')", meeting.getMeetingCaller(), meeting.getDate());
+        String query = String.format("INSERT INTO meeting VALUES (null, %d, ?, ?, '%tF')",
+                meeting.getMeetingCallerUserId(), meeting.getDate());
 
         // Insert into `meeting`.
         try {
@@ -47,8 +49,10 @@ public class MeetingRepository implements Repository<Meeting> {
         // Insert invited users into `user_meeting`.
         try {
             for (int i = 0; i < meeting.getInvitedUsers().size(); i++) {
-                query = String.format("INSERT INTO user_meeting VALUES (%d, %d)", meeting.getInvitedUsers().get(i).getId(), meeting.getId());
+                query = String.format("INSERT INTO user_meeting VALUES (%d, %d)",
+                        meeting.getInvitedUsers().get(i).getId(), meeting.getId());
                 ps = db.getConnection().prepareStatement(query);
+                
                 ps.executeUpdate();
             }
         } catch (SQLException ex) {
@@ -57,8 +61,22 @@ public class MeetingRepository implements Repository<Meeting> {
             close(null, ps, null);
         }
 
-        // Insert to `meeting_time_suggestion`.
-        // TODO implement.
+        if (meeting.getTimeSuggestions().size() > 0) {
+            // Insert time sugesstions into `meeting_time_suggestion`.
+            try {
+                for (int i = 0; i < meeting.getTimeSuggestions().size(); i++) {
+                    query = String.format("INSERT INTO meeting_time_suggestion VALUES (null, '%s', '%s')",
+                            meeting.getId(), meeting.getTimeSuggestions().get(i).toString());
+                    
+                    ps = db.getConnection().prepareStatement(query);
+                    ps.executeUpdate();
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(MeetingRepository.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                close(null, ps, null);
+            }
+        }
     }
 
     /*
@@ -81,10 +99,24 @@ public class MeetingRepository implements Repository<Meeting> {
             while (rs.next()) {
                 Meeting meeting = new Meeting();
                 meeting.setId(rs.getInt("id"));
-                meeting.setMeetingCaller(rs.getInt("meeting_caller"));
+                meeting.setMeetingCallerUserId(rs.getInt("meeting_caller"));
                 meeting.setTitle(rs.getString("title"));
                 meeting.setDescription(rs.getString("description"));
                 meeting.setDate(rs.getDate("date"));
+                
+                // Get time suggestions for meeting.
+                ArrayList<Time> timeSuggestions = new ArrayList<>();
+                PreparedStatement psTime = null;
+                ResultSet rsTime = null;
+                String getTimeSuggestions = String.format("SELECT time FROM meeting_time_suggestion WHERE meeting_id = %d", meeting.getId());                
+                
+                psTime = db.getConnection().prepareStatement(getTimeSuggestions);
+                rsTime = psTime.executeQuery();
+                
+                while (rsTime.next()) {
+                    timeSuggestions.add(rsTime.getTime("time"));
+                }
+                meeting.setTimeSuggestions(timeSuggestions);
                 
                 meetings.add(meeting);
             }
@@ -113,7 +145,7 @@ public class MeetingRepository implements Repository<Meeting> {
             while (rs.next()) {
                 Meeting meeting = new Meeting();
                 meeting.setId(rs.getInt("id"));
-                meeting.setMeetingCaller(rs.getInt("meeting_caller"));
+                meeting.setMeetingCallerUserId(rs.getInt("meeting_caller"));
                 meeting.setTitle(rs.getString("title"));
                 meeting.setDescription(rs.getString("description"));
                 meeting.setDate(rs.getDate("date"));

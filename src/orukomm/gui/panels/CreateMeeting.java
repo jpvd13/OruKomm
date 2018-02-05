@@ -2,7 +2,17 @@ package orukomm.gui.panels;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.sql.Time;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
@@ -29,10 +39,17 @@ public class CreateMeeting extends javax.swing.JPanel {
     private User selectedUserFromAddedUsers;
     private ArrayList<User> invitedUsers;
     private Meeting meeting;
-
+    private ArrayList<Time> timeSuggestions;
+    
+    private Time timeSuggestion;
+    private DateFormat dateFormat;
+    
     public CreateMeeting(MainWindow parentFrame) {
         initComponents();
         this.parentFrame = parentFrame;
+        dateFormat = new SimpleDateFormat("HH:mm");
+        timeSuggestions = new ArrayList<>();
+        
         meetingRepo = new MeetingRepository();
         meeting = new Meeting();
         invitedUsers = new ArrayList<>();
@@ -43,7 +60,7 @@ public class CreateMeeting extends javax.swing.JPanel {
         lstAddedUsers.setModel(lstMdlAddedUsers);
         lstMdlAllUsers = new DefaultListModel<>();
         lstAllUsers.setModel(lstMdlAllUsers);
-        
+
         refreshAllUsersList();
         lstAllUsers.setSelectedIndex(0);
 
@@ -73,23 +90,26 @@ public class CreateMeeting extends javax.swing.JPanel {
 
                 // Convert calendar to sql.Date.
                 java.sql.Date date = new java.sql.Date(clnDatePicker.getCalendar().getTime().getTime());
-                
+
                 // Survived validation: Create meeting and add it to database.
-                meeting.setMeetingCaller(parentFrame.loggedInUser.getId());
+                meeting.setMeetingCallerUserId(parentFrame.loggedInUser.getId());
                 meeting.setTitle(txtfTitle.getText());
                 meeting.setDescription(txtaDescription.getText());
                 meeting.setDate(date);
                 meeting.setInvitedUsers(invitedUsers);
+                meeting.setTimeSuggestions(timeSuggestions);
 
                 meetingRepo.add(meeting);
                 JOptionPane.showMessageDialog(parentFrame, "Mötet har skapats.", "Möte skapat", JOptionPane.INFORMATION_MESSAGE);
 
                 // TODO send email notifications to users that wants to receive them.
-
+                
+                // Reset and update panel components.
                 lstMdlAddedUsers.removeAllElements();
                 invitedUsers.removeAll(invitedUsers);
                 refreshAllUsersList();
                 clearFields();
+                lblAddedTimeSuggestions.setText("");
             }
         });
 
@@ -133,6 +153,57 @@ public class CreateMeeting extends javax.swing.JPanel {
                 }
             }
         });
+
+        // Time suggestion focus events.
+        txtfTimeSuggestion.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                txtfTimeSuggestion.setText("");
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+            }
+        });
+
+        // Live validation and constraints for time suggestion input.
+        txtfTimeSuggestion.addKeyListener(new KeyAdapter() {
+            public void keyTyped(KeyEvent e) {
+                char input = e.getKeyChar();
+                // Only allow digits and colon as input, no longer than 5 chars.
+                if (!((input >= '0') && (input <= '9') || input == ':') || txtfTimeSuggestion.getText().length() > 4) {
+                    e.consume();
+                }
+            }
+        });
+
+        // Add time suggestion event.
+        btnAddTimeSuggestion.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // Validate time input then add it to the meeting.
+                if (!Validation.is24HourFormat(txtfTimeSuggestion.getText())) {
+                    JOptionPane.showMessageDialog(parentFrame, "Ange tiden enligt 24-timmarsformatet HH:mm, e.g.: 19:15, 8:30.", "Valideringsfel", JOptionPane.ERROR_MESSAGE);
+                } else {
+                     try {
+                        timeSuggestion = new Time(dateFormat.parse(txtfTimeSuggestion.getText()).getTime());
+                    } catch (ParseException ex) {
+                        Logger.getLogger(CreateMeeting.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+
+                     if (timeSuggestions.size() > 4) {
+                         JOptionPane.showMessageDialog(parentFrame, "Högst 5 tidsförslag får anges.", "Valideringsfel", JOptionPane.ERROR_MESSAGE);
+                     } else {
+                        if (timeSuggestions.size() == 0)
+                            lblAddedTimeSuggestions.setText(timeSuggestion.toString());
+                        else
+                            lblAddedTimeSuggestions.setText(lblAddedTimeSuggestions.getText() + ", " + timeSuggestion);
+
+                        timeSuggestions.add(timeSuggestion);
+                     }
+                }
+            }
+        });
     }
 
     // Fetches users from the database and populates the all users-list with them.
@@ -140,11 +211,10 @@ public class CreateMeeting extends javax.swing.JPanel {
         users = userRepo.getAll();
         lstMdlAllUsers.removeAllElements();
 
-        for (User user : users) {
+        for (User user : users)
             // Don't add the logged in user to the list.
             if (user.getId() != parentFrame.loggedInUser.getId())
                 lstMdlAllUsers.addElement(user);
-        }
     }
 
     private void clearFields() {
@@ -174,9 +244,14 @@ public class CreateMeeting extends javax.swing.JPanel {
         txtfTitle = new javax.swing.JTextField();
         lblDate = new javax.swing.JLabel();
         clnDatePicker = new com.toedter.calendar.JCalendar();
+        lblTimeSuggestion = new javax.swing.JLabel();
+        txtfTimeSuggestion = new javax.swing.JTextField();
+        btnAddTimeSuggestion = new javax.swing.JButton();
+        lblAddedTimeSuggestions = new javax.swing.JLabel();
 
         setPreferredSize(new java.awt.Dimension(1024, 768));
 
+        pnlMeetingContainer.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(193, 193, 193)));
         pnlMeetingContainer.setPreferredSize(new java.awt.Dimension(919, 768));
 
         lblCreateMeetingHeading.setFont(new java.awt.Font("Noto Sans", 1, 14)); // NOI18N
@@ -207,6 +282,12 @@ public class CreateMeeting extends javax.swing.JPanel {
 
         lblDate.setText("Datum för möte");
 
+        lblTimeSuggestion.setText("Tidsförslag");
+
+        txtfTimeSuggestion.setText("HH:mm");
+
+        btnAddTimeSuggestion.setText("Lägg till");
+
         javax.swing.GroupLayout pnlMeetingContainerLayout = new javax.swing.GroupLayout(pnlMeetingContainer);
         pnlMeetingContainer.setLayout(pnlMeetingContainerLayout);
         pnlMeetingContainerLayout.setHorizontalGroup(
@@ -232,7 +313,7 @@ public class CreateMeeting extends javax.swing.JPanel {
                                                 .addGap(224, 224, 224)
                                                 .addComponent(btnAddUser))
                                             .addComponent(scrLstAllUsers)))
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
                                     .addGroup(pnlMeetingContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                         .addComponent(lblAddedUsers, javax.swing.GroupLayout.Alignment.LEADING)
                                         .addGroup(javax.swing.GroupLayout.Alignment.LEADING, pnlMeetingContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -241,7 +322,13 @@ public class CreateMeeting extends javax.swing.JPanel {
                             .addGap(25, 25, 25)
                             .addGroup(pnlMeetingContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                 .addComponent(clnDatePicker, javax.swing.GroupLayout.PREFERRED_SIZE, 397, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(lblDate))
+                                .addComponent(lblDate)
+                                .addComponent(lblTimeSuggestion)
+                                .addGroup(pnlMeetingContainerLayout.createSequentialGroup()
+                                    .addComponent(txtfTimeSuggestion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(btnAddTimeSuggestion))
+                                .addComponent(lblAddedTimeSuggestions))
                             .addGap(23, 23, 23))
                         .addGroup(pnlMeetingContainerLayout.createSequentialGroup()
                             .addGroup(pnlMeetingContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -280,12 +367,21 @@ public class CreateMeeting extends javax.swing.JPanel {
                         .addGap(18, 18, 18)
                         .addComponent(btnRemoveUser)))
                 .addGap(18, 18, 18)
-                .addComponent(lblMeetingDescription)
+                .addGroup(pnlMeetingContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblMeetingDescription)
+                    .addComponent(lblTimeSuggestion))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(pnlMeetingContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(pnlMeetingContainerLayout.createSequentialGroup()
+                        .addGroup(pnlMeetingContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtfTimeSuggestion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnAddTimeSuggestion))
+                        .addGap(18, 18, 18)
+                        .addComponent(lblAddedTimeSuggestions)))
                 .addGap(18, 18, 18)
                 .addComponent(btnCreate)
-                .addContainerGap(40, Short.MAX_VALUE))
+                .addContainerGap(38, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -308,16 +404,19 @@ public class CreateMeeting extends javax.swing.JPanel {
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAddTimeSuggestion;
     private javax.swing.JButton btnAddUser;
     private javax.swing.JButton btnCreate;
     private javax.swing.JButton btnRemoveUser;
     private com.toedter.calendar.JCalendar clnDatePicker;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblAddedTimeSuggestions;
     private javax.swing.JLabel lblAddedUsers;
     private javax.swing.JLabel lblChooseUsers;
     private javax.swing.JLabel lblCreateMeetingHeading;
     private javax.swing.JLabel lblDate;
     private javax.swing.JLabel lblMeetingDescription;
+    private javax.swing.JLabel lblTimeSuggestion;
     private javax.swing.JLabel lblTitle;
     private javax.swing.JList<User> lstAddedUsers;
     private javax.swing.JList<User> lstAllUsers;
@@ -325,6 +424,7 @@ public class CreateMeeting extends javax.swing.JPanel {
     private javax.swing.JScrollPane scrLstAddedUsers;
     private javax.swing.JScrollPane scrLstAllUsers;
     private javax.swing.JTextArea txtaDescription;
+    private javax.swing.JTextField txtfTimeSuggestion;
     private javax.swing.JTextField txtfTitle;
     // End of variables declaration//GEN-END:variables
 }
