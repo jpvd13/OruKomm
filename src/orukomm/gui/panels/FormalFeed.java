@@ -60,6 +60,8 @@ public class FormalFeed extends javax.swing.JPanel {
 		pnlFeed.repaint();
 		pnlFeed.revalidate();
 	}
+    
+  
 
     public void fillTable() {
         

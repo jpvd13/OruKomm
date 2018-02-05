@@ -14,6 +14,7 @@ import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
@@ -162,6 +163,34 @@ public class CreatePostPanel extends javax.swing.JPanel {
 
         }
     }
+    
+    public boolean buttonSelected()
+    {
+        boolean selected = false;
+        if(rbtn1.isSelected() || rbtn2.isSelected())
+        {
+            selected = true;
+        }
+        else 
+        {
+             JOptionPane.showMessageDialog(parentFrame, "Vänligen välj flöde.", "Valideringsfel", JOptionPane.ERROR_MESSAGE);
+        }
+        
+        return selected;
+    }
+    
+    public int getButton()
+    {
+        if(rbtn1.isSelected())
+        {
+            return 0;
+        }
+        else 
+        {
+            return 1;
+        }
+            
+    }
 
     /**
      * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The
@@ -171,6 +200,7 @@ public class CreatePostPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        buttonGroup1 = new javax.swing.ButtonGroup();
         jPanel1 = new javax.swing.JPanel();
         lblURL3 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
@@ -194,6 +224,8 @@ public class CreatePostPanel extends javax.swing.JPanel {
         jScrollPane2 = new javax.swing.JScrollPane();
         lstCategory = new javax.swing.JList<>();
         jLabel1 = new javax.swing.JLabel();
+        rbtn1 = new javax.swing.JRadioButton();
+        rbtn2 = new javax.swing.JRadioButton();
 
         setPreferredSize(new java.awt.Dimension(1024, 768));
         setLayout(new java.awt.CardLayout());
@@ -262,6 +294,12 @@ public class CreatePostPanel extends javax.swing.JPanel {
 
         jLabel1.setText("Kategori");
 
+        buttonGroup1.add(rbtn1);
+        rbtn1.setText("Formella flödet");
+
+        buttonGroup1.add(rbtn2);
+        rbtn2.setText("Informella flödet");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -273,7 +311,11 @@ public class CreatePostPanel extends javax.swing.JPanel {
                         .addComponent(jLabel2))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(15, 15, 15)
-                        .addComponent(jButton1))
+                        .addComponent(jButton1)
+                        .addGap(45, 45, 45)
+                        .addComponent(rbtn1)
+                        .addGap(34, 34, 34)
+                        .addComponent(rbtn2))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(btnClearURL1)
@@ -342,7 +384,10 @@ public class CreatePostPanel extends javax.swing.JPanel {
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(12, 12, 12)
-                .addComponent(jButton1)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(rbtn1)
+                    .addComponent(rbtn2))
                 .addGap(32, 32, 32)
                 .addComponent(lblBifogad)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -374,11 +419,16 @@ public class CreatePostPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        setTextPost();
+        if(buttonSelected())
+        {
+            setTextPost();
+        
         setHeadingPost();
-        fs.insertPost(parentFrame.loggedInUser.getId(), textHeading, textPost, 1, date);
+        
+        fs.insertPost(parentFrame.loggedInUser.getId(), textHeading, textPost, 1, getButton(), date);
         insertAttachedPicture();
         insertAttachedFiles();
+        }
         
     }//GEN-LAST:event_jButton1ActionPerformed
 
@@ -481,6 +531,7 @@ public class CreatePostPanel extends javax.swing.JPanel {
     private javax.swing.JButton btnClearURL1;
     private javax.swing.JButton btnClearURL2;
     private javax.swing.JButton btnClearURL3;
+    private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -498,5 +549,7 @@ public class CreatePostPanel extends javax.swing.JPanel {
     private javax.swing.JLabel lblURL2;
     private javax.swing.JLabel lblURL3;
     private javax.swing.JList<String> lstCategory;
+    private javax.swing.JRadioButton rbtn1;
+    private javax.swing.JRadioButton rbtn2;
     // End of variables declaration//GEN-END:variables
 }
