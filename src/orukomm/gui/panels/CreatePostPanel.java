@@ -1,39 +1,25 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package orukomm.gui.panels;
 
 import java.io.File;
-import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.WindowConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import orukomm.CreatedPost;
 import orukomm.data.FileStorage;
+import orukomm.data.entities.Category;
 import orukomm.data.entities.User;
 import orukomm.data.repositories.CategoryRepository;
 import orukomm.gui.MainWindow;
 
-/**
- *
- * @author Johan
- */
 public class CreatePostPanel extends javax.swing.JPanel {
 
     private MainWindow parentFrame;
-    private ArrayList<String> Category;
+    private ArrayList<Category> categories;
     private CategoryRepository categoryRepo;
-    private DefaultListModel<String> lstCategories;
+    private DefaultListModel<Category> lstMdlCategories;
     private FileStorage fs;
     private String date;
 
@@ -51,46 +37,45 @@ public class CreatePostPanel extends javax.swing.JPanel {
 
         initComponents();
         this.parentFrame = parentFrame;
+        lstMdlCategories = new DefaultListModel<>();
+        lstCategory.setModel(lstMdlCategories);
         fs = new FileStorage();
-        categoryRepo = new CategoryRepository(); 
+        categoryRepo = new CategoryRepository();
         getDate();
-//        refreshCategoryList();
+        refreshCategoryList();
         lstCategory.setSelectedIndex(0);
-        
+
         hideButtons();
         lstCategory.addListSelectionListener(new ListSelectionListener() {
             @Override
             public void valueChanged(ListSelectionEvent e) {
-                String selectedCategory = lstCategory.getSelectedValue();
+                Category selectedCategory = lstCategory.getSelectedValue();
                 if (selectedCategory != null) {
-                    
+
                 }
             }
         });
     }
-    
-//       public void refreshCategoryList() {
-//        lstCategories = new DefaultListModel<>();
-//        lstCategory.setModel(lstCategories);
-//        Category = categoryRepo.getAll();
-//        lstCategories.removeAllElements();
-//
-//        for(String cats : Category) {
-//            lstCategories.addElement(cats);
-//        }
-//    }
-    
+
+    public void refreshCategoryList() {
+        lstMdlCategories.removeAllElements();
+        categories = categoryRepo.getAll();
+
+        for (Category cats : categories) {
+            lstMdlCategories.addElement(cats);
+        }
+    }
+
     private void hideButtons() {
         btnClearImage.setVisible(false);
         btnClearURL1.setVisible(false);
         btnClearURL2.setVisible(false);
         btnClearURL3.setVisible(false);
-}
+    }
 
     public CreatePostPanel() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
 
     public void getDate() {
 
@@ -379,7 +364,7 @@ public class CreatePostPanel extends javax.swing.JPanel {
         fs.insertPost(parentFrame.loggedInUser.getId(), textHeading, textPost, 1, date);
         insertAttachedPicture();
         insertAttachedFiles();
-        
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -400,7 +385,7 @@ public class CreatePostPanel extends javax.swing.JPanel {
                 lblBifogad.setText("Bifogad fil 1:");
                 fileURL = path;
                 btnClearURL1.setVisible(true);
-                               
+
             } else if (lblURL2.getText().isEmpty()) {
                 lblURL2.setText(path);
                 lblBifogad2.setText("Bifogad fil 2:");
@@ -431,16 +416,16 @@ public class CreatePostPanel extends javax.swing.JPanel {
             File selectedFile = file.getSelectedFile();
             String path = selectedFile.getAbsolutePath();
             this.bildURL = path;
-            
+
             lblBifogadBild.setText("Bifogad bild:");
             btnClearImage.setVisible(true);
             lblImageURL.setText(path);
-            
+
         } else if (result == JFileChooser.CANCEL_OPTION) {
             System.out.println("No File Select");
         }
     }//GEN-LAST:event_jButton2ActionPerformed
-    
+
     private void btnClearURL1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearURL1ActionPerformed
         lblURL1.setText("");
         lblBifogad.setText(null);
@@ -449,10 +434,10 @@ public class CreatePostPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnClearURL1ActionPerformed
 
     private void btnClearURL2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearURL2ActionPerformed
-       lblURL2.setText("");
-       lblBifogad2.setText(null);
-       fileURL2 = "";
-       btnClearURL2.setVisible(false);
+        lblURL2.setText("");
+        lblBifogad2.setText(null);
+        fileURL2 = "";
+        btnClearURL2.setVisible(false);
     }//GEN-LAST:event_btnClearURL2ActionPerformed
 
     private void btnClearURL3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearURL3ActionPerformed
@@ -497,6 +482,6 @@ public class CreatePostPanel extends javax.swing.JPanel {
     private javax.swing.JLabel lblURL1;
     private javax.swing.JLabel lblURL2;
     private javax.swing.JLabel lblURL3;
-    private javax.swing.JList<String> lstCategory;
+    private javax.swing.JList<Category> lstCategory;
     // End of variables declaration//GEN-END:variables
 }

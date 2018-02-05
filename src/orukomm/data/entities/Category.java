@@ -24,4 +24,9 @@ public class Category implements Entity {
         this.category = category;
     }
     
+    @Override
+    public String toString() {
+        return category;
+    }
+    
 }
