@@ -10,6 +10,7 @@ import java.util.logging.Logger;
 import orukomm.data.Database;
 import static orukomm.data.Database.close;
 import orukomm.data.entities.Meeting;
+import orukomm.data.entities.TimeSuggestion;
 
 public class MeetingRepository implements Repository<Meeting> {
 
@@ -49,7 +50,7 @@ public class MeetingRepository implements Repository<Meeting> {
         // Insert invited users into `user_meeting`.
         try {
             for (int i = 0; i < meeting.getInvitedUsers().size(); i++) {
-                query = String.format("INSERT INTO user_meeting VALUES (%d, %d)",
+                query = String.format("INSERT INTO user_meeting VALUES (%d, %d, 0)",
                         meeting.getInvitedUsers().get(i).getId(), meeting.getId());
                 ps = db.getConnection().prepareStatement(query);
                 
@@ -66,7 +67,7 @@ public class MeetingRepository implements Repository<Meeting> {
             try {
                 for (int i = 0; i < meeting.getTimeSuggestions().size(); i++) {
                     query = String.format("INSERT INTO meeting_time_suggestion VALUES (null, '%s', '%s')",
-                            meeting.getId(), meeting.getTimeSuggestions().get(i).toString());
+                            meeting.getId(), meeting.getTimeSuggestions().get(i).getTime().toString());
                     
                     ps = db.getConnection().prepareStatement(query);
                     ps.executeUpdate();
@@ -79,6 +80,50 @@ public class MeetingRepository implements Repository<Meeting> {
         }
     }
 
+    /*
+     * Upsert a user's time suggestion response.
+     */
+    public boolean existsTimeSuggestionResponse(int timeSuggestionId, int userId) throws SQLException {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        
+        String query = String.format("SELECT * FROM meeting_time_suggestion_user WHERE meeting_time_suggestion_id = %d "
+                + "AND user_id = %d", timeSuggestionId, userId);
+        
+        ps = db.getConnection().prepareStatement(query);
+        rs = ps.executeQuery();
+        
+        return Database.fetchedRows(rs) > 0;
+    }
+    
+    /*
+     * Update or delete a user's time suggestion response.
+     */    
+    public void updateTimeSuggestionResponse(int timeSuggestionId, int userId, boolean timeSuggestionIsSelected) {
+        PreparedStatement ps = null;
+        
+        try {
+            if (!timeSuggestionIsSelected) {
+                if (existsTimeSuggestionResponse(timeSuggestionId, userId)) {
+                    // Delete response.
+                    String query = String.format("DELETE FROM meeting_time_suggestion_user WHERE meeting_time_suggestion_id = %d "
+                            + "AND user_id = %d", timeSuggestionId, userId);
+                    ps = db.getConnection().prepareStatement(query);
+                    ps.executeUpdate();
+                }
+            } else if (!existsTimeSuggestionResponse(timeSuggestionId, userId)) {
+                // Add response.
+                String query = String.format("INSERT INTO meeting_time_suggestion_user VALUES (%d, %d)", timeSuggestionId, userId);
+                ps = db.getConnection().prepareStatement(query);
+                ps.executeUpdate();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MeetingRepository.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            close(null, ps, null);
+        }
+    }
+    
     /*
      * Returns all meetings where the provided userId is invited to.
      */
@@ -105,17 +150,23 @@ public class MeetingRepository implements Repository<Meeting> {
                 meeting.setDate(rs.getDate("date"));
                 
                 // Get time suggestions for meeting.
-                ArrayList<Time> timeSuggestions = new ArrayList<>();
+                ArrayList<TimeSuggestion> timeSuggestions = new ArrayList<>();
                 PreparedStatement psTime = null;
                 ResultSet rsTime = null;
-                String getTimeSuggestions = String.format("SELECT time FROM meeting_time_suggestion WHERE meeting_id = %d", meeting.getId());                
+                String getTimeSuggestions = String.format("SELECT * FROM meeting_time_suggestion WHERE meeting_id = %d", meeting.getId());                
                 
                 psTime = db.getConnection().prepareStatement(getTimeSuggestions);
                 rsTime = psTime.executeQuery();
                 
                 while (rsTime.next()) {
-                    timeSuggestions.add(rsTime.getTime("time"));
+                    TimeSuggestion timeSuggestion = new TimeSuggestion();
+                    timeSuggestion.setId(rsTime.getInt("id"));
+                    timeSuggestion.setMeetingid(rsTime.getInt("meeting_id"));
+                    timeSuggestion.setTime(rsTime.getTime("time"));
+                    
+                    timeSuggestions.add(timeSuggestion);
                 }
+                
                 meeting.setTimeSuggestions(timeSuggestions);
                 
                 meetings.add(meeting);
@@ -161,6 +212,14 @@ public class MeetingRepository implements Repository<Meeting> {
         
         return meetings;
     }
+    
+//    public void setMeetingAttendance(int meetingId, int userId, boolean attenting) {
+//        
+//    }
+//    
+//    public boolean getMeetingAttendance(int meetingId, int userId) {
+//        
+//    }
     
     @Override
     public void remove(Meeting entity) {

@@ -3,10 +3,17 @@ package orukomm.gui.panels;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Time;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JCheckBox;
 import orukomm.data.entities.Meeting;
+import orukomm.data.entities.TimeSuggestion;
 import orukomm.data.entities.User;
+import orukomm.data.repositories.MeetingRepository;
 import orukomm.data.repositories.UserRepository;
 import orukomm.gui.MainWindow;
 
@@ -17,14 +24,19 @@ import orukomm.gui.MainWindow;
 public class MeetingResponse extends javax.swing.JPanel {
 
     private UserRepository userRepo;
+    private MeetingRepository meetingRepo;
 
     private Meeting meeting;
     private User createdBy;
+    
+    // Mapping time suggestion id to checkboxes.
+    private HashMap<Integer, JCheckBox> checkboxes;
 
     public MeetingResponse(Meeting meeting, MainWindow parentFrame) {
         initComponents();
         this.meeting = meeting;
         userRepo = new UserRepository();
+        meetingRepo = new MeetingRepository();
         createdBy = userRepo.getById(meeting.getMeetingCallerUserId());
 
         // Set meeting info.
@@ -40,33 +52,85 @@ public class MeetingResponse extends javax.swing.JPanel {
             }
         });
 
-        // Add time suggestion checkboxes if exists.
+        // Add time suggestion checkboxes if time suggestions exists.
         if (meeting.getTimeSuggestions().size() > 0) {
             lblChooseTime.setVisible(true);
             pnlCheckBoxes.setLayout(new GridLayout(0, 5, 20, 20));
 
-            for (Time time : meeting.getTimeSuggestions()) {
-                JCheckBox cb = new JCheckBox(time.toString());
+            checkboxes = new HashMap<Integer, JCheckBox>();
+            for (TimeSuggestion timeSuggestion : meeting.getTimeSuggestions()) {
+                boolean checked = false;
+                try {
+                    checked = meetingRepo.existsTimeSuggestionResponse(timeSuggestion.getId(), parentFrame.loggedInUser.getId());
+                } catch (SQLException ex) {
+                    Logger.getLogger(MeetingResponse.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                JCheckBox cb = new JCheckBox(timeSuggestion.getTime().toString());
+                cb.setSelected(checked);
+                checkboxes.put(timeSuggestion.getId(), cb);
                 
-                // Set checked status for checkbox depending on what's registred in database.
-                
-                pnlCheckBoxes.add(cb);
+                pnlCheckBoxes.add(checkboxes.get(timeSuggestion.getId()));
                 pnlCheckBoxes.revalidate();
                 pnlCheckBoxes.repaint();
             }
         } else {
             lblChooseTime.setVisible(false);
         }
-        
+
         // Attendance confirmation event.
         btnConfirm.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Check selected time suggestion and write to database.
+                // Write selected time suggestions to database.
+                for (Map.Entry<Integer, JCheckBox> entry : checkboxes.entrySet()) {
+                    meetingRepo.updateTimeSuggestionResponse(entry.getKey(), parentFrame.loggedInUser.getId(), entry.getValue().isSelected());
+                }
+                
+//                meetingRepo.setMeetingAttendance(meeting.getId(), parentFrame.loggedInUser.getId(), true);
             }
         });
-        
+
     }
+
+//    private class TimeSuggestionsCheckBoxes {
+//
+//        public JCheckBox checkbox;
+//        public int timeSuggestionId;
+//        public ArrayList<TimeSuggestion> timeSuggestions;
+//        
+//        public TimeSuggestionsCheckBoxes(ArrayList<TimeSuggestion> timeSuggestions) {
+//            this.timeSuggestions = timeSuggestions;
+//        }
+//        
+//        public JCheckBox getCheckboxByTimeId(int timeId) {
+//            JCheckBox cb = null;
+//            for (TimeSuggestion ts : timeSuggestions) {
+//                if (ts.getId() == timeId) {
+//                    cb = checkbox;
+//                    break;
+//                }
+//            }
+//            
+//            return cb;
+//        }
+//        
+//        public JCheckBox getCheckbox(int timeSuggestionId) {
+//            return checkbox;
+//        }
+//
+//        public void setCheckbox(JCheckBox checkbox) {
+//            this.checkbox = checkbox;
+//        }
+//
+//        public int getTimeSuggestionId() {
+//            return timeSuggestionId;
+//        }
+//
+//        public void setTimeSuggestionId(int timeSuggestionId) {
+//            this.timeSuggestionId = timeSuggestionId;
+//        }
+//
+//    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents

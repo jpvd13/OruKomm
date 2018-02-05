@@ -24,7 +24,7 @@ public class DataInitializer {
         
         try {
             ps = db.getConnection().prepareStatement("DROP TABLE IF EXISTS"
-                    + "`attachments`, `meeting_time_suggestion`, `user_meeting`, `meeting`, `posts`, `category`, `user`");
+                    + "`attachments`, `meeting_time_suggestion_user`, `meeting_time_suggestion`, `user_meeting`, `meeting`, `posts`, `category`, `user`");
             ps.executeUpdate();
 
             String createUserTable = "CREATE TABLE `user` ("
@@ -98,7 +98,15 @@ public class DataInitializer {
             ps.executeUpdate();
 
             // Many-to-many realtionship table between a user and time sugggestions.
-            String createTimeSuggestionUserTbl = "CREATE TABLE meeting_time_suggestion_user";
+            String createTimeSuggestionUserTbl = "CREATE TABLE meeting_time_suggestion_user ("
+                    + "meeting_time_suggestion_id INT NOT NULL, user_id INT NOT NULL,"
+                    + "PRIMARY KEY (meeting_time_suggestion_id, user_id), "
+                    + "FOREIGN KEY (meeting_time_suggestion_id) REFERENCES meeting_time_suggestion(id),"
+                    + "FOREIGN KEY (user_id) REFERENCES user(id))"
+                    + "ENGINE=InnoDB DEFAULT CHARSET=utf8";
+            
+            ps = db.getConnection().prepareStatement(createTimeSuggestionUserTbl);
+            ps.executeUpdate();
             
         } catch (SQLException ex) {
             Logger.getLogger(DataInitializer.class.getName()).log(Level.SEVERE, null, ex);
