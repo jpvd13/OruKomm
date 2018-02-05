@@ -361,10 +361,10 @@ public class CreatePostPanel extends javax.swing.JPanel {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         setTextPost();
         setHeadingPost();
-        fs.insertPost(parentFrame.loggedInUser.getId(), textHeading, textPost, 1, date);
+        fs.insertPost(parentFrame.loggedInUser.getId(), textHeading, textPost, lstCategory.getSelectedValue().getId(), date);
         insertAttachedPicture();
         insertAttachedFiles();
-
+        
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
