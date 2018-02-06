@@ -37,7 +37,7 @@ public class InformalFeed extends javax.swing.JPanel {
     
     public InformalFeed(MainWindow parentFrame) {
         try {
-            this.dsvv = new DisplayPostV((this), description, title);
+            this.dsvv = new DisplayPostV(pnlInfoFeed, description, title);
             initComponents();
             PostRepository pr = new PostRepository();
             this.posts = pr.fillList2();
