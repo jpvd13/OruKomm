@@ -82,7 +82,7 @@
                   <Component id="lblBifogad3" alignment="0" max="32767" attributes="0"/>
                   <Component id="lblURL3" alignment="0" min="-2" pref="16" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="29" max="32767" attributes="0"/>
+              <EmptySpace pref="37" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -99,14 +99,8 @@
       </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lblBifogad1">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Bifogad fil 1:"/>
-      </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lblBifogad3">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="Bifogad fil 3:"/>
-      </Properties>
     </Component>
     <Component class="javax.swing.JLabel" name="lblURL1">
       <Properties>
@@ -114,7 +108,7 @@
           <Color blue="ff" green="0" red="0" type="rgb"/>
         </Property>
         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-          <Color id="Default Cursor"/>
+          <Color id="Standardmark&#xf6;r"/>
         </Property>
       </Properties>
       <Events>
@@ -127,9 +121,12 @@
           <Color blue="ff" green="0" red="0" type="rgb"/>
         </Property>
         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-          <Color id="Default Cursor"/>
+          <Color id="Standardmark&#xf6;r"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="componentAdded" listener="java.awt.event.ContainerListener" parameters="java.awt.event.ContainerEvent" handler="lblURL2ComponentAdded"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="lblURL3">
       <Properties>
@@ -137,13 +134,16 @@
           <Color blue="ff" green="0" red="0" type="rgb"/>
         </Property>
         <Property name="cursor" type="java.awt.Cursor" editor="org.netbeans.modules.form.editors2.CursorEditor">
-          <Color id="Default Cursor"/>
+          <Color id="Standardmark&#xf6;r"/>
         </Property>
       </Properties>
+      <Events>
+        <EventHandler event="componentAdded" listener="java.awt.event.ContainerListener" parameters="java.awt.event.ContainerEvent" handler="lblURL3ComponentAdded"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="lblBifogad2">
       <Properties>
-        <Property name="text" type="java.lang.String" value="Bifogad fil 2:"/>
+        <Property name="text" type="java.lang.String" value=" "/>
       </Properties>
     </Component>
     <Container class="javax.swing.JScrollPane" name="jScrollPane1">

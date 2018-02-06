@@ -148,8 +148,7 @@ public class InformalFeed extends javax.swing.JPanel {
             while (rs.next()){
 
                 fileNames.add(rs.getString("name"));               
-                return fileNames;
-            }
+                           }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
 
