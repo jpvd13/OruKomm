@@ -5,8 +5,6 @@
  */
 package orukomm.data;
 
-import java.awt.image.BufferedImage;
-import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -22,12 +20,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
-import orukomm.data.entities.Post;
 import orukomm.data.entities.User;
 import orukomm.gui.MainWindow;
 import orukomm.gui.panels.FormalFeed;
@@ -48,7 +43,6 @@ public class FileStorage {
     public User loggedInUser = new User();
 
     int postId;
-    private MainWindow parentFrame;
 
     public Connection connect() {
         try {
@@ -255,8 +249,7 @@ public class FileStorage {
 
     public ArrayList<String> getFileName() {
         FileStorage fs = new FileStorage();
-       
-        int postId = 2;               
+                    
 
         ArrayList<String> fileNames = new ArrayList<String>();
 
@@ -264,7 +257,7 @@ public class FileStorage {
         try (Connection conn = fs.connect();
                 PreparedStatement pstmt = conn.prepareStatement(selectSQL)) {
 
-            pstmt.setInt(1, postId);
+            pstmt.setInt(1, 2);
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()){
