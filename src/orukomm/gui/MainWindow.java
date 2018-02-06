@@ -17,7 +17,7 @@ import orukomm.gui.panels.Meetings;
 import orukomm.gui.panels.Register;
 import orukomm.gui.panels.UpdateAccount;
 import orukomm.gui.panels.InformalFeed;
-import orukomm.gui.panels.ChangePost;
+//import orukomm.gui.panels.ChangePost;
 
 public class MainWindow extends javax.swing.JFrame implements ActionListener {
 
@@ -152,10 +152,10 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
                 switchPanel(informalFeed);
                 break;
                 
-            case "mnuChangePost":
-                ChangePost changePost = new ChangePost(this);
-                switchPanel(changePost);
-                break;
+          //  case "mnuChangePost":
+          //      ChangePost changePost = new ChangePost(this);
+            //    switchPanel(changePost);
+            //    break;
 
             case "mnuNewPost":
                 switchPanel(new CreatePostPanel((this)));

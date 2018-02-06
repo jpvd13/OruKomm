@@ -18,7 +18,7 @@ import orukomm.gui.panels.FormalFeed;
  *
  * @author Pontu
  */
-public class DisplayPostV extends javax.swing.JPanel {
+public class DisplayPostInformal extends javax.swing.JPanel {
 
     private static String bildURL;
     private static String textPost;
@@ -29,7 +29,7 @@ public class DisplayPostV extends javax.swing.JPanel {
     private static ImageIcon attachedImage;
     private FileStorage fs = new FileStorage();
     private ArrayList<String> fileNames = new ArrayList<String>();
-    private JPanel panel;
+    private InformalFeed ff;
 
     /**
      * Creates new form CreatedPost
@@ -38,20 +38,21 @@ public class DisplayPostV extends javax.swing.JPanel {
     
     
      
-     public DisplayPostV(JPanel panel, String textPost, String title) throws IOException {
+     public DisplayPostInformal(InformalFeed feed, String textPost, String title) throws IOException {
         initComponents();
         // bildURL = CreatePost.getBildURL();
         // fileName = CreatePost.getFileURL();
         // fileName2 = CreatePost.getFileURL2();
-        // fileURL3 = CreatePost.getFileURL3();      
+        // fileURL3 = CreatePost.getFileURL3();  
+       
 
-        fileNames = fs.getFileName();        
+             
 
         //paintPicture(lblDisplay);
-        this.panel = panel;
+        this.ff = feed;
         this.textPost = textPost;
         setTxtCreatedPost();
-
+        fileNames = ff.getFileName(); 
         this.title = title;
         setTxtHeadingPost();
 
@@ -64,6 +65,8 @@ public class DisplayPostV extends javax.swing.JPanel {
         txtUserOutput.setWrapStyleWord(true);
 
     }
+     
+     
 
     private void setTxtCreatedPost() {
         txtUserOutput.setText(textPost);
@@ -124,7 +127,7 @@ public class DisplayPostV extends javax.swing.JPanel {
         lblBifogad3.setText("Bifogad fil 3:");
 
         lblURL1.setForeground(new java.awt.Color(0, 0, 255));
-        lblURL1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblURL1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         lblURL1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblURL1MouseClicked(evt);
@@ -132,10 +135,10 @@ public class DisplayPostV extends javax.swing.JPanel {
         });
 
         lblURL2.setForeground(new java.awt.Color(0, 0, 255));
-        lblURL2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblURL2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         lblURL3.setForeground(new java.awt.Color(0, 0, 255));
-        lblURL3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblURL3.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         lblBifogad2.setText("Bifogad fil 2:");
 
@@ -203,7 +206,7 @@ public class DisplayPostV extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void lblURL1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblURL1MouseClicked
-        fs.chooseDirectory();
+        ff.chooseDirectory();
     }//GEN-LAST:event_lblURL1MouseClicked
 
 

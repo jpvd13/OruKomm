@@ -49,7 +49,7 @@ public class FileStorage {
     public User loggedInUser = new User();
     private PostRepository pr = new PostRepository();
     
-    private FormalFeed ff = new FormalFeed();
+   
     int postId;
     private MainWindow parentFrame;
 
@@ -239,45 +239,4 @@ public class FileStorage {
     }
 
 
-    public void chooseDirectory() {
-
-        JFileChooser chooser = new JFileChooser();
-        chooser.setCurrentDirectory(new java.io.File("."));
-        chooser.setDialogTitle("Choose destination");
-        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        chooser.setAcceptAllFileFilterUsed(false);
-
-        if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-            System.out.println("getCurrentDirectory(): " + chooser.getCurrentDirectory());
-            System.out.println("getSelectedFile() : " + chooser.getSelectedFile());
-            selectFile(ff.getPostId(), chooser.getSelectedFile().toString()+"\\");
-        } else {
-            System.out.println("No Selection ");
-        }
-    }
-
-    public ArrayList<String> getFileName() {
-        FileStorage fs = new FileStorage();               
-
-        ArrayList<String> fileNames = new ArrayList<String>();
-
-        String selectSQL = ("SELECT name FROM attachments WHERE post_id = ?");
-        try (Connection conn = fs.connect();
-                PreparedStatement pstmt = conn.prepareStatement(selectSQL)) {
-
-            pstmt.setInt(1, ff.getPostId());
-            ResultSet rs = pstmt.executeQuery();
-
-            while (rs.next()){
-
-                fileNames.add(rs.getString("name"));               
-                return fileNames;
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-
-        }
-        return fileNames;
-    }
-
-}
+ }
