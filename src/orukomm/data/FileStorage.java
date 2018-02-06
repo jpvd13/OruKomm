@@ -29,6 +29,7 @@ import javax.imageio.ImageIO;
 import javax.swing.JFileChooser;
 import orukomm.data.entities.Post;
 import orukomm.data.entities.User;
+import orukomm.data.repositories.PostRepository;
 import orukomm.gui.MainWindow;
 import orukomm.gui.panels.FormalFeed;
 
@@ -46,7 +47,9 @@ public class FileStorage {
     private final String dbPassword = "masterkey";
 
     public User loggedInUser = new User();
-
+    private PostRepository pr = new PostRepository();
+    
+    private FormalFeed ff = new FormalFeed();
     int postId;
     private MainWindow parentFrame;
 
@@ -247,16 +250,14 @@ public class FileStorage {
         if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
             System.out.println("getCurrentDirectory(): " + chooser.getCurrentDirectory());
             System.out.println("getSelectedFile() : " + chooser.getSelectedFile());
-            selectFile(2, chooser.getSelectedFile().toString()+"\\");
+            selectFile(ff.getPostId(), chooser.getSelectedFile().toString()+"\\");
         } else {
             System.out.println("No Selection ");
         }
     }
 
     public ArrayList<String> getFileName() {
-        FileStorage fs = new FileStorage();
-       
-        int postId = 2;               
+        FileStorage fs = new FileStorage();               
 
         ArrayList<String> fileNames = new ArrayList<String>();
 
@@ -264,7 +265,7 @@ public class FileStorage {
         try (Connection conn = fs.connect();
                 PreparedStatement pstmt = conn.prepareStatement(selectSQL)) {
 
-            pstmt.setInt(1, postId);
+            pstmt.setInt(1, ff.getPostId());
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()){

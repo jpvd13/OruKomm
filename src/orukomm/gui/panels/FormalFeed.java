@@ -48,6 +48,11 @@ public class FormalFeed extends javax.swing.JPanel {
 
     }
     
+    public FormalFeed(){
+        
+        
+    }
+    
     private void initPanels() {
 		pnlFeed.setVisible(true);
 	}
@@ -67,12 +72,12 @@ public class FormalFeed extends javax.swing.JPanel {
         
 
         DefaultTableModel model = (DefaultTableModel) tblFormalFeed.getModel();  //Typecastar JTablemodellen till en DefaultTableModel
-        Object[] row = new Object[4];    // Använder Object klassen så att Arrayn kan ta in vilka object som helst
+        Object[] row = new Object[3];    // Använder Object klassen så att Arrayn kan ta in vilka object som helst
         for (int i = 0; i < posts.size(); i++) {
             row[0] = posts.get(i).getTitle();
             row[1] = posts.get(i).getUsername();
             row[2] = posts.get(i).getDate();
-            row[3] = posts.get(i).getId(); //Ska tas bort när vi hittar lösning på hur vi hämtar ut post ID till attachments
+            
             model.addRow(row);
         }
 
@@ -86,19 +91,20 @@ public class FormalFeed extends javax.swing.JPanel {
         int columnTitle = 0;
         int columnPoster = 1;
         
-        int columnId = 3; //Ska tas bort när vi hittar lösning på hur vi hämtar ut post ID till attachments
+      
         
         int row = tblFormalFeed.getSelectedRow();
         title = tblFormalFeed.getModel().getValueAt(row, columnTitle).toString();
         String poster = tblFormalFeed.getModel().getValueAt(row, columnPoster).toString();
         description = "";
-        String stringId = tblFormalFeed.getModel().getValueAt(row, columnId).toString();
+       
         
-        post_id = Integer.parseInt(stringId); //Ska tas bort när vi hittar lösning på hur vi hämtar ut post ID till attachments
+       
         
         for (Post post : posts) {
             if (post.getUsername().equals(poster) && post.getTitle().equals(title)) {
                 description = post.getDescription();
+                post_id = post.getId();
             }
         }
         try {
