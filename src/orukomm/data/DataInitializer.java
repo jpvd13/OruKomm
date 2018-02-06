@@ -49,6 +49,7 @@ public class DataInitializer {
                     + "id int(11) NOT NULL AUTO_INCREMENT, poster int,"
                     + "title VARCHAR(50) NOT NULL, description TEXT,"
                     + "category int,"
+                    + "flow bit,"
                     + "date DATE,"
                     + "PRIMARY KEY (id),"
                     + "FOREIGN KEY (poster) REFERENCES `user`(`id`),"
@@ -140,7 +141,7 @@ public class DataInitializer {
             ps2.executeUpdate();
 
             String insertPostsData = "INSERT INTO posts VALUES"
-                    + " (null , 1, 'Bla', 'Bla', 1, '2008-11-11')";
+                    + " (null , 1, 'Bla', 'Bla', 1, 1, '2008-11-11')";
 
             PreparedStatement ps3 = db.getConnection().prepareStatement(insertPostsData);
             ps3.executeUpdate();
