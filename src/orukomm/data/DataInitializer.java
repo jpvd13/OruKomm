@@ -155,8 +155,11 @@ public class DataInitializer {
             ps = db.getConnection().prepareStatement(insertMeetingsData);
             ps.executeUpdate();
 
-            String userMeetingData = "INSERT INTO user_meeting VALUES (1, 3, 0), (1, 4, 0), (2, 5, 0), (1, 6, 1),"
-                    + "(2, 7, 1), (4, 4, 1), (3, 4, 0), (2, 1, 1), (3, 1, 1), (2, 2, 1), (3, 2, 0), (1, 7, 0)";
+            String userMeetingData = "INSERT INTO user_meeting VALUES "
+                    + "(2,1,1), (3,1,1), (4,1,1), (5,1,0), (6,1,0),"
+                    + "(2,2,1), (3,2,0), (4,2,1), (5,2,1), (6,2,0),"
+                    + "(1,3,1), (2,3,0), (4,3,1), (5,3,0), (6,3,0)"
+                    + "(1,3,1), (1,4,1), (1,5,0), (1,6,0), (1,7,0)";
             
             ps = db.getConnection().prepareStatement(userMeetingData);
             ps.executeUpdate();

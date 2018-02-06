@@ -19,7 +19,7 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="112" max="-2" attributes="0"/>
               <Component id="pnlMeetingCreatedContainer" min="-2" max="-2" attributes="0"/>
-              <EmptySpace pref="71" max="32767" attributes="0"/>
+              <EmptySpace pref="75" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -73,12 +73,12 @@
                               <Group type="102" alignment="0" attributes="0">
                                   <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="lblChooseTime" min="-2" max="-2" attributes="0"/>
-                                      <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
+                                      <Component id="lblInvitedUsers" alignment="0" min="-2" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="pnlCheckBoxes" min="-2" max="-2" attributes="0"/>
                               </Group>
-                              <Component id="scrLstAttendingUsers" alignment="0" min="-2" pref="300" max="-2" attributes="0"/>
+                              <Component id="scrLstInvitedUsers" alignment="0" min="-2" pref="300" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="0" pref="139" max="32767" attributes="0"/>
                       </Group>
@@ -113,11 +113,11 @@
                       <Group type="102" alignment="0" attributes="0">
                           <Component id="lblChooseTime" min="-2" max="-2" attributes="0"/>
                           <EmptySpace max="-2" attributes="0"/>
-                          <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
+                          <Component id="lblInvitedUsers" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="scrLstAttendingUsers" min="-2" pref="330" max="-2" attributes="0"/>
+                  <Component id="scrLstInvitedUsers" min="-2" pref="330" max="-2" attributes="0"/>
                   <EmptySpace pref="155" max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -186,14 +186,14 @@
             <Property name="text" type="java.lang.String" value="Tidsf&#xf6;rslag"/>
           </Properties>
         </Component>
-        <Container class="javax.swing.JScrollPane" name="scrLstAttendingUsers">
+        <Container class="javax.swing.JScrollPane" name="scrLstInvitedUsers">
           <AuxValues>
             <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
           </AuxValues>
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
-            <Component class="javax.swing.JList" name="lstAttendingUsers">
+            <Component class="javax.swing.JList" name="lstInvitedUsers">
               <Properties>
                 <Property name="model" type="javax.swing.ListModel" editor="org.netbeans.modules.form.editors2.ListModelEditor">
                   <StringArray count="0"/>
@@ -205,12 +205,12 @@
             </Component>
           </SubComponents>
         </Container>
-        <Component class="javax.swing.JLabel" name="jLabel1">
+        <Component class="javax.swing.JLabel" name="lblInvitedUsers">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Noto Sans" size="12" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Bekr&#xe4;ftade deltagare"/>
+            <Property name="text" type="java.lang.String" value="Inbjudna anv&#xe4;ndare"/>
           </Properties>
         </Component>
       </SubComponents>

@@ -19,13 +19,14 @@ public class CreatedMeeting extends javax.swing.JPanel {
     
     public CreatedMeeting(Meeting meeting, MainWindow parentFrame) {
         initComponents();
+        lblMeetingTitle.setText(meeting.getTitle());
         this.meeting = meeting;
         this.parentFrame = parentFrame;
         attendingUsers = new ArrayList<User>();
         meetingRepo = new MeetingRepository();
         
         lstMdlAttendingUsers = new DefaultListModel<>();
-        lstAttendingUsers.setModel(lstMdlAttendingUsers);
+        lstInvitedUsers.setModel(lstMdlAttendingUsers);
         refreshAttendingUsers();
     }
 
@@ -34,8 +35,10 @@ public class CreatedMeeting extends javax.swing.JPanel {
         // Add confirmed attendees.
         for (User user : meeting.getInvitedUsers()) {
             if (meetingRepo.getMeetingAttendance(user.getId(), meeting.getId())) {
-                lstMdlAttendingUsers.addElement(user);
+                user.setSurname(user.getSurname() + " [deltar]"); // Quick 'n' dirty fix to change object's display text in the JList.
             }
+            
+            lstMdlAttendingUsers.addElement(user);
         }
     }
 
@@ -52,9 +55,9 @@ public class CreatedMeeting extends javax.swing.JPanel {
         btnBack = new javax.swing.JButton();
         pnlCheckBoxes = new javax.swing.JPanel();
         lblChooseTime = new javax.swing.JLabel();
-        scrLstAttendingUsers = new javax.swing.JScrollPane();
-        lstAttendingUsers = new javax.swing.JList<>();
-        jLabel1 = new javax.swing.JLabel();
+        scrLstInvitedUsers = new javax.swing.JScrollPane();
+        lstInvitedUsers = new javax.swing.JList<>();
+        lblInvitedUsers = new javax.swing.JLabel();
 
         pnlMeetingCreatedContainer.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(193, 193, 193), 1, true));
 
@@ -87,10 +90,10 @@ public class CreatedMeeting extends javax.swing.JPanel {
         lblChooseTime.setFont(new java.awt.Font("Noto Sans", 1, 12)); // NOI18N
         lblChooseTime.setText("Tidsförslag");
 
-        scrLstAttendingUsers.setViewportView(lstAttendingUsers);
+        scrLstInvitedUsers.setViewportView(lstInvitedUsers);
 
-        jLabel1.setFont(new java.awt.Font("Noto Sans", 1, 12)); // NOI18N
-        jLabel1.setText("Bekräftade deltagare");
+        lblInvitedUsers.setFont(new java.awt.Font("Noto Sans", 1, 12)); // NOI18N
+        lblInvitedUsers.setText("Inbjudna användare");
 
         javax.swing.GroupLayout pnlMeetingCreatedContainerLayout = new javax.swing.GroupLayout(pnlMeetingCreatedContainer);
         pnlMeetingCreatedContainer.setLayout(pnlMeetingCreatedContainerLayout);
@@ -117,10 +120,10 @@ public class CreatedMeeting extends javax.swing.JPanel {
                             .addGroup(pnlMeetingCreatedContainerLayout.createSequentialGroup()
                                 .addGroup(pnlMeetingCreatedContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(lblChooseTime)
-                                    .addComponent(jLabel1))
+                                    .addComponent(lblInvitedUsers))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(pnlCheckBoxes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(scrLstAttendingUsers, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(scrLstInvitedUsers, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 139, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -146,9 +149,9 @@ public class CreatedMeeting extends javax.swing.JPanel {
                     .addGroup(pnlMeetingCreatedContainerLayout.createSequentialGroup()
                         .addComponent(lblChooseTime)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel1)))
+                        .addComponent(lblInvitedUsers)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(scrLstAttendingUsers, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(scrLstInvitedUsers, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(155, Short.MAX_VALUE))
         );
 
@@ -159,7 +162,7 @@ public class CreatedMeeting extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(112, 112, 112)
                 .addComponent(pnlMeetingCreatedContainer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(71, Short.MAX_VALUE))
+                .addContainerGap(75, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -173,16 +176,16 @@ public class CreatedMeeting extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBack;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel lblChooseTime;
     private javax.swing.JLabel lblDataData;
     private javax.swing.JLabel lblDate;
     private javax.swing.JLabel lblDuration;
     private javax.swing.JLabel lblDurationData;
+    private javax.swing.JLabel lblInvitedUsers;
     private javax.swing.JLabel lblMeetingTitle;
-    private javax.swing.JList<User> lstAttendingUsers;
+    private javax.swing.JList<User> lstInvitedUsers;
     private javax.swing.JPanel pnlCheckBoxes;
     private javax.swing.JPanel pnlMeetingCreatedContainer;
-    private javax.swing.JScrollPane scrLstAttendingUsers;
+    private javax.swing.JScrollPane scrLstInvitedUsers;
     // End of variables declaration//GEN-END:variables
 }

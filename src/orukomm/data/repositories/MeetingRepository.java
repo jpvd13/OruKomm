@@ -125,7 +125,7 @@ public class MeetingRepository implements Repository<Meeting> {
     }
 
     /*
-     * Returns all meetings where the provided userId is invited to.
+     * Returns all meetings where the user with provided userId is invited to.
      */
     public ArrayList<Meeting> getMeetingInvitations(int userId) {
         PreparedStatement ps = null;
@@ -216,7 +216,7 @@ public class MeetingRepository implements Repository<Meeting> {
 
                 while (rsInvitedUsers.next()) {
                     User invitedUser = new User();
-                    invitedUser.setId(rs.getInt("id"));
+                    invitedUser.setId(rsInvitedUsers.getInt("id"));
                     invitedUser.setFirstName(rsInvitedUsers.getString("first_name"));
                     invitedUser.setSurname(rsInvitedUsers.getString("surname"));
                     invitedUser.setUsername(rsInvitedUsers.getString("username"));
