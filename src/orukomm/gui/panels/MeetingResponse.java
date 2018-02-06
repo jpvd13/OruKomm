@@ -4,12 +4,12 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JCheckBox;
+import javax.swing.JOptionPane;
 import orukomm.data.entities.Meeting;
 import orukomm.data.entities.TimeSuggestion;
 import orukomm.data.entities.User;
@@ -86,6 +86,8 @@ public class MeetingResponse extends javax.swing.JPanel {
                     meetingRepo.updateTimeSuggestionResponse(entry.getKey(), parentFrame.loggedInUser.getId(), entry.getValue().isSelected());
                 }
                 meetingRepo.setMeetingAttendance(parentFrame.loggedInUser.getId(), meeting.getId(),  true);
+                JOptionPane.showMessageDialog(parentFrame, "Mötesdeltagande registrerat.", "Mötesdeltagande bekräftat", JOptionPane.INFORMATION_MESSAGE);
+                parentFrame.switchPanel(new Meetings(parentFrame));
             }
         });
         
@@ -94,6 +96,13 @@ public class MeetingResponse extends javax.swing.JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 meetingRepo.setMeetingAttendance(parentFrame.loggedInUser.getId(), meeting.getId(),  false);
+                
+                // Remove all time suggestion entries for logged in user.
+                for (Map.Entry<Integer, JCheckBox> entry : checkboxes.entrySet()) {
+                    meetingRepo.removeTimeSuggestion(entry.getKey(), parentFrame.loggedInUser.getId());
+                }
+                JOptionPane.showMessageDialog(parentFrame, "Mötesavböjan registrerad.", "Mötesdeltagande avböjt", JOptionPane.INFORMATION_MESSAGE);
+                parentFrame.switchPanel(new Meetings(parentFrame));
             }
         });
 

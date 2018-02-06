@@ -226,23 +226,39 @@ public class MeetingRepository implements Repository<Meeting> {
         } finally {
             close(null, ps, null);
         }
+        
+//        // Remove user's time suggestion confirmations.
+//        ps = null;
+//        query = "DELETE FROM meeting_time_suggestion_user WHERE ";
     }
 
-    public boolean getMeetingAttendance(int userId, int meetingId) {
+    public void removeTimeSuggestion(int timeSuggestionId, int userId) {
         PreparedStatement ps = null;
-        String query = String.format("DELETE FROM user_meeting WHERE user_id = %d AND meeting_id = %d", userId, meetingId);
+        String query = String.format("DELETE FROM meeting_time_suggestion_user WHERE meeting_time_suggestion_id = %d AND user_id = %d", timeSuggestionId, userId);
         
         try {
             ps = db.getConnection().prepareStatement(query);
             ps.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(MeetingRepository.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            close(null, ps, null);
         }
-        
-        return false;
     }
+    
+//    public boolean getMeetingAttendance(int userId, int meetingId) {
+//        PreparedStatement ps = null;
+//        String query = String.format("DELETE FROM user_meeting WHERE user_id = %d AND meeting_id = %d", userId, meetingId);
+//        
+//        try {
+//            ps = db.getConnection().prepareStatement(query);
+//            ps.executeUpdate();
+//        } catch (SQLException ex) {
+//            Logger.getLogger(MeetingRepository.class.getName()).log(Level.SEVERE, null, ex);
+//        } finally {
+//            close(null, ps, null);
+//        }
+//        
+//        return false;
+//    }
 
     @Override
     public void remove(Meeting entity) {
