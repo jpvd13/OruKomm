@@ -10,6 +10,7 @@ import orukomm.data.Database;
 import static orukomm.data.Database.close;
 import orukomm.data.entities.Meeting;
 import orukomm.data.entities.TimeSuggestion;
+import orukomm.data.entities.User;
 
 public class MeetingRepository implements Repository<Meeting> {
 
@@ -180,6 +181,9 @@ public class MeetingRepository implements Repository<Meeting> {
         return meetings;
     }
 
+    /*
+     * Returns all meetings created by user id.
+     */
     public ArrayList<Meeting> getCreatedMeetings(int userId) {
         PreparedStatement ps = null;
         ResultSet rs = null;
@@ -200,6 +204,31 @@ public class MeetingRepository implements Repository<Meeting> {
                 meeting.setDescription(rs.getString("description"));
                 meeting.setDate(rs.getDate("date"));
 
+                // Create array of all invited users for current meeting.
+                ArrayList<User> invitedUsers = new ArrayList<>();
+                PreparedStatement psUsers = null;
+                ResultSet rsInvitedUsers = null;
+                String getTimeSuggestions = String.format("SELECT * FROM user JOIN user_meeting ON "
+                        + "user_meeting.user_id = user.id WHERE meeting_id = %d", meeting.getId());
+
+                psUsers = db.getConnection().prepareStatement(getTimeSuggestions);
+                rsInvitedUsers = psUsers.executeQuery();
+
+                while (rsInvitedUsers.next()) {
+                    User invitedUser = new User();
+                    invitedUser.setId(rs.getInt("id"));
+                    invitedUser.setFirstName(rsInvitedUsers.getString("first_name"));
+                    invitedUser.setSurname(rsInvitedUsers.getString("surname"));
+                    invitedUser.setUsername(rsInvitedUsers.getString("username"));
+                    invitedUser.setEmail(rsInvitedUsers.getString("email"));
+                    invitedUser.setPassword(rsInvitedUsers.getString("password_hash"));
+                    invitedUser.setSalt(rsInvitedUsers.getString("salt"));
+                    invitedUser.setRole(rsInvitedUsers.getInt("role"));
+
+                    invitedUsers.add(invitedUser);
+                }
+                meeting.setInvitedUsers(invitedUsers);
+                
                 meetings.add(meeting);
             }
 
@@ -225,11 +254,7 @@ public class MeetingRepository implements Repository<Meeting> {
             Logger.getLogger(MeetingRepository.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             close(null, ps, null);
-        }
-        
-//        // Remove user's time suggestion confirmations.
-//        ps = null;
-//        query = "DELETE FROM meeting_time_suggestion_user WHERE ";
+        }       
     }
 
     public void removeTimeSuggestion(int timeSuggestionId, int userId) {
@@ -244,21 +269,31 @@ public class MeetingRepository implements Repository<Meeting> {
         }
     }
     
-//    public boolean getMeetingAttendance(int userId, int meetingId) {
-//        PreparedStatement ps = null;
-//        String query = String.format("DELETE FROM user_meeting WHERE user_id = %d AND meeting_id = %d", userId, meetingId);
-//        
-//        try {
-//            ps = db.getConnection().prepareStatement(query);
-//            ps.executeUpdate();
-//        } catch (SQLException ex) {
-//            Logger.getLogger(MeetingRepository.class.getName()).log(Level.SEVERE, null, ex);
-//        } finally {
-//            close(null, ps, null);
-//        }
-//        
-//        return false;
-//    }
+    /*
+     * Returns bool attending status for provided user at provided meeting.
+     */
+    public boolean getMeetingAttendance(int userId, int meetingId) {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        int attending = 0;
+        String query = String.format("SELECT attending FROM user_meeting WHERE user_id = %d AND meeting_id = %d", userId, meetingId);
+        
+        try {
+            ps = db.getConnection().prepareStatement(query);
+            rs = ps.executeQuery();
+            
+            if (Database.fetchedRows(rs) == 1) {
+                attending = rs.getInt("attending");
+            }
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(MeetingRepository.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            close(null, ps, null);
+        }
+        
+        return attending == 1;
+    }
 
     @Override
     public void remove(Meeting entity) {
