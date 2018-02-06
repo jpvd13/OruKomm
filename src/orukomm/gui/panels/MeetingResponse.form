@@ -216,12 +216,12 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnConfirm">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Bekr&#xe4;fta deltagande"/>
+            <Property name="text" type="java.lang.String" value="Deltar"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="btnCancel">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Avbryt"/>
+            <Property name="text" type="java.lang.String" value="Deltar ej"/>
           </Properties>
         </Component>
       </SubComponents>

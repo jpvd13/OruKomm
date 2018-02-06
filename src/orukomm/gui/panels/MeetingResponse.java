@@ -85,52 +85,19 @@ public class MeetingResponse extends javax.swing.JPanel {
                 for (Map.Entry<Integer, JCheckBox> entry : checkboxes.entrySet()) {
                     meetingRepo.updateTimeSuggestionResponse(entry.getKey(), parentFrame.loggedInUser.getId(), entry.getValue().isSelected());
                 }
-                
-//                meetingRepo.setMeetingAttendance(meeting.getId(), parentFrame.loggedInUser.getId(), true);
+                meetingRepo.setMeetingAttendance(parentFrame.loggedInUser.getId(), meeting.getId(),  true);
+            }
+        });
+        
+        // Decline meeting attendance.
+        btnCancel.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                meetingRepo.setMeetingAttendance(parentFrame.loggedInUser.getId(), meeting.getId(),  false);
             }
         });
 
     }
-
-//    private class TimeSuggestionsCheckBoxes {
-//
-//        public JCheckBox checkbox;
-//        public int timeSuggestionId;
-//        public ArrayList<TimeSuggestion> timeSuggestions;
-//        
-//        public TimeSuggestionsCheckBoxes(ArrayList<TimeSuggestion> timeSuggestions) {
-//            this.timeSuggestions = timeSuggestions;
-//        }
-//        
-//        public JCheckBox getCheckboxByTimeId(int timeId) {
-//            JCheckBox cb = null;
-//            for (TimeSuggestion ts : timeSuggestions) {
-//                if (ts.getId() == timeId) {
-//                    cb = checkbox;
-//                    break;
-//                }
-//            }
-//            
-//            return cb;
-//        }
-//        
-//        public JCheckBox getCheckbox(int timeSuggestionId) {
-//            return checkbox;
-//        }
-//
-//        public void setCheckbox(JCheckBox checkbox) {
-//            this.checkbox = checkbox;
-//        }
-//
-//        public int getTimeSuggestionId() {
-//            return timeSuggestionId;
-//        }
-//
-//        public void setTimeSuggestionId(int timeSuggestionId) {
-//            this.timeSuggestionId = timeSuggestionId;
-//        }
-//
-//    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -188,9 +155,9 @@ public class MeetingResponse extends javax.swing.JPanel {
         lblChooseTime.setFont(new java.awt.Font("Noto Sans", 1, 12)); // NOI18N
         lblChooseTime.setText("Välj passande tider");
 
-        btnConfirm.setText("Bekräfta deltagande");
+        btnConfirm.setText("Deltar");
 
-        btnCancel.setText("Avbryt");
+        btnCancel.setText("Deltar ej");
 
         javax.swing.GroupLayout pnlMeetingContainerLayout = new javax.swing.GroupLayout(pnlMeetingContainer);
         pnlMeetingContainer.setLayout(pnlMeetingContainerLayout);
