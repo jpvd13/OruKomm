@@ -60,6 +60,33 @@ public class CreatePostPanel extends javax.swing.JPanel {
         });
     }
 
+    public void clearFields() {
+        TxtHeading.setText(null);
+        TxtInput.setText(null);
+        hideButtons();
+
+        lblURL1.setText("");
+        lblBifogad.setText(null);
+        fileURL = "";
+        btnClearURL1.setVisible(false);
+
+        lblURL2.setText("");
+        lblBifogad2.setText(null);
+        fileURL2 = "";
+        btnClearURL2.setVisible(false);
+
+        lblURL3.setText("");
+        lblBifogad3.setText(null);
+        fileURL3 = "";
+        btnClearURL3.setVisible(false);
+
+        lblImageURL.setText("");
+        lblBifogadBild.setText(null);
+        bildURL = "";
+        btnClearImage.setVisible(false);
+
+    }
+
     public void refreshCategoryList() {
         lstMdlCategories.removeAllElements();
         categories = categoryRepo.getAll();
@@ -150,33 +177,25 @@ public class CreatePostPanel extends javax.swing.JPanel {
 
         }
     }
-    
-    public boolean buttonSelected()
-    {
+
+    public boolean buttonSelected() {
         boolean selected = false;
-        if(rbtn1.isSelected() || rbtn2.isSelected())
-        {
+        if (rbtn1.isSelected() || rbtn2.isSelected()) {
             selected = true;
+        } else {
+            JOptionPane.showMessageDialog(parentFrame, "Vänligen välj flöde.", "Valideringsfel", JOptionPane.ERROR_MESSAGE);
         }
-        else 
-        {
-             JOptionPane.showMessageDialog(parentFrame, "Vänligen välj flöde.", "Valideringsfel", JOptionPane.ERROR_MESSAGE);
-        }
-        
+
         return selected;
     }
-    
-    public int getButton()
-    {
-        if(rbtn1.isSelected())
-        {
+
+    public int getButton() {
+        if (rbtn1.isSelected()) {
             return 0;
-        }
-        else 
-        {
+        } else {
             return 1;
         }
-            
+
     }
 
     /**
@@ -406,18 +425,18 @@ public class CreatePostPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        if(buttonSelected())
-        {
+        if (buttonSelected()) {
             setTextPost();
-        
-        setHeadingPost();
-        fs.insertPost(parentFrame.loggedInUser.getId(), textHeading, textPost, lstCategory.getSelectedValue().getId(),getButton(), date);
-        
-       
-        insertAttachedPicture();
-        insertAttachedFiles();
+
+            setHeadingPost();
+            fs.insertPost(parentFrame.loggedInUser.getId(), textHeading, textPost, lstCategory.getSelectedValue().getId(), getButton(), date);
+
+            insertAttachedPicture();
+            insertAttachedFiles();
         }
-        
+        JOptionPane.showMessageDialog(null, "Inlägg skapat");
+        clearFields();
+
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
@@ -477,6 +496,7 @@ public class CreatePostPanel extends javax.swing.JPanel {
         } else if (result == JFileChooser.CANCEL_OPTION) {
             System.out.println("No File Select");
         }
+
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void btnClearURL1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnClearURL1ActionPerformed

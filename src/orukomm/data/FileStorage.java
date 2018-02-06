@@ -24,6 +24,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import orukomm.data.entities.User;
+import orukomm.data.repositories.PostRepository;
 import orukomm.gui.MainWindow;
 import orukomm.gui.panels.FormalFeed;
 
@@ -38,10 +39,12 @@ public class FileStorage {
     private final String connectionString = "jdbc:mysql://localhost:3306/oru_komm?autoReconnect=true&useSSL=false";
 
     private final String dbUser = "root";
-    private final String dbPassword = "masterkey";
+    private final String dbPassword = "admin";
 
     public User loggedInUser = new User();
-
+    private PostRepository pr = new PostRepository();
+    
+   
     int postId;
 
     public Connection connect() {
@@ -228,7 +231,6 @@ public class FileStorage {
         }
 
     }
-
 
     public void chooseDirectory() {
 
