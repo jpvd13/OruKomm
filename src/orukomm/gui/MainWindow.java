@@ -17,6 +17,7 @@ import orukomm.gui.panels.Meetings;
 import orukomm.gui.panels.Register;
 import orukomm.gui.panels.UpdateAccount;
 import orukomm.gui.panels.InformalFeed;
+import orukomm.gui.panels.ChangePost;
 
 public class MainWindow extends javax.swing.JFrame implements ActionListener {
 
@@ -99,6 +100,9 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
         mnuNewPost.setActionCommand("mnuNewPost");
         mnuNewPost.addActionListener(this);
         
+        mnuChangePost.setActionCommand("mnuChangePost");
+        mnuChangePost.addActionListener(this);
+        
         mnuMeetingCreate.setActionCommand("mnuMeetingCreate");
         mnuMeetingCreate.addActionListener(this);
         
@@ -147,6 +151,11 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
                 informalFeed.fillTable();
                 switchPanel(informalFeed);
                 break;
+                
+            case "mnuChangePost":
+                ChangePost changePost = new ChangePost(this);
+                switchPanel(changePost);
+                break;
 
             case "mnuNewPost":
                 switchPanel(new CreatePostPanel((this)));
@@ -194,6 +203,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
         mnuInformalFeed = new javax.swing.JMenuItem();
         mnuPost = new javax.swing.JMenu();
         mnuNewPost = new javax.swing.JMenuItem();
+        mnuChangePost = new javax.swing.JMenuItem();
         mnuMeetings = new javax.swing.JMenu();
         mnuMeetingCreate = new javax.swing.JMenuItem();
         mnuMyMeetings = new javax.swing.JMenuItem();
@@ -259,6 +269,9 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
         });
         mnuPost.add(mnuNewPost);
 
+        mnuChangePost.setText("Redigera inlägg");
+        mnuPost.add(mnuChangePost);
+
         mnubMain.add(mnuPost);
 
         mnuMeetings.setText("Möten");
@@ -302,6 +315,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
     private javax.swing.JMenu mnuAdministrationUsers;
     private javax.swing.JMenu mnuArchive;
     private javax.swing.JMenuItem mnuArchiveExit;
+    private javax.swing.JMenuItem mnuChangePost;
     private javax.swing.JMenu mnuFeed;
     private javax.swing.JMenuItem mnuFormalFeed;
     private javax.swing.JMenuItem mnuInformalFeed;
