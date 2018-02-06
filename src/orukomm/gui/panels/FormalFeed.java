@@ -37,7 +37,7 @@ public class FormalFeed extends javax.swing.JPanel {
     
     public FormalFeed(MainWindow parentFrame) {
         try {
-            this.dsv = new DisplayPostV((this), description, title);
+            this.dsv = new DisplayPostV(pnlFeed, description, title);
             initComponents();
             PostRepository pr = new PostRepository();
             this.posts = pr.fillList();

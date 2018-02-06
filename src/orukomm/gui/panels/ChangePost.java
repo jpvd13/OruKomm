@@ -19,7 +19,7 @@ import orukomm.gui.MainWindow;
  *
  * @author Ludvig
  */
-public class InformalFeed extends javax.swing.JPanel {
+public class ChangePost extends javax.swing.JPanel {
 
     /**
      * Creates new form FormalFeed
@@ -33,32 +33,32 @@ public class InformalFeed extends javax.swing.JPanel {
     private String title;
     private String description;
     private int post_id;
-    DisplayPostV dsvv;
+    DisplayPostV dsv;
     
-    public InformalFeed(MainWindow parentFrame) {
+    public ChangePost(MainWindow parentFrame) {
         try {
-            this.dsvv = new DisplayPostV(pnlInfoFeed, description, title);
+            this.dsv = new DisplayPostV(pnlPost, description, title);
             initComponents();
             PostRepository pr = new PostRepository();
-            this.posts = pr.fillList2();
+            this.posts = pr.fillList();
             initPanels();
         } catch (IOException ex) {
-            Logger.getLogger(InformalFeed.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ChangePost.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
     
     private void initPanels() {
-		pnlInfoFeed.setVisible(true);
+		pnlPost.setVisible(true);
 	}
     
     public void switchPanel(JPanel panel) {
-		pnlInfoFeed.removeAll();
-		pnlInfoFeed.repaint();
-		pnlInfoFeed.revalidate();
-		pnlInfoFeed.add(panel);
-		pnlInfoFeed.repaint();
-		pnlInfoFeed.revalidate();
+		pnlPost.removeAll();
+		pnlPost.repaint();
+		pnlPost.revalidate();
+		pnlPost.add(panel);
+		pnlPost.repaint();
+		pnlPost.revalidate();
 	}
     
   
@@ -104,7 +104,7 @@ public class InformalFeed extends javax.swing.JPanel {
         try {
             switchPanel(new DisplayPostV((this), description, title));
         } catch (IOException ex) {
-            Logger.getLogger(InformalFeed.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ChangePost.class.getName()).log(Level.SEVERE, null, ex);
         }
     }  
     
@@ -123,7 +123,7 @@ public class InformalFeed extends javax.swing.JPanel {
 
         jScrollPane1 = new javax.swing.JScrollPane();
         tblFormalFeed = new javax.swing.JTable();
-        pnlInfoFeed = new javax.swing.JPanel();
+        pnlPost = new javax.swing.JPanel();
 
         tblFormalFeed.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -155,7 +155,7 @@ public class InformalFeed extends javax.swing.JPanel {
             tblFormalFeed.getColumnModel().getColumn(3).setResizable(false);
         }
 
-        pnlInfoFeed.setLayout(new java.awt.CardLayout());
+        pnlPost.setLayout(new java.awt.CardLayout());
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -165,7 +165,7 @@ public class InformalFeed extends javax.swing.JPanel {
                 .addGap(13, 13, 13)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(pnlInfoFeed, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(pnlPost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(445, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -174,7 +174,7 @@ public class InformalFeed extends javax.swing.JPanel {
                 .addGap(24, 24, 24)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(pnlInfoFeed, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(pnlPost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(198, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -187,7 +187,7 @@ public class InformalFeed extends javax.swing.JPanel {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JPanel pnlInfoFeed;
+    private javax.swing.JPanel pnlPost;
     public javax.swing.JTable tblFormalFeed;
     // End of variables declaration//GEN-END:variables
 }
