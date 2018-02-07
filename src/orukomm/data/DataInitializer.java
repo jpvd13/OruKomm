@@ -24,7 +24,8 @@ public class DataInitializer {
         
         try {
             ps = db.getConnection().prepareStatement("DROP TABLE IF EXISTS "
-                    + "  `meeting_time_suggestion_user`, `meeting_time_suggestion`, `user_meeting`, `meeting`, `attachments`, `posts`, `user_category`, `category`, `user`");
+                    + "  `meeting_time_suggestion_user`, `meeting_time_suggestion`, `user_meeting`, `meeting`, `attachments`, `posts`, `user_category`, research_group, `category`, `user`");
+
             ps.executeUpdate();
 
             String createUserTable = "CREATE TABLE `user` ("
@@ -104,12 +105,23 @@ public class DataInitializer {
 
             String createMeetingTimeSuggestion = "CREATE TABLE meeting_time_suggestion ("
                     + "id INT(11) NOT NULL AUTO_INCREMENT, meeting_id INT NOT NULL, time TIME NOT NULL,"
-                    + "PRIMARY KEY (id), FOREIGN KEY (meeting_id) REFERENCES meeting(id))"
+                    + "PRIMARY KEY (id), FOREIGN KEY(meeting_id) REFERENCES meeting(id))"
                     + "ENGINE=InnoDB DEFAULT CHARSET=utf8";
 
             ps = db.getConnection().prepareStatement(createMeetingTimeSuggestion);
             ps.executeUpdate();
 
+            
+            // Research groups.
+            String createResearchGrp = "CREATE TABLE research_group ("
+                    + "id INT(11) NOT NULL AUTO_INCREMENT, name VARCHAR(250) NOT NULL,"
+                    + "group_admin INT(11) NOT NULL,"
+                    + "PRIMARY KEY (id), FOREIGN KEY(group_admin) REFERENCES `user`(`id`))"
+                    + " ENGINE=InnoDB DEFAULT CHARSET=utf8";
+            
+            ps = db.getConnection().prepareStatement(createResearchGrp);
+            ps.executeUpdate(); 
+            
             // Many-to-many realtionship table between a user and time sugggestions.
             String createTimeSuggestionUserTbl = "CREATE TABLE meeting_time_suggestion_user ("
                     + "meeting_time_suggestion_id INT NOT NULL, user_id INT NOT NULL,"
@@ -164,6 +176,13 @@ public class DataInitializer {
             
             PreparedStatement ps3 = db.getConnection().prepareStatement(insertPostsData);
             ps3.executeUpdate();
+            
+            // Research group data.
+            String insertResearchData ="INSERT INTO research_group VALUES(null, 'Forskning', 1)";
+            
+            ps = db.getConnection().prepareStatement(insertResearchData);
+            ps.executeUpdate();
+            
             
             // Meeting data.
             String insertMeetingsData = "INSERT INTO meeting VALUES (null, 1, 'Ett möte',  'Lorem ipsum', '2018-03-10'),"
