@@ -5,6 +5,7 @@
  */
 package orukomm.gui.panels;
 
+import java.awt.Cursor;
 import java.awt.Image;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,27 +37,28 @@ public class DisplayPostFormal extends javax.swing.JPanel {
      */
     public DisplayPostFormal(FormalFeed feed, String textPost, String title) throws IOException {
         initComponents();
-        // bildURL = CreatePost.getBildURL();
+        //bildURL = CreatePostPanel.getBildURL();
         // fileName = CreatePost.getFileURL();
         // fileName2 = CreatePost.getFileURL2();
         // fileURL3 = CreatePost.getFileURL3();  
 
         //paintPicture(lblDisplay);
+        
         this.ff = feed;
         this.textPost = textPost;
-        setTxtCreatedPost();
+        
         fileNames = ff.getFileName();
         this.title = title;
+        
         setTxtHeadingPost();
-
         setAttachedFilesTxt();
+        setTxtCreatedPost();
 
         txtUserOutput.setEditable(false);
-
         txtUserOutput.setLineWrap(true);
-
         txtUserOutput.setWrapStyleWord(true);
 
+        
     }
 
     private void setTxtCreatedPost() {
@@ -102,6 +104,10 @@ public class DisplayPostFormal extends javax.swing.JPanel {
             lblBifogad2.setText("Bifogad fil2: ");
             lblBifogad3.setText("Bifogad fil3: ");
         }
+        
+         lblURL1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+         lblURL2.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+         lblURL3.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
 
     /**
@@ -132,6 +138,9 @@ public class DisplayPostFormal extends javax.swing.JPanel {
         lblURL1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblURL1MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                lblURL1MouseEntered(evt);
             }
         });
 
@@ -227,6 +236,10 @@ public class DisplayPostFormal extends javax.swing.JPanel {
     private void lblURL3ComponentAdded(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_lblURL3ComponentAdded
         lblBifogad3.setText("Bifogad fil3: ");
     }//GEN-LAST:event_lblURL3ComponentAdded
+
+    private void lblURL1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblURL1MouseEntered
+      
+    }//GEN-LAST:event_lblURL1MouseEntered
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
