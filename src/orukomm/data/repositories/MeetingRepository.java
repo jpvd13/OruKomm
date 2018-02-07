@@ -229,20 +229,26 @@ public class MeetingRepository implements Repository<Meeting> {
                 }
                 meeting.setInvitedUsers(invitedUsers);
 
-                // Get time suggestions for meeting.
+                // Get time suggestions with vote count for meeting.
                 ArrayList<TimeSuggestion> timeSuggestions = new ArrayList<>();
                 PreparedStatement psTime = null;
                 ResultSet rsTime = null;
-                String getTimeSuggestions = String.format("SELECT * FROM meeting_time_suggestion WHERE meeting_id = %d", meeting.getId());
+                String getTimeSuggestions = String.format("SELECT meeting_time_suggestion.id, meeting_id, time, COUNT(*) AS votes FROM meeting_time_suggestion "
+                + "JOIN meeting_time_suggestion_user ON meeting_time_suggestion_user.meeting_time_suggestion_id = meeting_time_suggestion.id "
+                + "JOIN user ON user.id = meeting_time_suggestion_user.user_id "
+                + "WHERE meeting_id = %d GROUP BY meeting_time_suggestion.id, time ORDER BY votes DESC", meeting.getId());
+                
+                String getTimeSuggestions2 = String.format("SELECT * FROM meeting_time_suggestion WHERE meeting_id = %d", meeting.getId());
 
                 psTime = db.getConnection().prepareStatement(getTimeSuggestions);
                 rsTime = psTime.executeQuery();
 
                 while (rsTime.next()) {
                     TimeSuggestion timeSuggestion = new TimeSuggestion();
-                    timeSuggestion.setId(rsTime.getInt("id"));
+                    timeSuggestion.setId(rsTime.getInt("meeting_time_suggestion.id"));
                     timeSuggestion.setMeetingid(rsTime.getInt("meeting_id"));
                     timeSuggestion.setTime(rsTime.getTime("time"));
+                    timeSuggestion.setVoteCount(rsTime.getInt("votes"));
 
                     timeSuggestions.add(timeSuggestion);
                 }
@@ -264,12 +270,8 @@ public class MeetingRepository implements Repository<Meeting> {
         PreparedStatement ps = null;
         String query = String.format("UPDATE user_meeting SET attending = %b WHERE user_id = %d AND meeting_id = %d", attenting, userId, meetingId);
 
-        System.out.println(query);
-        
         try {
             ps = db.getConnection().prepareStatement(query);
-//            ps.setInt(1, userId);
-//            ps.setInt(2, meetingId);
             ps.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(MeetingRepository.class.getName()).log(Level.SEVERE, null, ex);
@@ -315,7 +317,7 @@ public class MeetingRepository implements Repository<Meeting> {
         
         return attending == 1;
     }
-
+   
     @Override
     public void remove(Meeting entity) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

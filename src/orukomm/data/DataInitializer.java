@@ -172,7 +172,11 @@ public class DataInitializer {
             ps = db.getConnection().prepareStatement(insertMeetingTimeSuggestions);
             ps.executeUpdate();
             
-//            String insertTimeSuggestionAttendance = "INSERT INTO ";
+            String timeSuggestionUser = "INSERT INTO meeting_time_suggestion_user VALUES (1,2), (1,3), (1,4), "
+                    + "(2,3), (3,2), (3,3), (3,4), (3,5), (3,6), (4,2), (4,3), (4,4), (4,5), (4,6), "
+                    + "(5,2), (5,4), (5,6), (6,1), (6,4), (6,5), (7,1), (9,1)";
+            ps = db.getConnection().prepareStatement(timeSuggestionUser);
+            ps.executeLargeUpdate();
             
         } catch (SQLException ex) {
             Logger.getLogger(DataInitializer.class.getName()).log(Level.SEVERE, null, ex);
