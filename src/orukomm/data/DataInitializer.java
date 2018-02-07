@@ -24,7 +24,7 @@ public class DataInitializer {
         
         try {
             ps = db.getConnection().prepareStatement("DROP TABLE IF EXISTS "
-                    + "  `meeting_time_suggestion_user`, `meeting_time_suggestion`, `user_meeting`, `meeting`, `attachments`, `posts`, `user_category`, research_group `category`, `user`");
+                    + "  `meeting_time_suggestion_user`, `meeting_time_suggestion`, `user_meeting`, `meeting`, `attachments`, `posts`, `user_category`, research_group, `category`, `user`");
 
             ps.executeUpdate();
 
