@@ -3,10 +3,17 @@ package orukomm.gui.panels;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Time;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JCheckBox;
+import javax.swing.JOptionPane;
 import orukomm.data.entities.Meeting;
+import orukomm.data.entities.TimeSuggestion;
 import orukomm.data.entities.User;
+import orukomm.data.repositories.MeetingRepository;
 import orukomm.data.repositories.UserRepository;
 import orukomm.gui.MainWindow;
 
@@ -17,20 +24,26 @@ import orukomm.gui.MainWindow;
 public class MeetingResponse extends javax.swing.JPanel {
 
     private UserRepository userRepo;
+    private MeetingRepository meetingRepo;
 
     private Meeting meeting;
     private User createdBy;
+
+    // Mapping time suggestion id to checkboxes.
+    private HashMap<Integer, JCheckBox> checkboxes;
 
     public MeetingResponse(Meeting meeting, MainWindow parentFrame) {
         initComponents();
         this.meeting = meeting;
         userRepo = new UserRepository();
+        meetingRepo = new MeetingRepository();
         createdBy = userRepo.getById(meeting.getMeetingCallerUserId());
 
         // Set meeting info.
         lblMeetingTitle.setText(meeting.getTitle());
         lblDataData.setText(meeting.getDate().toString());
         lblCreatedByUser.setText(createdBy.toString());
+        txtaDescription.setText(meeting.getDescription());
 
         // Back to meetings panel button event.
         btnBack.addActionListener(new ActionListener() {
@@ -40,32 +53,63 @@ public class MeetingResponse extends javax.swing.JPanel {
             }
         });
 
-        // Add time suggestion checkboxes if exists.
+        // Add time suggestion checkboxes if time suggestions exists.
         if (meeting.getTimeSuggestions().size() > 0) {
             lblChooseTime.setVisible(true);
             pnlCheckBoxes.setLayout(new GridLayout(0, 5, 20, 20));
 
-            for (Time time : meeting.getTimeSuggestions()) {
-                JCheckBox cb = new JCheckBox(time.toString());
-                
-                // Set checked status for checkbox depending on what's registred in database.
-                
-                pnlCheckBoxes.add(cb);
+            checkboxes = new HashMap<Integer, JCheckBox>();
+            for (TimeSuggestion timeSuggestion : meeting.getTimeSuggestions()) {
+                boolean checked = false;
+                try {
+                    checked = meetingRepo.existsTimeSuggestionResponse(timeSuggestion.getId(), parentFrame.loggedInUser.getId());
+                } catch (SQLException ex) {
+                    Logger.getLogger(MeetingResponse.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                JCheckBox cb = new JCheckBox(timeSuggestion.getTime().toString());
+                cb.setSelected(checked);
+                checkboxes.put(timeSuggestion.getId(), cb);
+
+                pnlCheckBoxes.add(checkboxes.get(timeSuggestion.getId()));
                 pnlCheckBoxes.revalidate();
                 pnlCheckBoxes.repaint();
             }
         } else {
             lblChooseTime.setVisible(false);
         }
-        
+
         // Attendance confirmation event.
         btnConfirm.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // Check selected time suggestion and write to database.
+                // Write selected time suggestions to database.
+                if (checkboxes != null) {
+                    for (Map.Entry<Integer, JCheckBox> entry : checkboxes.entrySet()) {
+                        meetingRepo.updateTimeSuggestionResponse(entry.getKey(), parentFrame.loggedInUser.getId(), entry.getValue().isSelected());
+                    }
+                }
+                
+                meetingRepo.setMeetingAttendance(parentFrame.loggedInUser.getId(), meeting.getId(), true);
+                JOptionPane.showMessageDialog(parentFrame, "Mötesdeltagande registrerat.", "Mötesdeltagande bekräftat", JOptionPane.INFORMATION_MESSAGE);
+                parentFrame.switchPanel(new Meetings(parentFrame));
             }
         });
-        
+
+        // Decline meeting attendance.
+        btnCancel.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                meetingRepo.setMeetingAttendance(parentFrame.loggedInUser.getId(), meeting.getId(), false);
+
+                // Remove all time suggestion entries for logged in user.
+                for (Map.Entry<Integer, JCheckBox> entry : checkboxes.entrySet()) {
+                    meetingRepo.removeTimeSuggestion(entry.getKey(), parentFrame.loggedInUser.getId());
+                }
+                JOptionPane.showMessageDialog(parentFrame, "Mötesavböjan registrerad.", "Mötesdeltagande avböjt", JOptionPane.INFORMATION_MESSAGE);
+                parentFrame.switchPanel(new Meetings(parentFrame));
+            }
+        });
+
     }
 
     @SuppressWarnings("unchecked")
@@ -85,6 +129,9 @@ public class MeetingResponse extends javax.swing.JPanel {
         lblChooseTime = new javax.swing.JLabel();
         btnConfirm = new javax.swing.JButton();
         btnCancel = new javax.swing.JButton();
+        lblDescription = new javax.swing.JLabel();
+        scrTxtaDescription = new javax.swing.JScrollPane();
+        txtaDescription = new javax.swing.JTextArea();
 
         setPreferredSize(new java.awt.Dimension(1024, 768));
 
@@ -124,9 +171,17 @@ public class MeetingResponse extends javax.swing.JPanel {
         lblChooseTime.setFont(new java.awt.Font("Noto Sans", 1, 12)); // NOI18N
         lblChooseTime.setText("Välj passande tider");
 
-        btnConfirm.setText("Bekräfta deltagande");
+        btnConfirm.setText("Deltar");
 
-        btnCancel.setText("Avbryt");
+        btnCancel.setText("Deltar ej");
+
+        lblDescription.setFont(new java.awt.Font("Noto Sans", 1, 12)); // NOI18N
+        lblDescription.setText("Beskrivning");
+
+        txtaDescription.setEditable(false);
+        txtaDescription.setColumns(20);
+        txtaDescription.setRows(5);
+        scrTxtaDescription.setViewportView(txtaDescription);
 
         javax.swing.GroupLayout pnlMeetingContainerLayout = new javax.swing.GroupLayout(pnlMeetingContainer);
         pnlMeetingContainer.setLayout(pnlMeetingContainerLayout);
@@ -161,7 +216,9 @@ public class MeetingResponse extends javax.swing.JPanel {
                             .addGroup(pnlMeetingContainerLayout.createSequentialGroup()
                                 .addComponent(btnConfirm)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btnCancel)))
+                                .addComponent(btnCancel))
+                            .addComponent(lblDescription)
+                            .addComponent(scrTxtaDescription, javax.swing.GroupLayout.PREFERRED_SIZE, 500, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 139, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -186,6 +243,10 @@ public class MeetingResponse extends javax.swing.JPanel {
                     .addComponent(lblDuration)
                     .addComponent(lblDurationData))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblDescription)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(scrTxtaDescription, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(7, 7, 7)
                 .addGroup(pnlMeetingContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(lblChooseTime)
                     .addComponent(pnlCheckBoxes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -193,7 +254,7 @@ public class MeetingResponse extends javax.swing.JPanel {
                 .addGroup(pnlMeetingContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnConfirm)
                     .addComponent(btnCancel))
-                .addContainerGap(441, Short.MAX_VALUE))
+                .addContainerGap(324, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -224,10 +285,13 @@ public class MeetingResponse extends javax.swing.JPanel {
     private javax.swing.JLabel lblCreatedByUser;
     private javax.swing.JLabel lblDataData;
     private javax.swing.JLabel lblDate;
+    private javax.swing.JLabel lblDescription;
     private javax.swing.JLabel lblDuration;
     private javax.swing.JLabel lblDurationData;
     private javax.swing.JLabel lblMeetingTitle;
     private javax.swing.JPanel pnlCheckBoxes;
     private javax.swing.JPanel pnlMeetingContainer;
+    private javax.swing.JScrollPane scrTxtaDescription;
+    private javax.swing.JTextArea txtaDescription;
     // End of variables declaration//GEN-END:variables
 }

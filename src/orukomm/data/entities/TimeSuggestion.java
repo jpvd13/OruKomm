@@ -7,6 +7,15 @@ public class TimeSuggestion implements Entity {
     private int id;
     private int meetingid;
     private Time time;
+    private int voteCount;
+
+    public int getVoteCount() {
+        return voteCount;
+    }
+
+    public void setVoteCount(int voteCount) {
+        this.voteCount = voteCount;
+    }
 
     public int getMeetingid() {
         return meetingid;

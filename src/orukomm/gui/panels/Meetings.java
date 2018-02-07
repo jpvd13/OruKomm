@@ -48,6 +48,12 @@ public class Meetings extends javax.swing.JPanel {
         });
         
         // Show created meeting event.
+        btnCreatedShow.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                parentFrame.switchPanel(new CreatedMeeting(lstMeetingsCreated.getSelectedValue(), parentFrame));
+            }
+        });
     }
 
     private void refreshInvitedMeetingsList() {
