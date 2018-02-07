@@ -90,6 +90,8 @@
                                   <EmptySpace max="-2" attributes="0"/>
                                   <Component id="btnCancel" min="-2" max="-2" attributes="0"/>
                               </Group>
+                              <Component id="lblDescription" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="scrTxtaDescription" alignment="0" min="-2" pref="500" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="0" pref="139" max="32767" attributes="0"/>
                       </Group>
@@ -124,6 +126,10 @@
                       <Component id="lblDurationData" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
+                  <Component id="lblDescription" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="scrTxtaDescription" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="7" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Component id="lblChooseTime" min="-2" max="-2" attributes="0"/>
                       <Component id="pnlCheckBoxes" min="-2" max="-2" attributes="0"/>
@@ -133,7 +139,7 @@
                       <Component id="btnConfirm" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="btnCancel" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="441" max="32767" attributes="0"/>
+                  <EmptySpace pref="324" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -224,6 +230,30 @@
             <Property name="text" type="java.lang.String" value="Deltar ej"/>
           </Properties>
         </Component>
+        <Component class="javax.swing.JLabel" name="lblDescription">
+          <Properties>
+            <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+              <Font name="Noto Sans" size="12" style="1"/>
+            </Property>
+            <Property name="text" type="java.lang.String" value="Beskrivning"/>
+          </Properties>
+        </Component>
+        <Container class="javax.swing.JScrollPane" name="scrTxtaDescription">
+          <AuxValues>
+            <AuxValue name="autoScrollPane" type="java.lang.Boolean" value="true"/>
+          </AuxValues>
+
+          <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
+          <SubComponents>
+            <Component class="javax.swing.JTextArea" name="txtaDescription">
+              <Properties>
+                <Property name="editable" type="boolean" value="false"/>
+                <Property name="columns" type="int" value="20"/>
+                <Property name="rows" type="int" value="5"/>
+              </Properties>
+            </Component>
+          </SubComponents>
+        </Container>
       </SubComponents>
     </Container>
   </SubComponents>

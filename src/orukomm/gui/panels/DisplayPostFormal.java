@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import orukomm.data.FileStorage;
 import orukomm.gui.panels.FormalFeed;
 
@@ -17,7 +18,7 @@ import orukomm.gui.panels.FormalFeed;
  *
  * @author Pontu
  */
-public class DisplayPostV extends javax.swing.JPanel {
+public class DisplayPostFormal extends javax.swing.JPanel {
 
     private static String bildURL;
     private static String textPost;
@@ -26,55 +27,25 @@ public class DisplayPostV extends javax.swing.JPanel {
     private static String fileName2;
     private static String fileName3;
     private static ImageIcon attachedImage;
-    private FormalFeed panel;
-    private InformalFeed panels;
     private FileStorage fs = new FileStorage();
-    private ArrayList<String> fileNames = new ArrayList<String>(); 
+    private ArrayList<String> fileNames = new ArrayList<String>();
+    private FormalFeed ff;
 
     /**
      * Creates new form CreatedPost
      */
-    public DisplayPostV(FormalFeed panel, String textPost, String title) throws IOException {
+    public DisplayPostFormal(FormalFeed feed, String textPost, String title) throws IOException {
         initComponents();
         // bildURL = CreatePost.getBildURL();
         // fileName = CreatePost.getFileURL();
         // fileName2 = CreatePost.getFileURL2();
-        // fileURL3 = CreatePost.getFileURL3();      
-
-        fileNames = fs.getFileName();        
+        // fileURL3 = CreatePost.getFileURL3();  
 
         //paintPicture(lblDisplay);
-        this.panel = panel;
+        this.ff = feed;
         this.textPost = textPost;
         setTxtCreatedPost();
-
-        this.title = title;
-        setTxtHeadingPost();
-
-        setAttachedFilesTxt();
-
-        txtUserOutput.setEditable(false);
-
-        txtUserOutput.setLineWrap(true);
-
-        txtUserOutput.setWrapStyleWord(true);
-
-    }
-    
-     public DisplayPostV(InformalFeed panel, String textPost, String title) throws IOException {
-        initComponents();
-        // bildURL = CreatePost.getBildURL();
-        // fileName = CreatePost.getFileURL();
-        // fileName2 = CreatePost.getFileURL2();
-        // fileURL3 = CreatePost.getFileURL3();      
-
-        fileNames = fs.getFileName();        
-
-        //paintPicture(lblDisplay);
-        this.panels = panel;
-        this.textPost = textPost;
-        setTxtCreatedPost();
-
+        fileNames = ff.getFileName();
         this.title = title;
         setTxtHeadingPost();
 
@@ -113,9 +84,23 @@ public class DisplayPostV extends javax.swing.JPanel {
 
     private void setAttachedFilesTxt() {
 
-        for (int i = 0; i < fileNames.size(); i++) {
+        if (fileNames.size() == 1) {
             lblURL1.setText(fileNames.get(0));
-           
+            lblBifogad1.setText("Bifogad fil1: ");
+        }
+        if (fileNames.size() == 2) {
+            lblURL1.setText(fileNames.get(0));
+            lblURL2.setText(fileNames.get(1));
+            lblBifogad1.setText("Bifogad fil1: ");
+            lblBifogad2.setText("Bifogad fil2: ");
+        }
+        if (fileNames.size() == 3) {
+            lblURL1.setText(fileNames.get(0));
+            lblURL2.setText(fileNames.get(1));
+            lblURL3.setText(fileNames.get(2));
+            lblBifogad1.setText("Bifogad fil1: ");
+            lblBifogad2.setText("Bifogad fil2: ");
+            lblBifogad3.setText("Bifogad fil3: ");
         }
     }
 
@@ -142,12 +127,8 @@ public class DisplayPostV extends javax.swing.JPanel {
         lblHeading.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         lblHeading.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
-        lblBifogad1.setText("Bifogad fil 1:");
-
-        lblBifogad3.setText("Bifogad fil 3:");
-
         lblURL1.setForeground(new java.awt.Color(0, 0, 255));
-        lblURL1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblURL1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         lblURL1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblURL1MouseClicked(evt);
@@ -155,12 +136,22 @@ public class DisplayPostV extends javax.swing.JPanel {
         });
 
         lblURL2.setForeground(new java.awt.Color(0, 0, 255));
-        lblURL2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblURL2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        lblURL2.addContainerListener(new java.awt.event.ContainerAdapter() {
+            public void componentAdded(java.awt.event.ContainerEvent evt) {
+                lblURL2ComponentAdded(evt);
+            }
+        });
 
         lblURL3.setForeground(new java.awt.Color(0, 0, 255));
-        lblURL3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lblURL3.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        lblURL3.addContainerListener(new java.awt.event.ContainerAdapter() {
+            public void componentAdded(java.awt.event.ContainerEvent evt) {
+                lblURL3ComponentAdded(evt);
+            }
+        });
 
-        lblBifogad2.setText("Bifogad fil 2:");
+        lblBifogad2.setText(" ");
 
         txtUserOutput.setColumns(20);
         txtUserOutput.setRows(5);
@@ -221,13 +212,21 @@ public class DisplayPostV extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(lblBifogad3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblURL3, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addContainerGap(37, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void lblURL1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblURL1MouseClicked
-        fs.chooseDirectory();
+        ff.chooseDirectory();
     }//GEN-LAST:event_lblURL1MouseClicked
+
+    private void lblURL2ComponentAdded(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_lblURL2ComponentAdded
+        lblBifogad2.setText("Bifogad fil2: ");
+    }//GEN-LAST:event_lblURL2ComponentAdded
+
+    private void lblURL3ComponentAdded(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_lblURL3ComponentAdded
+        lblBifogad3.setText("Bifogad fil3: ");
+    }//GEN-LAST:event_lblURL3ComponentAdded
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

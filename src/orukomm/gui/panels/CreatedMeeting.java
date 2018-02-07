@@ -1,8 +1,13 @@
 package orukomm.gui.panels;
 
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
+import javax.swing.JLabel;
 import orukomm.data.entities.Meeting;
+import orukomm.data.entities.TimeSuggestion;
 import orukomm.data.entities.User;
 import orukomm.data.repositories.MeetingRepository;
 import orukomm.gui.MainWindow;
@@ -24,10 +29,24 @@ public class CreatedMeeting extends javax.swing.JPanel {
         this.parentFrame = parentFrame;
         attendingUsers = new ArrayList<User>();
         meetingRepo = new MeetingRepository();
+        pnlCheckBoxes.setLayout(new GridLayout(0, 5, 15, 15));
+        
+        for (TimeSuggestion ts : meeting.getTimeSuggestions()) {
+            JLabel lblTime = new JLabel(ts.getTime().toString());
+            lblTime.setVisible(true);
+            pnlCheckBoxes.add(lblTime);
+        }
         
         lstMdlAttendingUsers = new DefaultListModel<>();
         lstInvitedUsers.setModel(lstMdlAttendingUsers);
         refreshAttendingUsers();
+        
+        btnBack.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                parentFrame.switchPanel(new Meetings((parentFrame)));
+            }
+        });
     }
 
     public void refreshAttendingUsers() {
@@ -84,7 +103,7 @@ public class CreatedMeeting extends javax.swing.JPanel {
         );
         pnlCheckBoxesLayout.setVerticalGroup(
             pnlCheckBoxesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 30, Short.MAX_VALUE)
+            .addGap(0, 20, Short.MAX_VALUE)
         );
 
         lblChooseTime.setFont(new java.awt.Font("Noto Sans", 1, 12)); // NOI18N
@@ -109,7 +128,7 @@ public class CreatedMeeting extends javax.swing.JPanel {
                                 .addComponent(lblDate)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(lblDataData, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 540, Short.MAX_VALUE)
                         .addComponent(btnBack))
                     .addGroup(pnlMeetingCreatedContainerLayout.createSequentialGroup()
                         .addGroup(pnlMeetingCreatedContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -117,14 +136,13 @@ public class CreatedMeeting extends javax.swing.JPanel {
                                 .addComponent(lblDuration)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(lblDurationData, javax.swing.GroupLayout.PREFERRED_SIZE, 270, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lblInvitedUsers)
+                            .addComponent(scrLstInvitedUsers, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(pnlMeetingCreatedContainerLayout.createSequentialGroup()
-                                .addGroup(pnlMeetingCreatedContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(lblChooseTime)
-                                    .addComponent(lblInvitedUsers))
+                                .addComponent(lblChooseTime)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(pnlCheckBoxes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(scrLstInvitedUsers, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 139, Short.MAX_VALUE)))
+                                .addComponent(pnlCheckBoxes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         pnlMeetingCreatedContainerLayout.setVerticalGroup(
@@ -144,12 +162,11 @@ public class CreatedMeeting extends javax.swing.JPanel {
                     .addComponent(lblDuration)
                     .addComponent(lblDurationData))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(pnlMeetingCreatedContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(pnlCheckBoxes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(pnlMeetingCreatedContainerLayout.createSequentialGroup()
-                        .addComponent(lblChooseTime)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(lblInvitedUsers)))
+                .addGroup(pnlMeetingCreatedContainerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(lblChooseTime)
+                    .addComponent(pnlCheckBoxes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblInvitedUsers)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(scrLstInvitedUsers, javax.swing.GroupLayout.PREFERRED_SIZE, 330, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(155, Short.MAX_VALUE))
@@ -162,14 +179,14 @@ public class CreatedMeeting extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addGap(112, 112, 112)
                 .addComponent(pnlMeetingCreatedContainer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(75, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(pnlMeetingCreatedContainer, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(139, Short.MAX_VALUE))
+                .addContainerGap(136, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 

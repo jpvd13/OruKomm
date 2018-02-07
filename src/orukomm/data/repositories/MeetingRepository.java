@@ -208,10 +208,10 @@ public class MeetingRepository implements Repository<Meeting> {
                 ArrayList<User> invitedUsers = new ArrayList<>();
                 PreparedStatement psUsers = null;
                 ResultSet rsInvitedUsers = null;
-                String getTimeSuggestions = String.format("SELECT * FROM user JOIN user_meeting ON "
+                String getInvitedUsers = String.format("SELECT * FROM user JOIN user_meeting ON "
                         + "user_meeting.user_id = user.id WHERE meeting_id = %d", meeting.getId());
 
-                psUsers = db.getConnection().prepareStatement(getTimeSuggestions);
+                psUsers = db.getConnection().prepareStatement(getInvitedUsers);
                 rsInvitedUsers = psUsers.executeQuery();
 
                 while (rsInvitedUsers.next()) {
@@ -228,6 +228,25 @@ public class MeetingRepository implements Repository<Meeting> {
                     invitedUsers.add(invitedUser);
                 }
                 meeting.setInvitedUsers(invitedUsers);
+
+                // Get time suggestions for meeting.
+                ArrayList<TimeSuggestion> timeSuggestions = new ArrayList<>();
+                PreparedStatement psTime = null;
+                ResultSet rsTime = null;
+                String getTimeSuggestions = String.format("SELECT * FROM meeting_time_suggestion WHERE meeting_id = %d", meeting.getId());
+
+                psTime = db.getConnection().prepareStatement(getTimeSuggestions);
+                rsTime = psTime.executeQuery();
+
+                while (rsTime.next()) {
+                    TimeSuggestion timeSuggestion = new TimeSuggestion();
+                    timeSuggestion.setId(rsTime.getInt("id"));
+                    timeSuggestion.setMeetingid(rsTime.getInt("meeting_id"));
+                    timeSuggestion.setTime(rsTime.getTime("time"));
+
+                    timeSuggestions.add(timeSuggestion);
+                }
+                meeting.setTimeSuggestions(timeSuggestions);
                 
                 meetings.add(meeting);
             }
@@ -241,14 +260,16 @@ public class MeetingRepository implements Repository<Meeting> {
         return meetings;
     }
 
-    public void setMeetingAttendance(int meetingId, int userId, boolean attenting) {
+    public void setMeetingAttendance(int userId, int meetingId, boolean attenting) {
         PreparedStatement ps = null;
-        String query = String.format("UPDATE user_meeting SET attending = %b WHERE user_id = ? AND meeting_id = ?", attenting);
+        String query = String.format("UPDATE user_meeting SET attending = %b WHERE user_id = %d AND meeting_id = %d", attenting, userId, meetingId);
 
+        System.out.println(query);
+        
         try {
             ps = db.getConnection().prepareStatement(query);
-            ps.setInt(1, userId);
-            ps.setInt(2, meetingId);
+//            ps.setInt(1, userId);
+//            ps.setInt(2, meetingId);
             ps.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(MeetingRepository.class.getName()).log(Level.SEVERE, null, ex);

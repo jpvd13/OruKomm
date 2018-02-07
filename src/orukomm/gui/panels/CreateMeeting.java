@@ -78,6 +78,18 @@ public class CreateMeeting extends javax.swing.JPanel {
                     return;
                 }
 
+                if (txtfTitle.getText().length() > 64) {
+                    JOptionPane.showMessageDialog(parentFrame, "Mötestiteln får inte vara längre än 64 tecken.", "Valideringsfel", JOptionPane.ERROR_MESSAGE);
+                    
+                    return;
+                }
+                
+                if (txtaDescription.getText().length() > 512) {
+                    JOptionPane.showMessageDialog(parentFrame, "Mötesbeskriningen får inte vara längre än 512 tecken..", "Valideringsfel", JOptionPane.ERROR_MESSAGE);
+                    
+                    return;
+                }
+                
                 // Add all invited users to array list.
                 for (int i = 0; i < lstMdlAddedUsers.getSize(); i++) {
                     invitedUsers.add(lstMdlAddedUsers.getElementAt(i));
