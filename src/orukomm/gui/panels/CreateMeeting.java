@@ -18,6 +18,7 @@ import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import orukomm.data.entities.Meeting;
+import orukomm.data.entities.TimeSuggestion;
 import orukomm.data.entities.User;
 import orukomm.data.repositories.MeetingRepository;
 import orukomm.data.repositories.UserRepository;
@@ -39,9 +40,9 @@ public class CreateMeeting extends javax.swing.JPanel {
     private User selectedUserFromAddedUsers;
     private ArrayList<User> invitedUsers;
     private Meeting meeting;
-    private ArrayList<Time> timeSuggestions;
+    private ArrayList<TimeSuggestion> timeSuggestions;
     
-    private Time timeSuggestion;
+    private TimeSuggestion timeSuggestion;
     private DateFormat dateFormat;
     
     public CreateMeeting(MainWindow parentFrame) {
@@ -77,6 +78,18 @@ public class CreateMeeting extends javax.swing.JPanel {
                     return;
                 }
 
+                if (txtfTitle.getText().length() > 64) {
+                    JOptionPane.showMessageDialog(parentFrame, "Mötestiteln får inte vara längre än 64 tecken.", "Valideringsfel", JOptionPane.ERROR_MESSAGE);
+                    
+                    return;
+                }
+                
+                if (txtaDescription.getText().length() > 512) {
+                    JOptionPane.showMessageDialog(parentFrame, "Mötesbeskriningen får inte vara längre än 512 tecken..", "Valideringsfel", JOptionPane.ERROR_MESSAGE);
+                    
+                    return;
+                }
+                
                 // Add all invited users to array list.
                 for (int i = 0; i < lstMdlAddedUsers.getSize(); i++) {
                     invitedUsers.add(lstMdlAddedUsers.getElementAt(i));
@@ -110,6 +123,7 @@ public class CreateMeeting extends javax.swing.JPanel {
                 refreshAllUsersList();
                 clearFields();
                 lblAddedTimeSuggestions.setText("");
+                timeSuggestions.clear();
             }
         });
 
@@ -181,13 +195,15 @@ public class CreateMeeting extends javax.swing.JPanel {
         btnAddTimeSuggestion.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                timeSuggestion = new TimeSuggestion();
                 // Validate time input then add it to the meeting.
                 if (!Validation.is24HourFormat(txtfTimeSuggestion.getText())) {
                     JOptionPane.showMessageDialog(parentFrame, "Ange tiden enligt 24-timmarsformatet HH:mm, e.g.: 19:15, 8:30.", "Valideringsfel", JOptionPane.ERROR_MESSAGE);
                 } else {
                      try {
-                        timeSuggestion = new Time(dateFormat.parse(txtfTimeSuggestion.getText()).getTime());
-                    } catch (ParseException ex) {
+                         timeSuggestion.setMeetingid(meeting.getId());
+                         timeSuggestion.setTime(new Time(dateFormat.parse(txtfTimeSuggestion.getText()).getTime()));
+                     } catch (ParseException ex) {
                         Logger.getLogger(CreateMeeting.class.getName()).log(Level.SEVERE, null, ex);
                     }
 
@@ -195,9 +211,9 @@ public class CreateMeeting extends javax.swing.JPanel {
                          JOptionPane.showMessageDialog(parentFrame, "Högst 5 tidsförslag får anges.", "Valideringsfel", JOptionPane.ERROR_MESSAGE);
                      } else {
                         if (timeSuggestions.size() == 0)
-                            lblAddedTimeSuggestions.setText(timeSuggestion.toString());
+                            lblAddedTimeSuggestions.setText(timeSuggestion.getTime().toString());
                         else
-                            lblAddedTimeSuggestions.setText(lblAddedTimeSuggestions.getText() + ", " + timeSuggestion);
+                            lblAddedTimeSuggestions.setText(lblAddedTimeSuggestions.getText() + ", " + timeSuggestion.getTime());
 
                         timeSuggestions.add(timeSuggestion);
                      }
