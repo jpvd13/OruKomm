@@ -44,6 +44,18 @@ public class DataInitializer {
 
             ps = db.getConnection().prepareStatement(createCategoryTable);
             ps.executeUpdate();
+            
+            String createuserChoosenCategoriesTable = "CREATE TABLE user_category ("
+                    + "category_id int(11) NOT NULL,"
+                    + "user_id int(11) NOT NULL,"
+                    + "PRIMARY KEY (category_id, user_id),"
+                    + "FOREIGN KEY (category_id) REFERENCES category(id),"
+                    + "FOREIGN KEY (user_id) REFERENCES `user`(`id`))"                    
+                    + "ENGINE=InnoDB DEFAULT CHARSET=utf8";
+            
+            
+            ps = db.getConnection().prepareStatement(createuserChoosenCategoriesTable);
+            ps.executeUpdate();
 
             String createPostsTable = "CREATE TABLE posts ("
                     + "id int(11) NOT NULL AUTO_INCREMENT, poster int,"
@@ -129,20 +141,27 @@ public class DataInitializer {
                     + "(5, 'Bertil', 'Böna', 'bönan', 'foo@bar.com', 'Clv2a/V++MNDfaIylfpxp8b6KvHeK7ts7t3nCGeFv9o=', '8LM/8OOc5zvjew==', '2')," // ...
                     + "(6, 'Cecilia', 'Citron', 'citronen', 'foo@bar.com', 'Clv2a/V++MNDfaIylfpxp8b6KvHeK7ts7t3nCGeFv9o=', '8LM/8OOc5zvjew==', '2'),"
                     + "(7, 'Daniel', 'Duva', 'duvan', 'foo@bar.com', 'Clv2a/V++MNDfaIylfpxp8b6KvHeK7ts7t3nCGeFv9o=', '8LM/8OOc5zvjew==', '2'),"
-                    + "(8, 'Erik', 'Elefant', 'elefanten', 'foo@bar.com', 'Clv2a/V++MNDfaIylfpxp8b6KvHeK7ts7t3nCGeFv9o=', '8LM/8OOc5zvjew==', '2')";
-                    
+                    + "(8, 'Erik', 'Elefant', 'elefanten', 'foo@bar.com', 'Clv2a/V++MNDfaIylfpxp8b6KvHeK7ts7t3nCGeFv9o=', '8LM/8OOc5zvjew==', '2')";                    
 
             ps = db.getConnection().prepareStatement(insertUserData);
             ps.executeUpdate();
-
+            
+            // Category data.
             String insertCategoryData = "INSERT INTO category VALUES(null, 'Kul')";
-
+            
             PreparedStatement ps2 = db.getConnection().prepareStatement(insertCategoryData);
             ps2.executeUpdate();
-
+            
+            // User_category data.
+            String userCategoryData = "INSERT INTO user_category VALUES (1, 1)";
+            
+            ps = db.getConnection().prepareStatement(userCategoryData);
+            ps.executeUpdate();
+            
+            // Posts data.
             String insertPostsData = "INSERT INTO posts VALUES"
                     + " (null , 1, 'Bla', 'Bla', 1, 1, '2008-11-11')";
-
+            
             PreparedStatement ps3 = db.getConnection().prepareStatement(insertPostsData);
             ps3.executeUpdate();
             
