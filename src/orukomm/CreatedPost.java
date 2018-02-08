@@ -40,7 +40,7 @@ public class CreatedPost extends javax.swing.JFrame {
         fileURL2 = CreatePost.getFileURL2();
         fileURL3 = CreatePost.getFileURL3();
          
-         paintPicture(lblDisplay);
+        paintPicture(lblDisplay);
         
         this.textPost = textPost;
         setTxtCreatedPost();

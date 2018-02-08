@@ -153,30 +153,7 @@ public class FormalFeed extends javax.swing.JPanel {
         return fileNames;
     }
 
-    public void displayImage() throws IOException {
-        
-        image = null;
-        String imageQuery = "SELECT file FROM ATTACHMENT WHERE id=?";
-        try (Connection conn = fs.connect();
-                PreparedStatement pstmt = conn.prepareStatement(imageQuery)) {
-            pstmt.setInt(1, getPostId());
-            ResultSet rs = pstmt.executeQuery();
-
-            java.sql.Blob blob = rs.getBlob("file");
-            InputStream is = blob.getBinaryStream();
-            image = ImageIO.read(is);           
-            
-
-        } catch (SQLException ex) {
-            Logger.getLogger(FormalFeed.class.getName()).log(Level.SEVERE, null, ex);
-            
-        } 
-
-    }
     
-    public BufferedImage getImage(){
-        return image;
-    }
 
     /**
      * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The

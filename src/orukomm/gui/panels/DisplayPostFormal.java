@@ -5,6 +5,7 @@
  */
 package orukomm.gui.panels;
 
+import java.awt.Cursor;
 import java.awt.Image;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,6 +35,9 @@ public class DisplayPostFormal extends javax.swing.JPanel {
     /**
      * Creates new form CreatedPost
      */
+    public DisplayPostFormal() {
+    }
+
     public DisplayPostFormal(FormalFeed feed, String textPost, String title) throws IOException {
         initComponents();
         // bildURL = CreatePost.getBildURL();
@@ -87,20 +91,31 @@ public class DisplayPostFormal extends javax.swing.JPanel {
         if (fileNames.size() == 1) {
             lblURL1.setText(fileNames.get(0));
             lblBifogad1.setText("Bifogad fil1: ");
+
+            lblURL1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         }
         if (fileNames.size() == 2) {
             lblURL1.setText(fileNames.get(0));
             lblURL2.setText(fileNames.get(1));
+
             lblBifogad1.setText("Bifogad fil1: ");
             lblBifogad2.setText("Bifogad fil2: ");
+
+            lblURL1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            lblURL2.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         }
         if (fileNames.size() == 3) {
             lblURL1.setText(fileNames.get(0));
             lblURL2.setText(fileNames.get(1));
             lblURL3.setText(fileNames.get(2));
+
             lblBifogad1.setText("Bifogad fil1: ");
             lblBifogad2.setText("Bifogad fil2: ");
             lblBifogad3.setText("Bifogad fil3: ");
+
+            lblURL1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            lblURL2.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            lblURL3.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         }
     }
 
@@ -126,6 +141,11 @@ public class DisplayPostFormal extends javax.swing.JPanel {
 
         lblHeading.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         lblHeading.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        lblHeading.addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                lblHeadingComponentShown(evt);
+            }
+        });
 
         lblURL1.setForeground(new java.awt.Color(0, 0, 255));
         lblURL1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
@@ -227,6 +247,10 @@ public class DisplayPostFormal extends javax.swing.JPanel {
     private void lblURL3ComponentAdded(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_lblURL3ComponentAdded
         lblBifogad3.setText("Bifogad fil3: ");
     }//GEN-LAST:event_lblURL3ComponentAdded
+
+    private void lblHeadingComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_lblHeadingComponentShown
+        paintPicture(lblDisplay);
+    }//GEN-LAST:event_lblHeadingComponentShown
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
