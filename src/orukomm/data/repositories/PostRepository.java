@@ -63,7 +63,7 @@ public class PostRepository {
         return post;
     }
 
-    public ArrayList<Post> fillList() {
+    public ArrayList<Post> fillListFormal() {
         ArrayList<Post> postList = new ArrayList<>();
         Post post;
 
@@ -101,7 +101,7 @@ public class PostRepository {
         return postList;
 
     }
-        public ArrayList<Post> fillList2() {
+        public ArrayList<Post> fillListInformal() {
         ArrayList<Post> postList = new ArrayList<>();
         Post post;
 

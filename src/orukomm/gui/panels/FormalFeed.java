@@ -46,7 +46,7 @@ public class FormalFeed extends javax.swing.JPanel {
             this.dsv = new DisplayPostFormal((this), description, title);
             initComponents();
             PostRepository pr = new PostRepository();
-            this.posts = pr.fillList();
+            this.posts = pr.fillListFormal();
             initPanels();
         } catch (IOException ex) {
             Logger.getLogger(FormalFeed.class.getName()).log(Level.SEVERE, null, ex);
@@ -179,11 +179,11 @@ public class FormalFeed extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Titel", "Författare", "Datum", "ID"
+                "Titel", "Författare", "Datum"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -201,7 +201,6 @@ public class FormalFeed extends javax.swing.JPanel {
             tblFormalFeed.getColumnModel().getColumn(0).setResizable(false);
             tblFormalFeed.getColumnModel().getColumn(1).setResizable(false);
             tblFormalFeed.getColumnModel().getColumn(2).setResizable(false);
-            tblFormalFeed.getColumnModel().getColumn(3).setResizable(false);
         }
 
         pnlFeed.setLayout(new java.awt.CardLayout());
