@@ -1,17 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package orukomm;
 
 import java.io.File;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame; 
 import javax.swing.WindowConstants;
@@ -19,15 +12,8 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import orukomm.data.FileStorage;
-import orukomm.data.entities.Category;
 import orukomm.data.entities.User;
-import orukomm.data.repositories.CategoryRepository;
-import orukomm.gui.MainWindow;
 
-/**
- *
- * @author Pontu
- */
 public class CreatePost extends javax.swing.JFrame {
     private static String bildURL;
     private static String fileURL;

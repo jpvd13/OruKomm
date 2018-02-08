@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package orukomm.data.repositories;
 
 import java.sql.PreparedStatement;
@@ -19,10 +14,6 @@ import orukomm.data.Database;
 import static orukomm.data.Database.close;
 import orukomm.data.entities.Post;
 
-/**
- *
- * @author Ludvig
- */
 public class PostRepository {
     private static Database db;
 

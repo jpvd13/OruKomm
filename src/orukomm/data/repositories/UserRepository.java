@@ -1,6 +1,5 @@
 package orukomm.data.repositories;
 
-import java.awt.List;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;

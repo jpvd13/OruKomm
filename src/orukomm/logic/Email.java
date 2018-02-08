@@ -42,7 +42,7 @@ public class Email {
     public Email() {
         Properties properties = new Properties();
 
-        // SMTP sdettings.
+        // SMTP settings.
         properties.put("mail.smtp.user", "orukomm@gmail.com");
         properties.put("mail.smtp.host", "smtp.gmail.com");
         properties.put("mail.smtp.port", "25");
