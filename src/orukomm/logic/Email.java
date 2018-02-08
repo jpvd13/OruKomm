@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Properties;
 import javax.mail.Message;
 import javax.mail.MessagingException;
-import javax.mail.Multipart;
 import javax.mail.Session;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Transport;
@@ -22,27 +21,28 @@ public class Email {
 
     private Session session;
 
-    
     /*
      * Test code for sending email:
  
-       ArrayList<User> recipients = new ArrayList<>();
-       User user = new User();
-       user.setEmail("orukomm2@gmail.com");
-       recipients.add(user);
+        ArrayList<User> recipients = new ArrayList<>();
+        User user = new User();
+        User user2 = new User();
+        user.setEmail("orukomm2@gmail.com");
+        user2.setEmail("ad.solecki@gmail.com");
+        recipients.add(user);
+        recipients.add(user2);
 
-       String heading = "E-mail heading";
-       String body = String.format("<h1>I are email</h1><p>Hello, %s</p>", user.getEmail());
+        String heading = "E-mail heading";
+        String body = String.format("<h1>I are email</h1>\n<p>Hello, %s!</p>", user.getFirstName());
 
-       Email email = new Email();
-       email.send(heading, body, recipients);
+        Email email = new Email();
+        email.send(heading, body, recipients);
      * 
      */
-    
     public Email() {
         Properties properties = new Properties();
 
-        // SMTP settings.
+        // SMTP server settings.
         properties.put("mail.smtp.user", "orukomm@gmail.com");
         properties.put("mail.smtp.host", "smtp.gmail.com");
         properties.put("mail.smtp.port", "25");
@@ -64,20 +64,29 @@ public class Email {
 
     }
 
+    /*
+     * Sends an email to all recipients in @param recipients.
+     */
     public void send(String heading, String body, ArrayList<User> recipients) {
         try {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(username));
-            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(recipients.get(0).getEmail())); // TODO iterate through all recipients.
-            message.setSubject(heading);
 
+            String recipientsCsv = "";
+            for (User user : recipients) {
+                recipientsCsv += user.getEmail() + ",";
+            }
+
+            message.addRecipients(Message.RecipientType.TO, InternetAddress.parse(recipientsCsv));
+            message.setSubject(heading);
             message.setContent(body, "text/html; charset=utf8");
+            
             Transport.send(message);
-            System.out.println("email sent");
+            System.out.println("E-mail successfully sent");
 
         } catch (MessagingException me) {
             throw new RuntimeException(me);
-        }        
+        }
     }
 
     public String getHeading() {
