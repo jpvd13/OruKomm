@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
@@ -41,6 +42,8 @@ public class InformalFeed extends javax.swing.JPanel {
     private int post_id;
     DisplayPostInformal dsv;
     
+    static ImageIcon ii;
+    
     public InformalFeed(MainWindow parentFrame) {
         try {
             this.dsv = new DisplayPostInformal((this), description, title);
@@ -48,6 +51,7 @@ public class InformalFeed extends javax.swing.JPanel {
             PostRepository pr = new PostRepository();
             this.posts = pr.fillList2();
             initPanels();
+           
         } catch (IOException ex) {
             Logger.getLogger(InformalFeed.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -156,7 +160,37 @@ public class InformalFeed extends javax.swing.JPanel {
         return fileNames;
     }
     
+    public void selectImage() throws IOException {
         
+        
+     String imageQuery = "SELECT file FROM attachments WHERE post_id=?";
+        try (Connection conn = fs.connect();
+            PreparedStatement pstmt = conn.prepareStatement(imageQuery)) {
+            pstmt.setInt(1, getPostId());
+            System.out.println(getPostId());
+            ResultSet rs = pstmt.executeQuery();
+            while(rs.next()){
+            byte[] bytes = rs.getBytes("file");
+            ii = new ImageIcon(bytes);
+            }
+            
+          
+            
+
+        } catch (SQLException ex) {
+            Logger.getLogger(FormalFeed.class.getName()).log(Level.SEVERE, null, ex);
+            
+        }  
+
+    }
+    
+    public ImageIcon getImage(){
+        return ii;                  
+       
+   
+      
+   } 
+   
         
     
 
