@@ -140,5 +140,27 @@ public class PostRepository {
 
     }
         
+    public void updatePost(int id, String title, String description)
+        {
+            PreparedStatement ps = null;
+            
+            String query = String.format("UPDATE posts SET title = ?, description = ? WHERE id = ?");
+            
+            try {
+                
+            ps = db.getConnection().prepareStatement(query);
+            
+            ps.setString(1, title);
+            ps.setString(2, description);
+            ps.setInt(3, id);
+           
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(UserRepository.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            close(null, ps, null);
+        }
+            
+        }
         
 }
