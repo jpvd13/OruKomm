@@ -1,6 +1,8 @@
 package orukomm.data;
 
+import java.io.File;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -185,7 +187,8 @@ public class DataInitializer {
             
             // Posts data.
             String insertPostsData = "INSERT INTO posts VALUES"
-                    + " (null , 1, 'Bla', 'Bla', 1, 1, '2008-11-11')";
+                    + " (null , 1, 'Bla', 'Bla', 1, 1, '2008-11-11') ,"
+                    + " (null , 1, 'bild', 'bild', 1, 1, '2008-02-08')";
             
             PreparedStatement ps3 = db.getConnection().prepareStatement(insertPostsData);
             ps3.executeUpdate();
@@ -231,8 +234,8 @@ public class DataInitializer {
             
             String userResearchGrpData = "INSERT INTO user_research_group VALUES(1,1)";
             ps = db.getConnection().prepareStatement(userResearchGrpData);
-            ps.executeUpdate();
-            
+            ps.executeUpdate();          
+                                   
             
         } catch (SQLException ex) {
             Logger.getLogger(DataInitializer.class.getName()).log(Level.SEVERE, null, ex);

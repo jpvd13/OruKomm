@@ -113,7 +113,7 @@ public class FileStorage {
         String updateSQL = "INSERT INTO attachments values(null, ?, ?, ?)";
 
         try (Connection conn = connect();
-                PreparedStatement pstmt = conn.prepareStatement(updateSQL)) {
+            PreparedStatement pstmt = conn.prepareStatement(updateSQL)) {
 
             pstmt.setInt(1, postId);
             pstmt.setBytes(2, FileStorage.this.readFile(file));

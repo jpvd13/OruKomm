@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
@@ -40,7 +41,10 @@ public class InformalFeed extends javax.swing.JPanel {
     private String description;
     private int post_id;
     DisplayPostInformal dsv;
+    private ImageIcon imageIcon;
+
     
+
     public InformalFeed(MainWindow parentFrame) {
         try {
             this.dsv = new DisplayPostInformal((this), description, title);
@@ -48,30 +52,27 @@ public class InformalFeed extends javax.swing.JPanel {
             PostRepository pr = new PostRepository();
             this.posts = pr.fillListInformal();
             initPanels();
+
         } catch (IOException ex) {
             Logger.getLogger(InformalFeed.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
-    
-    
+
     private void initPanels() {
-		pnlInfoFeed.setVisible(true);
-	}
-    
+        pnlInfoFeed.setVisible(true);
+    }
+
     public void switchPanel(JPanel panel) {
-		pnlInfoFeed.removeAll();
-		pnlInfoFeed.repaint();
-		pnlInfoFeed.revalidate();
-		pnlInfoFeed.add(panel);
-		pnlInfoFeed.repaint();
-		pnlInfoFeed.revalidate();
-	}
-    
-  
+        pnlInfoFeed.removeAll();
+        pnlInfoFeed.repaint();
+        pnlInfoFeed.revalidate();
+        pnlInfoFeed.add(panel);
+        pnlInfoFeed.repaint();
+        pnlInfoFeed.revalidate();
+    }
 
     public void fillTable() {
-        
 
         DefaultTableModel model = (DefaultTableModel) tblFormalFeed.getModel();  //Typecastar JTablemodellen till en DefaultTableModel
         Object[] row = new Object[3];    // Använder Object klassen så att Arrayn kan ta in vilka object som helst
@@ -79,34 +80,30 @@ public class InformalFeed extends javax.swing.JPanel {
             row[0] = posts.get(i).getTitle();
             row[1] = posts.get(i).getUsername();
             row[2] = posts.get(i).getDate();
-            
+
             model.addRow(row);
         }
 
     }
-    
-    public int getPostId(){
+
+    public int getPostId() {
         return post_id;
     }
-    
+
     private void selectPost(){
         int columnTitle = 0;
         int columnPoster = 1;
-        
-      
-        
+
         int row = tblFormalFeed.getSelectedRow();
         title = tblFormalFeed.getModel().getValueAt(row, columnTitle).toString();
         String poster = tblFormalFeed.getModel().getValueAt(row, columnPoster).toString();
         description = "";
-       
-        
-       
-        
+
         for (Post post : posts) {
             if (post.getUsername().equals(poster) && post.getTitle().equals(title)) {
                 description = post.getDescription();
                 post_id = post.getId();
+                
             }
         }
         try {
@@ -114,9 +111,9 @@ public class InformalFeed extends javax.swing.JPanel {
         } catch (IOException ex) {
             Logger.getLogger(InformalFeed.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }  
-    
-       public void chooseDirectory() {
+    }   
+            
+    public void chooseDirectory() {
 
         JFileChooser chooser = new JFileChooser();
         chooser.setCurrentDirectory(new java.io.File("."));
@@ -127,14 +124,14 @@ public class InformalFeed extends javax.swing.JPanel {
         if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
             System.out.println("getCurrentDirectory(): " + chooser.getCurrentDirectory());
             System.out.println("getSelectedFile() : " + chooser.getSelectedFile());
-            fs.selectFile(getPostId(), chooser.getSelectedFile().toString()+"\\");
+            fs.selectFile(getPostId(), chooser.getSelectedFile().toString() + "\\");
         } else {
             System.out.println("No Selection ");
         }
     }
 
     public ArrayList<String> getFileName() {
-        FileStorage fs = new FileStorage();               
+        FileStorage fs = new FileStorage();
 
         ArrayList<String> fileNames = new ArrayList<String>();
 
@@ -145,20 +142,44 @@ public class InformalFeed extends javax.swing.JPanel {
             pstmt.setInt(1, getPostId());
             ResultSet rs = pstmt.executeQuery();
 
-            while (rs.next()){
+            while (rs.next()) {
 
-                fileNames.add(rs.getString("name"));               
-                           }
+                fileNames.add(rs.getString("name"));
+            }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
 
         }
         return fileNames;
     }
-    
+
+    public ImageIcon selectImage() throws IOException {
         
-        
-    
+        imageIcon = new ImageIcon();
+        String selectSQL = ("SELECT file FROM attachments WHERE post_id = ?");
+        try (Connection conn = fs.connect();
+                PreparedStatement pstmt = conn.prepareStatement(selectSQL)) {
+
+            pstmt.setInt(1, getPostId());
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                byte[] bytes = rs.getBytes("file");
+                imageIcon = new ImageIcon(bytes);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(FormalFeed.class.getName()).log(Level.SEVERE, null, ex);
+
+        }
+       
+        return imageIcon;
+    } 
+
+   /* public ImageIcon getImage() {
+        return ii;
+
+    }*/
 
     /**
      * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The
@@ -227,8 +248,10 @@ public class InformalFeed extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void tblFormalFeedMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblFormalFeedMouseClicked
-        selectPost();     
-      
+       selectPost();
+       
+            
+
     }//GEN-LAST:event_tblFormalFeedMouseClicked
 
 
