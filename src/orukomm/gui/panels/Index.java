@@ -1,17 +1,20 @@
 package orukomm.gui.panels;
 
+import java.util.ArrayList;
+import orukomm.data.entities.User;
 import orukomm.gui.MainWindow;
+import orukomm.logic.Email;
 
 /*
  * First panel to display after successful login.
  */
 public class Index extends javax.swing.JPanel {
 
-	public Index(MainWindow parentFrame) {
-		initComponents();
-	}
+    public Index(MainWindow parentFrame) {
+        initComponents();
+    }
 
-	@SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked")
         // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
         private void initComponents() {
 
