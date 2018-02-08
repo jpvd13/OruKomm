@@ -24,7 +24,7 @@ public class DataInitializer {
         
         try {
             ps = db.getConnection().prepareStatement("DROP TABLE IF EXISTS "
-                    + "  `meeting_time_suggestion_user`, `meeting_time_suggestion`, `user_meeting`, `meeting`, `attachments`, `posts`, `user_category`, research_group, `category`, `user`");
+                    + " `meeting_time_suggestion_user`, `meeting_time_suggestion`, `user_meeting`, `meeting`, `attachments`, `posts`, `user_category`, `user_research_group`, `research_group`, `category`, `user`");
 
             ps.executeUpdate();
 
@@ -110,17 +110,7 @@ public class DataInitializer {
 
             ps = db.getConnection().prepareStatement(createMeetingTimeSuggestion);
             ps.executeUpdate();
-
-            
-            // Research groups.
-            String createResearchGrp = "CREATE TABLE research_group ("
-                    + "id INT(11) NOT NULL AUTO_INCREMENT, name VARCHAR(250) NOT NULL,"
-                    + "group_admin INT(11) NOT NULL,"
-                    + "PRIMARY KEY (id), FOREIGN KEY(group_admin) REFERENCES `user`(`id`))"
-                    + " ENGINE=InnoDB DEFAULT CHARSET=utf8";
-            
-            ps = db.getConnection().prepareStatement(createResearchGrp);
-            ps.executeUpdate(); 
+         
             
             // Many-to-many realtionship table between a user and time sugggestions.
             String createTimeSuggestionUserTbl = "CREATE TABLE meeting_time_suggestion_user ("
@@ -131,6 +121,29 @@ public class DataInitializer {
                     + "ENGINE=InnoDB DEFAULT CHARSET=utf8";
             
             ps = db.getConnection().prepareStatement(createTimeSuggestionUserTbl);
+            ps.executeUpdate();
+            
+            
+            // Research groups.
+            String createResearchGrp = "CREATE TABLE research_group ("
+                    + "id INT(11) NOT NULL AUTO_INCREMENT, name VARCHAR(250) NOT NULL,"
+                    + "group_admin INT(11) NOT NULL,"
+                    + "PRIMARY KEY (id), FOREIGN KEY(group_admin) REFERENCES `user`(`id`))"
+                    + "ENGINE=InnoDB DEFAULT CHARSET=utf8";
+            
+            ps = db.getConnection().prepareStatement(createResearchGrp);
+            ps.executeUpdate(); 
+            
+            // User_research_group.
+            String userResearchGrp = "CREATE TABLE user_research_group ("
+                    + "group_id INT(11) NOT NULL,"
+                    + "member_id INT(11) NOT NULL,"
+                    + "PRIMARY KEY (group_id, member_id),"
+                    + "FOREIGN KEY(group_id) REFERENCES research_group(id),"
+                    + "FOREIGN KEY (member_id) REFERENCES `user`(`id`))"
+                    + "ENGINE=InnoDB DEFAULT CHARSET=utf8";
+            
+            ps = db.getConnection().prepareStatement(userResearchGrp);
             ps.executeUpdate();
             
         } catch (SQLException ex) {
@@ -215,6 +228,11 @@ public class DataInitializer {
                     + "(5,2), (5,4), (5,6), (6,1), (6,4), (6,5), (7,1), (9,1)";
             ps = db.getConnection().prepareStatement(timeSuggestionUser);
             ps.executeLargeUpdate();
+            
+            String userResearchGrpData = "INSERT INTO user_research_group VALUES(1,1)";
+            ps = db.getConnection().prepareStatement(userResearchGrpData);
+            ps.executeUpdate();
+            
             
         } catch (SQLException ex) {
             Logger.getLogger(DataInitializer.class.getName()).log(Level.SEVERE, null, ex);
