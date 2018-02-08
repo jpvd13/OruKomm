@@ -3,8 +3,10 @@ package orukomm.gui.panels;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import javax.swing.DefaultListModel;
 import orukomm.data.entities.Meeting;
+import orukomm.data.entities.User;
 import orukomm.data.repositories.MeetingRepository;
 import orukomm.gui.MainWindow;
 
@@ -28,7 +30,7 @@ public class Meetings extends javax.swing.JPanel {
     public Meetings(MainWindow parentFrame) {
         initComponents();
         this.parentFrame = parentFrame;
-
+        
         meetingRepo = new MeetingRepository();
 
         lstMdlCreatedMeeting = new DefaultListModel<>();
