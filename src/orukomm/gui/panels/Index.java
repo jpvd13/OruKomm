@@ -1,7 +1,6 @@
 package orukomm.gui.panels;
 
 import orukomm.gui.MainWindow;
-import orukomm.logic.Email;
 
 /*
  * First panel to display after successful login.
@@ -10,8 +9,6 @@ public class Index extends javax.swing.JPanel {
 
 	public Index(MainWindow parentFrame) {
 		initComponents();
-//                Email email = new Email();
-//                email.send(recipients);
 	}
 
 	@SuppressWarnings("unchecked")
