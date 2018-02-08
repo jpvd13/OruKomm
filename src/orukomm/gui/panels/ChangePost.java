@@ -6,11 +6,17 @@
 package orukomm.gui.panels;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
+import orukomm.data.FileStorage;
 import orukomm.data.entities.Post;
 import orukomm.data.repositories.PostRepository;
 import orukomm.gui.MainWindow;
@@ -34,10 +40,15 @@ public class ChangePost extends javax.swing.JPanel {
     private String description;
     private int post_id;
     DisplayPostV2 dsv;
+    DisplayPostFormal formal;
+    DisplayPostInformal informal;
+    FileStorage fs = new FileStorage();
     
     public ChangePost(MainWindow parentFrame) {
         try {
-            this.dsv = new DisplayPostV2(pnlPost, description, title, post_id);
+            //this.dsv = new DisplayPostV2(pnlPost, description, title, post_id);
+            this.formal = new DisplayPostFormal((this), description, title);
+            this.informal = new DisplayPostInformal((this), description, title);
             initComponents();
             initPanels();
         } catch (IOException ex) {
@@ -70,7 +81,7 @@ public class ChangePost extends javax.swing.JPanel {
             row[0] = posts.get(i).getTitle();
             row[1] = posts.get(i).getUsername();
             row[2] = posts.get(i).getDate();
-            row[3] = posts.get(i).getId(); //Ska tas bort när vi hittar lösning på hur vi hämtar ut post ID till attachments
+            //row[3] = posts.get(i).getId(); //Ska tas bort när vi hittar lösning på hur vi hämtar ut post ID till attachments
             model.addRow(row);
         }
 
@@ -110,7 +121,47 @@ public class ChangePost extends javax.swing.JPanel {
         } catch (IOException ex) {
             Logger.getLogger(ChangePost.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }  
+    }
+    
+     public void chooseDirectory() {
+
+        JFileChooser chooser = new JFileChooser();
+        chooser.setCurrentDirectory(new java.io.File("."));
+        chooser.setDialogTitle("Choose destination");
+        chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        chooser.setAcceptAllFileFilterUsed(false);
+
+        if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
+            System.out.println("getCurrentDirectory(): " + chooser.getCurrentDirectory());
+            System.out.println("getSelectedFile() : " + chooser.getSelectedFile());
+            fs.selectFile(getPostId(), chooser.getSelectedFile().toString()+"\\");
+        } else {
+            System.out.println("No Selection ");
+        }
+    }
+
+    public ArrayList<String> getFileName() {
+        FileStorage fs = new FileStorage();               
+
+        ArrayList<String> fileNames = new ArrayList<String>();
+
+        String selectSQL = ("SELECT name FROM attachments WHERE post_id = ?");
+        try (Connection conn = fs.connect();
+                PreparedStatement pstmt = conn.prepareStatement(selectSQL)) {
+
+            pstmt.setInt(1, getPostId());
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()){
+
+                fileNames.add(rs.getString("name"));               
+                           }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+
+        }
+        return fileNames;
+    }
     
         
         
@@ -220,14 +271,14 @@ public class ChangePost extends javax.swing.JPanel {
     private void rbtnFormalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbtnFormalActionPerformed
         clearTable();
         PostRepository pr = new PostRepository();
-            this.posts = pr.fillList();
+            this.posts = pr.fillListFormal();
             fillTable();
     }//GEN-LAST:event_rbtnFormalActionPerformed
 
     private void rbtnInformalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbtnInformalActionPerformed
         clearTable();
         PostRepository pr = new PostRepository();
-            this.posts = pr.fillList2();
+            this.posts = pr.fillListInformal();
             fillTable();
     }//GEN-LAST:event_rbtnInformalActionPerformed
 

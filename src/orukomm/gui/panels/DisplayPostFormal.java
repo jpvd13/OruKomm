@@ -31,6 +31,7 @@ public class DisplayPostFormal extends javax.swing.JPanel {
     private FileStorage fs = new FileStorage();
     private ArrayList<String> fileNames = new ArrayList<String>();
     private FormalFeed ff;
+    private ChangePost chp;
 
     /**
      * Creates new form CreatedPost
@@ -48,6 +49,31 @@ public class DisplayPostFormal extends javax.swing.JPanel {
         this.textPost = textPost;
         
         fileNames = ff.getFileName();
+        this.title = title;
+        
+        setTxtHeadingPost();
+        setAttachedFilesTxt();
+        setTxtCreatedPost();
+
+        txtUserOutput.setEditable(false);
+        txtUserOutput.setLineWrap(true);
+        txtUserOutput.setWrapStyleWord(true);
+
+        
+    }
+    public DisplayPostFormal(ChangePost chp, String textPost, String title) throws IOException {
+        initComponents();
+        //bildURL = CreatePostPanel.getBildURL();
+        // fileName = CreatePost.getFileURL();
+        // fileName2 = CreatePost.getFileURL2();
+        // fileURL3 = CreatePost.getFileURL3();  
+
+        //paintPicture(lblDisplay);
+        
+        this.chp = chp;
+        this.textPost = textPost;
+        
+        fileNames = chp.getFileName();
         this.title = title;
         
         setTxtHeadingPost();

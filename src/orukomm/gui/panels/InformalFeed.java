@@ -46,7 +46,7 @@ public class InformalFeed extends javax.swing.JPanel {
             this.dsv = new DisplayPostInformal((this), description, title);
             initComponents();
             PostRepository pr = new PostRepository();
-            this.posts = pr.fillList2();
+            this.posts = pr.fillListInformal();
             initPanels();
         } catch (IOException ex) {
             Logger.getLogger(InformalFeed.class.getName()).log(Level.SEVERE, null, ex);
@@ -178,11 +178,11 @@ public class InformalFeed extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Titel", "Författare", "Datum", "ID"
+                "Titel", "Författare", "Datum"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -200,7 +200,6 @@ public class InformalFeed extends javax.swing.JPanel {
             tblFormalFeed.getColumnModel().getColumn(0).setResizable(false);
             tblFormalFeed.getColumnModel().getColumn(1).setResizable(false);
             tblFormalFeed.getColumnModel().getColumn(2).setResizable(false);
-            tblFormalFeed.getColumnModel().getColumn(3).setResizable(false);
         }
 
         pnlInfoFeed.setLayout(new java.awt.CardLayout());
