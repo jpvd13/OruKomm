@@ -172,11 +172,6 @@ public class DisplayPostFormal extends javax.swing.JPanel {
 
         lblHeading.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         lblHeading.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
-        lblHeading.addComponentListener(new java.awt.event.ComponentAdapter() {
-            public void componentShown(java.awt.event.ComponentEvent evt) {
-                lblHeadingComponentShown(evt);
-            }
-        });
 
         lblURL1.setForeground(new java.awt.Color(0, 0, 255));
         lblURL1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));

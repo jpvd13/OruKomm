@@ -97,9 +97,6 @@
         </Property>
         <Property name="horizontalTextPosition" type="int" value="0"/>
       </Properties>
-      <Events>
-        <EventHandler event="componentShown" listener="java.awt.event.ComponentListener" parameters="java.awt.event.ComponentEvent" handler="lblHeadingComponentShown"/>
-      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="lblBifogad1">
     </Component>
