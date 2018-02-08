@@ -238,8 +238,6 @@ public class MeetingRepository implements Repository<Meeting> {
                 + "JOIN user ON user.id = meeting_time_suggestion_user.user_id "
                 + "WHERE meeting_id = %d GROUP BY meeting_time_suggestion.id, time ORDER BY votes DESC", meeting.getId());
                 
-                String getTimeSuggestions2 = String.format("SELECT * FROM meeting_time_suggestion WHERE meeting_id = %d", meeting.getId());
-
                 psTime = db.getConnection().prepareStatement(getTimeSuggestions);
                 rsTime = psTime.executeQuery();
 

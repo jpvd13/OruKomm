@@ -31,6 +31,7 @@ public class DisplayPostFormal extends javax.swing.JPanel {
     private FileStorage fs = new FileStorage();
     private ArrayList<String> fileNames = new ArrayList<String>();
     private FormalFeed ff;
+    private ChangePost chp;
 
     /**
      * Creates new form CreatedPost
@@ -40,27 +41,53 @@ public class DisplayPostFormal extends javax.swing.JPanel {
 
     public DisplayPostFormal(FormalFeed feed, String textPost, String title) throws IOException {
         initComponents();
-        // bildURL = CreatePost.getBildURL();
+        //bildURL = CreatePostPanel.getBildURL();
         // fileName = CreatePost.getFileURL();
         // fileName2 = CreatePost.getFileURL2();
         // fileURL3 = CreatePost.getFileURL3();  
 
         //paintPicture(lblDisplay);
+        
         this.ff = feed;
         this.textPost = textPost;
-        setTxtCreatedPost();
+        
         fileNames = ff.getFileName();
         this.title = title;
+        
         setTxtHeadingPost();
-
         setAttachedFilesTxt();
+        setTxtCreatedPost();
 
         txtUserOutput.setEditable(false);
-
         txtUserOutput.setLineWrap(true);
-
         txtUserOutput.setWrapStyleWord(true);
 
+        
+    }
+    public DisplayPostFormal(ChangePost chp, String textPost, String title) throws IOException {
+        initComponents();
+        //bildURL = CreatePostPanel.getBildURL();
+        // fileName = CreatePost.getFileURL();
+        // fileName2 = CreatePost.getFileURL2();
+        // fileURL3 = CreatePost.getFileURL3();  
+
+        //paintPicture(lblDisplay);
+        
+        this.chp = chp;
+        this.textPost = textPost;
+        
+        fileNames = chp.getFileName();
+        this.title = title;
+        
+        setTxtHeadingPost();
+        setAttachedFilesTxt();
+        setTxtCreatedPost();
+
+        txtUserOutput.setEditable(false);
+        txtUserOutput.setLineWrap(true);
+        txtUserOutput.setWrapStyleWord(true);
+
+        
     }
 
     private void setTxtCreatedPost() {
@@ -117,6 +144,10 @@ public class DisplayPostFormal extends javax.swing.JPanel {
             lblURL2.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             lblURL3.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
         }
+        
+         lblURL1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+         lblURL2.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+         lblURL3.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
     }
 
     /**
@@ -152,6 +183,9 @@ public class DisplayPostFormal extends javax.swing.JPanel {
         lblURL1.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 lblURL1MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                lblURL1MouseEntered(evt);
             }
         });
 
@@ -248,9 +282,11 @@ public class DisplayPostFormal extends javax.swing.JPanel {
         lblBifogad3.setText("Bifogad fil3: ");
     }//GEN-LAST:event_lblURL3ComponentAdded
 
-    private void lblHeadingComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_lblHeadingComponentShown
-        paintPicture(lblDisplay);
-    }//GEN-LAST:event_lblHeadingComponentShown
+
+    private void lblURL1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblURL1MouseEntered
+      
+    }//GEN-LAST:event_lblURL1MouseEntered
+
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

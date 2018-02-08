@@ -3,21 +3,23 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package orukomm;
+package orukomm.gui.panels;
 
 import java.awt.Image;
 import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import orukomm.data.FileStorage;
+import orukomm.data.repositories.PostRepository;
 import orukomm.gui.panels.FormalFeed;
 
 /**
  *
  * @author Pontu
  */
-public class DisplayPostV extends javax.swing.JPanel {
+public class DisplayPostV2 extends javax.swing.JPanel {
 
     private static String bildURL;
     private static String textPost;
@@ -26,14 +28,19 @@ public class DisplayPostV extends javax.swing.JPanel {
     private static String fileName2;
     private static String fileName3;
     private static ImageIcon attachedImage;
-    private FormalFeed panel; 
     private FileStorage fs = new FileStorage();
-    private ArrayList<String> fileNames = new ArrayList<String>(); 
+    private ArrayList<String> fileNames = new ArrayList<String>();
+    private JPanel panel;
+    private int id;
 
     /**
      * Creates new form CreatedPost
      */
-    public DisplayPostV(FormalFeed panel, String textPost, String title) throws IOException {
+    
+    
+    
+     
+     public DisplayPostV2(JPanel panel, String textPost, String title, int id) throws IOException {
         initComponents();
         // bildURL = CreatePost.getBildURL();
         // fileName = CreatePost.getFileURL();
@@ -43,6 +50,7 @@ public class DisplayPostV extends javax.swing.JPanel {
         fileNames = fs.getFileName();        
 
         //paintPicture(lblDisplay);
+        this.id = id;
         this.panel = panel;
         this.textPost = textPost;
         setTxtCreatedPost();
@@ -52,7 +60,7 @@ public class DisplayPostV extends javax.swing.JPanel {
 
         setAttachedFilesTxt();
 
-        txtUserOutput.setEditable(false);
+        
 
         txtUserOutput.setLineWrap(true);
 
@@ -66,7 +74,8 @@ public class DisplayPostV extends javax.swing.JPanel {
     }
 
     public void setTxtHeadingPost() {
-        lblHeading.setText(title);
+        txtHeading.setText(title);
+        
 
     }
 
@@ -90,6 +99,17 @@ public class DisplayPostV extends javax.swing.JPanel {
            
         }
     }
+    
+    private String getText()
+    {
+       return txtUserOutput.getText();
+        
+    }
+    
+    private String getTitle()
+    {
+        return txtHeading.getText();
+    }
 
     /**
      * /**
@@ -101,7 +121,6 @@ public class DisplayPostV extends javax.swing.JPanel {
     private void initComponents() {
 
         lblDisplay = new javax.swing.JLabel();
-        lblHeading = new javax.swing.JLabel();
         lblBifogad1 = new javax.swing.JLabel();
         lblBifogad3 = new javax.swing.JLabel();
         lblURL1 = new javax.swing.JLabel();
@@ -110,9 +129,8 @@ public class DisplayPostV extends javax.swing.JPanel {
         lblBifogad2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtUserOutput = new javax.swing.JTextArea();
-
-        lblHeading.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
-        lblHeading.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+        txtHeading = new javax.swing.JTextField();
+        btnEdit = new javax.swing.JButton();
 
         lblBifogad1.setText("Bifogad fil 1:");
 
@@ -138,6 +156,15 @@ public class DisplayPostV extends javax.swing.JPanel {
         txtUserOutput.setRows(5);
         jScrollPane1.setViewportView(txtUserOutput);
 
+        txtHeading.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
+
+        btnEdit.setText("Ändra");
+        btnEdit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -146,11 +173,7 @@ public class DisplayPostV extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblDisplay, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(lblHeading, javax.swing.GroupLayout.DEFAULT_SIZE, 565, Short.MAX_VALUE)
-                                .addGap(12, 12, 12))))
+                        .addComponent(lblDisplay, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(58, 58, 58)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -166,18 +189,23 @@ public class DisplayPostV extends javax.swing.JPanel {
                                 .addComponent(lblBifogad3)
                                 .addGap(18, 18, 18)
                                 .addComponent(lblURL3, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnEdit)
+                        .addGap(0, 35, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(jScrollPane1)))
+                        .addComponent(jScrollPane1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(txtHeading)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lblHeading, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(txtHeading, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(71, 71, 71)
                 .addComponent(lblDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -185,15 +213,17 @@ public class DisplayPostV extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(lblBifogad1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblURL1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(lblBifogad2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblURL2, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(lblBifogad2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(lblURL2, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnEdit))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(lblBifogad3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(lblURL3, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -201,17 +231,24 @@ public class DisplayPostV extends javax.swing.JPanel {
         fs.chooseDirectory();
     }//GEN-LAST:event_lblURL1MouseClicked
 
+    private void btnEditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditActionPerformed
+        PostRepository ps = new PostRepository();
+        
+        ps.updatePost(id, getTitle(), getText());
+    }//GEN-LAST:event_btnEditActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnEdit;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblBifogad1;
     private javax.swing.JLabel lblBifogad2;
     private javax.swing.JLabel lblBifogad3;
     private javax.swing.JLabel lblDisplay;
-    private javax.swing.JLabel lblHeading;
     private javax.swing.JLabel lblURL1;
     private javax.swing.JLabel lblURL2;
     private javax.swing.JLabel lblURL3;
+    private javax.swing.JTextField txtHeading;
     private javax.swing.JTextArea txtUserOutput;
     // End of variables declaration//GEN-END:variables
 }

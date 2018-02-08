@@ -9,6 +9,7 @@ import orukomm.data.entities.User;
 import orukomm.data.entities.User.PermissionFlag;
 import orukomm.gui.dialogs.AddCategory;
 import orukomm.gui.panels.AdminUpdateUsers;
+import orukomm.gui.panels.ChangePost;
 import orukomm.gui.panels.CreateMeeting;
 import orukomm.gui.panels.CreatePostPanel;
 import orukomm.gui.panels.FormalFeed;
@@ -152,10 +153,10 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
                 switchPanel(informalFeed);
                 break;
                 
-          //  case "mnuChangePost":
-          //      ChangePost changePost = new ChangePost(this);
-            //    switchPanel(changePost);
-            //    break;
+           case "mnuChangePost":
+               ChangePost changePost = new ChangePost(this);
+               switchPanel(changePost);
+               break;
 
             case "mnuNewPost":
                 switchPanel(new CreatePostPanel((this)));
