@@ -17,9 +17,9 @@ public class EmailJob implements Job {
     private Email email;
     
     public EmailJob() {
-//        userRepo = new UserRepository();
+        userRepo = new UserRepository();
 //        recipients = userRepo.getUsersWithSummedNotifications(); // Retrieve recipients. TODO fix user table
-//        email = new Email();
+        email = new Email();
     }
     
     @Override

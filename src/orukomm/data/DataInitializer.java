@@ -177,12 +177,7 @@ public class DataInitializer {
             PreparedStatement ps2 = db.getConnection().prepareStatement(insertCategoryData);
             ps2.executeUpdate();
             
-            // User_category data.
-            String userCategoryData = "INSERT INTO user_category VALUES (1, 1)";
-            
-            ps = db.getConnection().prepareStatement(userCategoryData);
-            ps.executeUpdate();
-            
+                      
             // Posts data.
             String insertPostsData = "INSERT INTO posts VALUES"
                     + " (null , 1, 'Bla', 'Bla', 1, 1, '2008-11-11') ,"

@@ -8,13 +8,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
-
 import orukomm.data.DataInitializer;
 import orukomm.data.Database;
 import static orukomm.data.Database.close;
 import orukomm.data.entities.Post;
 
 public class PostRepository {
+
     private static Database db;
 
     public PostRepository() {
@@ -29,7 +29,7 @@ public class PostRepository {
         ResultSet rs = null;
 
         String query = String.format("SELECT * FROM posts WHERE id = '%d'", id); // måste ändras när tabellen är skapad. 
-                                                                                //ändrade från user till posts. 
+        //ändrade från user till posts. 
 
         try {
             ps = db.getConnection().prepareStatement(query);
@@ -41,14 +41,14 @@ public class PostRepository {
                 post.setTitle(rs.getString("titel"));
                 post.setUsername(rs.getString("poster"));
                 post.setDate(rs.getString("date"));
-                
-                System.out.println(rs.getInt("titel"));                
+
+                System.out.println(rs.getInt("titel"));
                 System.out.println(rs.getInt("id"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(UserRepository.class.getName()).log(Level.SEVERE, null, ex);
-        //} finally {
-        //    close(rs, ps, null);
+        } finally {
+            close(rs, ps, null);
         }
 
         return post;
@@ -66,19 +66,17 @@ public class PostRepository {
         try {
             ps = db.getConnection().prepareStatement(query);
             rs = ps.executeQuery();
- 
+
             while (rs.next()) {
-                
+
                 post = new Post();
                 post.setUsername(rs.getString("username"));
-                post.setTitle(rs.getString("title"));                
+                post.setTitle(rs.getString("title"));
                 post.setDate(rs.getString("date"));
                 post.setDescription(rs.getString("description"));
                 post.setFlow(rs.getInt("flow"));
                 post.setId(rs.getInt("id"));
-                
-                        
-                
+
                 postList.add(post);
             }
 
@@ -86,13 +84,14 @@ public class PostRepository {
             Logger.getLogger(DataInitializer.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, "databasfel");
         }
-        finally {
-            close(rs, ps, null);
-        }
+        //finally {
+        //    close(rs, ps, null);
+        // }
         return postList;
 
     }
-        public ArrayList<Post> fillListInformal() {
+
+    public ArrayList<Post> fillListInformal() {
         ArrayList<Post> postList = new ArrayList<>();
         Post post;
 
@@ -104,19 +103,17 @@ public class PostRepository {
         try {
             ps = db.getConnection().prepareStatement(query);
             rs = ps.executeQuery();
- 
+
             while (rs.next()) {
-                
+
                 post = new Post();
                 post.setUsername(rs.getString("username"));
-                post.setTitle(rs.getString("title"));                
+                post.setTitle(rs.getString("title"));
                 post.setDate(rs.getString("date"));
                 post.setDescription(rs.getString("description"));
                 post.setFlow(rs.getInt("flow"));
                 post.setId(rs.getInt("id"));
-                
-                        
-                
+
                 postList.add(post);
             }
 
@@ -126,32 +123,115 @@ public class PostRepository {
         }
         //finally {
         //    close(rs, ps, null);
-       // }
+        // }
         return postList;
 
     }
-        
-    public void updatePost(int id, String title, String description)
-        {
-            PreparedStatement ps = null;
-            
-            String query = String.format("UPDATE posts SET title = ?, description = ? WHERE id = ?");
-            
-            try {
-                
+
+    public void updatePost(int id, String title, String description) {
+        PreparedStatement ps = null;
+
+        String query = String.format("UPDATE posts SET title = ?, description = ? WHERE id = ?");
+
+        try {
+
             ps = db.getConnection().prepareStatement(query);
-            
+
             ps.setString(1, title);
             ps.setString(2, description);
             ps.setInt(3, id);
-           
+
             ps.executeUpdate();
         } catch (SQLException ex) {
             Logger.getLogger(UserRepository.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             close(null, ps, null);
         }
-            
+
+    }
+
+    public ArrayList<Post> fillCategoriesListInformal() {
+        ArrayList<Post> postList = new ArrayList<>();
+        Post post;
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        String query = String.format("select username, title, `date`, description, flow, posts.id from posts\n"
+                + "join `user` on `user`.id = poster\n"
+                + "join category on category.id = posts.category\n"
+                + "where category.id not in(select user_category.category_id\n"
+                + "from user_category where user_category.user_id = poster)\n"
+                + "and flow = 1 ORDER BY date DESC;");
+
+        try {
+            ps = db.getConnection().prepareStatement(query);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+
+                post = new Post();
+                post.setUsername(rs.getString("username"));
+                post.setTitle(rs.getString("title"));
+                post.setDate(rs.getString("date"));
+                post.setDescription(rs.getString("description"));
+                post.setFlow(rs.getInt("flow"));
+                post.setId(rs.getInt("id"));
+
+                postList.add(post);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(DataInitializer.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "databasfel");
         }
-        
+        //finally {
+        //    close(rs, ps, null);
+        // }
+        return postList;
+
+    }
+
+    public ArrayList<Post> fillCategoriesListFormal() {
+        ArrayList<Post> postList = new ArrayList<>();
+        Post post;
+
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        String query = String.format("select username, title, `date`, description, flow, posts.id from posts\n"
+                + "join `user` on `user`.id = poster\n"
+                + "join category on category.id = posts.category\n"
+                + "where category.id not in(select user_category.category_id\n"
+                + "from user_category where user_category.user_id = poster)\n"
+                + "and flow = 0 ORDER BY date DESC;");
+
+        try {
+            ps = db.getConnection().prepareStatement(query);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+
+                post = new Post();
+                post.setUsername(rs.getString("username"));
+                post.setTitle(rs.getString("title"));
+                post.setDate(rs.getString("date"));
+                post.setDescription(rs.getString("description"));
+                post.setFlow(rs.getInt("flow"));
+                post.setId(rs.getInt("id"));
+
+                postList.add(post);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(DataInitializer.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "databasfel");
+        }
+        //finally {
+        //    close(rs, ps, null);
+        // }
+        return postList;
+
+    }
+
 }

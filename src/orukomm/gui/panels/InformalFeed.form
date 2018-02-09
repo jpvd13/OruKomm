@@ -16,11 +16,19 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Group type="102" alignment="0" attributes="0">
-              <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
-              <Component id="jScrollPane1" min="-2" pref="305" max="-2" attributes="0"/>
-              <EmptySpace type="separate" max="-2" attributes="0"/>
-              <Component id="pnlInfoFeed" min="-2" max="-2" attributes="0"/>
+          <Group type="102" attributes="0">
+              <Group type="103" groupAlignment="0" attributes="0">
+                  <Group type="102" attributes="0">
+                      <EmptySpace min="-2" pref="13" max="-2" attributes="0"/>
+                      <Component id="jScrollPane1" min="-2" pref="305" max="-2" attributes="0"/>
+                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <Component id="pnlInfoFeed" min="-2" max="-2" attributes="0"/>
+                  </Group>
+                  <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" pref="85" max="-2" attributes="0"/>
+                      <Component id="btnFiltrateCategories" min="-2" max="-2" attributes="0"/>
+                  </Group>
+              </Group>
               <EmptySpace pref="445" max="32767" attributes="0"/>
           </Group>
       </Group>
@@ -33,7 +41,9 @@
                   <Component id="jScrollPane1" min="-2" pref="266" max="-2" attributes="0"/>
                   <Component id="pnlInfoFeed" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="198" max="32767" attributes="0"/>
+              <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
+              <Component id="btnFiltrateCategories" min="-2" max="-2" attributes="0"/>
+              <EmptySpace pref="140" max="32767" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -91,5 +101,13 @@
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.DesignCardLayout"/>
     </Container>
+    <Component class="javax.swing.JButton" name="btnFiltrateCategories">
+      <Properties>
+        <Property name="text" type="java.lang.String" value="Filtrera kategorier"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnFiltrateCategoriesActionPerformed"/>
+      </Events>
+    </Component>
   </SubComponents>
 </Form>
