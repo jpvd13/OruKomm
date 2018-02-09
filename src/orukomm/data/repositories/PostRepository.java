@@ -95,9 +95,9 @@ public class PostRepository {
             Logger.getLogger(DataInitializer.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, "databasfel");
         }
-        //finally {
-        //    close(rs, ps, null);
-       // }
+        finally {
+            close(rs, ps, null);
+        }
         return postList;
 
     }
