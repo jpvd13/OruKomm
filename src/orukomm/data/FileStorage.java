@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import orukomm.data.entities.User;
 import orukomm.data.repositories.PostRepository;
 
@@ -32,8 +33,8 @@ public class FileStorage {
 
     public User loggedInUser = new User();
     private PostRepository pr = new PostRepository();
-    
-   
+
+    private int fileSize;
     int postId;
 
     public Connection connect() {
@@ -96,23 +97,37 @@ public class FileStorage {
 
     public void insertFile(String file) {
         // update sql
-        
         String fileName = file.substring(file.lastIndexOf("\\") + 1);
         selectMax();
         String updateSQL = "INSERT INTO attachments values(null, ?, ?, ?)";
 
         try (Connection conn = connect();
-            PreparedStatement pstmt = conn.prepareStatement(updateSQL)) {
+                PreparedStatement pstmt = conn.prepareStatement(updateSQL)) {
 
             pstmt.setInt(1, postId);
             pstmt.setBytes(2, FileStorage.this.readFile(file));
             pstmt.setString(3, fileName);
 
-            pstmt.executeUpdate();
-            System.out.println("Stored file as "+fileName+" in attachments column.");            
+            fileSize = readFile(file).length;
+            System.out.println(fileSize);
+            if (fileSize <= 26144400) {
+                pstmt.executeUpdate();
+                System.out.println("Stored file as " + fileName + " in attachments column.");
+               
+            } else {
+                JOptionPane.showMessageDialog(null, fileName + " är för stor (" + fileSize / 1024 / 1024 + "MB). Får max vara 25MB");
+            }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public boolean fileSize() {
+        boolean ok = true;
+        if (fileSize > 52428799) {
+            ok = false;
+        }
+        return ok;
     }
 
     /**
@@ -134,21 +149,21 @@ public class FileStorage {
             conn = connect();
             pstmt = conn.prepareStatement(selectSQL);
             pstmt.setInt(1, post_id);
-            
+
             rs = pstmt.executeQuery();
             rs.next();
             Blob size = rs.getBlob("file");
             long blob = size.length();
             int blobSize = toIntExact(blob);
-        
+
             String fileName = rs.getString("name");
             System.out.println(fileName);
-            
+
             rs.previous();
             // write binary stream into file
             file = new File(url + fileName);
-            fos = new FileOutputStream(file);           
-            
+            fos = new FileOutputStream(file);
+
             System.out.println(blobSize);
 
             System.out.println("Writing BLOB to file " + file.getAbsolutePath());
@@ -157,8 +172,7 @@ public class FileStorage {
                 byte[] buffer = new byte[blobSize];
                 while (input.read(buffer) > 0) {
                     fos.write(buffer);
-                    
-                    
+
                 }
             }
         } catch (SQLException | IOException e) {
@@ -183,7 +197,7 @@ public class FileStorage {
                 System.out.println(e.getMessage());
             }
         }
-        
+
     }
 
     /* public void getBlobImage(int attachmentId) throws SQLException, IOException {
@@ -216,7 +230,8 @@ public class FileStorage {
             pstmt.executeUpdate();
 
         } catch (SQLException ex) {
-            Logger.getLogger(FileStorage.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FileStorage.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
 
     }
@@ -232,7 +247,7 @@ public class FileStorage {
         if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
             System.out.println("getCurrentDirectory(): " + chooser.getCurrentDirectory());
             System.out.println("getSelectedFile() : " + chooser.getSelectedFile());
-            selectFile(2, chooser.getSelectedFile().toString()+"\\");
+            selectFile(2, chooser.getSelectedFile().toString() + "\\");
         } else {
             System.out.println("No Selection ");
         }
@@ -240,7 +255,6 @@ public class FileStorage {
 
     public ArrayList<String> getFileName() {
         FileStorage fs = new FileStorage();
-                    
 
         ArrayList<String> fileNames = new ArrayList<String>();
 
@@ -251,9 +265,9 @@ public class FileStorage {
             pstmt.setInt(1, 2);
             ResultSet rs = pstmt.executeQuery();
 
-            while (rs.next()){
+            while (rs.next()) {
 
-                fileNames.add(rs.getString("name"));               
+                fileNames.add(rs.getString("name"));
                 return fileNames;
             }
         } catch (SQLException e) {
