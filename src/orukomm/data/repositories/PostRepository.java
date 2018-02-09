@@ -56,8 +56,8 @@ public class PostRepository {
             }
         } catch (SQLException ex) {
             Logger.getLogger(UserRepository.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            close(rs, ps, null);
+        //} finally {
+        //    close(rs, ps, null);
         }
 
         return post;
