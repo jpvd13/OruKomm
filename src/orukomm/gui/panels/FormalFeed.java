@@ -45,14 +45,16 @@ public class FormalFeed extends javax.swing.JPanel {
     private int post_id;
     DisplayPostFormal dsv;
     static BufferedImage image;
+    private MainWindow parentFrame;
 
     public FormalFeed(MainWindow parentFrame) {
         try {
             this.dsv = new DisplayPostFormal((this), description, title);
             initComponents();
             PostRepository pr = new PostRepository();
-            this.posts = pr.fillListFormal();
+            this.posts = pr.fillCategoriesListFormal();
             initPanels();
+            this.parentFrame = parentFrame;
         } catch (IOException ex) {
             Logger.getLogger(FormalFeed.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -167,6 +169,7 @@ public class FormalFeed extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblFormalFeed = new javax.swing.JTable();
         pnlFeed = new javax.swing.JPanel();
+        btnFiltrateCategories = new javax.swing.JButton();
 
         tblFormalFeed.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -199,15 +202,27 @@ public class FormalFeed extends javax.swing.JPanel {
 
         pnlFeed.setLayout(new java.awt.CardLayout());
 
+        btnFiltrateCategories.setText("Filtrera kategorier");
+        btnFiltrateCategories.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFiltrateCategoriesActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(13, 13, 13)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(pnlFeed, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(13, 13, 13)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(pnlFeed, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(55, 55, 55)
+                        .addComponent(btnFiltrateCategories)))
                 .addContainerGap(445, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -217,7 +232,9 @@ public class FormalFeed extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(pnlFeed, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(198, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(btnFiltrateCategories)
+                .addContainerGap(155, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -226,8 +243,13 @@ public class FormalFeed extends javax.swing.JPanel {
 
     }//GEN-LAST:event_tblFormalFeedMouseClicked
 
+    private void btnFiltrateCategoriesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrateCategoriesActionPerformed
+        parentFrame.switchPanel(new PickCategories(parentFrame));
+    }//GEN-LAST:event_btnFiltrateCategoriesActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnFiltrateCategories;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel pnlFeed;
     public javax.swing.JTable tblFormalFeed;
