@@ -78,41 +78,11 @@ public class ChangePost extends javax.swing.JPanel {
     
   
 
-    public void fillTable() {
-        
-        
-
-        DefaultTableModel model = (DefaultTableModel) tblFormalFeed.getModel();  //Typecastar JTablemodellen till en DefaultTableModel
-        Object[] row = new Object[3];    // Använder Object klassen så att Arrayn kan ta in vilka object som helst
-        for (int i = 0; i < posts.size(); i++) {
-            row[0] = posts.get(i).getTitle();
-            row[1] = posts.get(i).getUsername();
-            row[2] = posts.get(i).getDate();
-            //row[3] = posts.get(i).getId(); //Ska tas bort när vi hittar lösning på hur vi hämtar ut post ID till attachments
-            model.addRow(row);
-        }
-    }
+   
     
-     public void fillTableUser() {
-        
-        
-
-        DefaultTableModel model = (DefaultTableModel) tblFormalFeed.getModel();  //Typecastar JTablemodellen till en DefaultTableModel
-        Object[] row = new Object[3]; // Använder Object klassen så att Arrayn kan ta in vilka object som helst
-       
-        
-        for (int i = 0; i < userPosts.size(); i++) {
-            
-            row[0] = userPosts.get(i).getTitle();
-            row[1] = userPosts.get(i).getUsername();
-            row[2] = userPosts.get(i).getDate();
-            //row[3] = posts.get(i).getId(); //Ska tas bort när vi hittar lösning på hur vi hämtar ut post ID till attachments
-            model.addRow(row);
-        }
-        
-    }
      
-     public void fillTablekuk(ArrayList<Post> list) {
+     
+     public void fillTable(ArrayList<Post> list) {
         
         
 
@@ -335,12 +305,12 @@ public class ChangePost extends javax.swing.JPanel {
         {
             this.posts = pr.fillListFormal();
             userPosts = userPosts();
-            fillTablekuk(userPosts);
+            fillTable(userPosts);
         }
         else
         {
             this.posts = pr.fillListFormal();
-        fillTablekuk(posts);
+        fillTable(posts);
         }
             
     }//GEN-LAST:event_rbtnFormalActionPerformed
@@ -353,12 +323,12 @@ public class ChangePost extends javax.swing.JPanel {
           {
           this.posts = pr.fillListInformal();
           userPosts = userPosts();
-          fillTablekuk(userPosts);
+          fillTable(userPosts);
           }
           
           else {
           this.posts = pr.fillListInformal();
-          fillTablekuk(posts);
+          fillTable(posts);
           }
         
         
