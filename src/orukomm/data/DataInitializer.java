@@ -82,6 +82,7 @@ public class DataInitializer {
             String createAttTable = "CREATE TABLE attachments ("
                     + "id int(11) NOT NULL AUTO_INCREMENT, post_id int,"
                     + "file LONGBLOB,"
+                    + "type bit,"
                     + "name VARCHAR(100),"
                     + "PRIMARY KEY (id),"
                     + "FOREIGN KEY (post_id) REFERENCES posts(id))"

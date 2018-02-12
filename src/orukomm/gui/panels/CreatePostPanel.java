@@ -147,14 +147,14 @@ public class CreatePostPanel extends javax.swing.JPanel {
     public void insertAttachedFiles() {
 
         if (!lblURL1.getText().isEmpty() && !lblURL2.getText().isEmpty() && !lblURL3.getText().isEmpty()) {
-            fs.insertFile(fileURL);
-            fs.insertFile(fileURL2);
-            fs.insertFile(fileURL3);
+            fs.insertFile(fileURL, 0);
+            fs.insertFile(fileURL2, 0);
+            fs.insertFile(fileURL3, 0);
         } else if (!lblURL1.getText().isEmpty() && !lblURL2.getText().isEmpty()) {
-            fs.insertFile(fileURL);
-            fs.insertFile(fileURL2);
+            fs.insertFile(fileURL, 0);
+            fs.insertFile(fileURL2, 0);
         } else if (!lblURL1.getText().isEmpty()) {
-            fs.insertFile(fileURL);
+            fs.insertFile(fileURL, 0);
         } else {
 
         }
@@ -163,7 +163,7 @@ public class CreatePostPanel extends javax.swing.JPanel {
     public void insertAttachedPicture() {
 
         if (!lblImageURL.getText().isEmpty()) {
-            fs.insertFile(bildURL);
+            fs.insertFile(bildURL, 1);
 
         }
     }

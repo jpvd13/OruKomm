@@ -135,7 +135,7 @@ public class FormalFeed extends javax.swing.JPanel {
 
         ArrayList<String> fileNames = new ArrayList<String>();
 
-        String selectSQL = ("SELECT name FROM attachments WHERE post_id = ?");
+        String selectSQL = ("SELECT name FROM attachments WHERE post_id = ? AND type = 0");
         try (Connection conn = fs.connect();
                 PreparedStatement pstmt = conn.prepareStatement(selectSQL)) {
 
@@ -157,7 +157,7 @@ public class FormalFeed extends javax.swing.JPanel {
     public ImageIcon selectImage() throws IOException {
         resizedImage = new ImageIcon();
         imageIcon = new ImageIcon();
-        String selectSQL = ("SELECT file FROM attachments WHERE post_id = ?");
+        String selectSQL = ("SELECT file FROM attachments WHERE post_id = ? AND type = 1");
         try (Connection conn = fs.connect();
                 PreparedStatement pstmt = conn.prepareStatement(selectSQL)) {
 
