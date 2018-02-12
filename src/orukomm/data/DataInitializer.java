@@ -24,9 +24,16 @@ public class DataInitializer {
         
         try {
             ps = db.getConnection().prepareStatement("DROP TABLE IF EXISTS "
-                    + " `meeting_time_suggestion_user`, `meeting_time_suggestion`, `user_meeting`, `meeting`, `attachments`, `posts`, `user_category`, `user_research_group`, `research_group`, `category`, `user`");
+                    + " `meeting_time_suggestion_user`, `meeting_time_suggestion`, `user_meeting`, "
+                    + " `meeting`, `attachments`, `posts`, `user_category`, `user_research_group`, `research_group`, `category`, `user`");
 
             ps.executeUpdate();
+            
+            //The database likes do double the size calculation of files. So for max 25MB (26 144 400 bytes) we need 52 428 800 bytes allowed.
+            String setMaxPacket = "SET GLOBAL max_allowed_packet=52428800;";
+            ps = db.getConnection().prepareStatement(setMaxPacket);
+            ps.executeQuery();
+            
 
             String createUserTable = "CREATE TABLE `user` ("
                     + "`id` int(11) NOT NULL AUTO_INCREMENT, `first_name` varchar(32) NOT NULL,"
@@ -74,7 +81,7 @@ public class DataInitializer {
 
             String createAttTable = "CREATE TABLE attachments ("
                     + "id int(11) NOT NULL AUTO_INCREMENT, post_id int,"
-                    + "file MEDIUMBLOB,"
+                    + "file LONGBLOB,"
                     + "name VARCHAR(100),"
                     + "PRIMARY KEY (id),"
                     + "FOREIGN KEY (post_id) REFERENCES posts(id))"
@@ -177,12 +184,7 @@ public class DataInitializer {
             PreparedStatement ps2 = db.getConnection().prepareStatement(insertCategoryData);
             ps2.executeUpdate();
             
-            // User_category data.
-            String userCategoryData = "INSERT INTO user_category VALUES (1, 1)";
-            
-            ps = db.getConnection().prepareStatement(userCategoryData);
-            ps.executeUpdate();
-            
+                      
             // Posts data.
             String insertPostsData = "INSERT INTO posts VALUES"
                     + " (null , 1, 'Bla', 'Bla', 1, 1, '2008-11-11') ,"
