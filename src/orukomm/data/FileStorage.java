@@ -95,18 +95,20 @@ public class FileStorage {
         return postId;
     }
 
-    public void insertFile(String file) {
+    public void insertFile(String file, int type) {
         // update sql
         String fileName = file.substring(file.lastIndexOf("\\") + 1);
         selectMax();
-        String updateSQL = "INSERT INTO attachments values(null, ?, ?, ?)";
+        String updateSQL = "INSERT INTO attachments values(null, ?, ?, ?, ?)";
 
         try (Connection conn = connect();
                 PreparedStatement pstmt = conn.prepareStatement(updateSQL)) {
 
             pstmt.setInt(1, postId);
             pstmt.setBytes(2, FileStorage.this.readFile(file));
-            pstmt.setString(3, fileName);
+            pstmt.setInt(3, type);
+            pstmt.setString(4, fileName);
+           
 
             fileSize = readFile(file).length;
             System.out.println(fileSize);
@@ -276,5 +278,28 @@ public class FileStorage {
         }
         return fileNames;
     }
+    
+    public int getFileID(int id, String name)
+    {
+        int fileID = 0;
+    FileStorage fs = new FileStorage();
+    String file = ("SELECT id FROM attachments WHERE post_id = ? AND name = ?");
+    
+    try (Connection conn = fs.connect();
+        PreparedStatement pstmt = conn.prepareStatement(file)) {
+
+            fileID = Integer.parseInt(file);
+
+           
+            }
+         catch (SQLException e) {
+            System.out.println(e.getMessage());
+
+        }
+        return fileID;
+    }
+        
+        
+    
 
 }

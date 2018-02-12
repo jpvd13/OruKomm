@@ -211,11 +211,11 @@ private void selectPost(){
 
             },
             new String [] {
-                "Titel", "Författare", "Datum", "ID"
+                "Titel", "Författare", "Datum"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -233,7 +233,6 @@ private void selectPost(){
             tblFormalFeed.getColumnModel().getColumn(0).setResizable(false);
             tblFormalFeed.getColumnModel().getColumn(1).setResizable(false);
             tblFormalFeed.getColumnModel().getColumn(2).setResizable(false);
-            tblFormalFeed.getColumnModel().getColumn(3).setResizable(false);
         }
 
         pnlPost.setLayout(new java.awt.CardLayout());
