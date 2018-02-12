@@ -3,7 +3,7 @@ package orukomm.gui.panels;
 import java.util.ArrayList;
 import orukomm.data.entities.User;
 import orukomm.gui.MainWindow;
-import orukomm.logic.Email;
+import orukomm.logic.scheduler.jobs.Email;
 
 /*
  * First panel to display after successful login.

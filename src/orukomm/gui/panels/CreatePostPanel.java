@@ -16,6 +16,7 @@ import orukomm.data.entities.Category;
 import orukomm.data.entities.User;
 import orukomm.data.repositories.CategoryRepository;
 import orukomm.gui.MainWindow;
+import orukomm.logic.security.Validation;
 
 public class CreatePostPanel extends javax.swing.JPanel {
 
@@ -425,17 +426,28 @@ public class CreatePostPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        
         if (buttonSelected()) {
             setTextPost();
 
             setHeadingPost();
-            fs.insertPost(parentFrame.loggedInUser.getId(), textHeading, textPost, lstCategory.getSelectedValue().getId(), getButton(), date);
+            fs.insertPost(parentFrame.loggedInUser.getId(),
+                    textHeading,
+                    textPost,
+                    lstCategory.getSelectedValue().getId(),
+                    getButton(),
+                    date);
 
             insertAttachedPicture();
             insertAttachedFiles();
+          if (lblURL1.getText().isEmpty() && lblURL2.getText().isEmpty() && lblURL3.getText().isEmpty() && lblImageURL.getText().isEmpty()) {
+              JOptionPane.showMessageDialog(null, "Inlägg skapat!");
+              
+            clearFields();
+          }
+                       
         }
-        JOptionPane.showMessageDialog(null, "Inlägg skapat");
-        clearFields();
+        
 
     }//GEN-LAST:event_jButton1ActionPerformed
 

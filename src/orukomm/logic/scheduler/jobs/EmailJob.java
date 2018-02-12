@@ -1,4 +1,4 @@
-package orukomm.logic;
+package orukomm.logic.scheduler.jobs;
 
 import java.util.ArrayList;
 import org.quartz.Job;
@@ -19,7 +19,7 @@ public class EmailJob implements Job {
     public EmailJob() {
         userRepo = new UserRepository();
 //        recipients = userRepo.getUsersWithSummedNotifications(); // Retrieve recipients. TODO fix user table
-        email = new Email();
+//        email = new Email();
     }
     
     @Override
@@ -27,8 +27,8 @@ public class EmailJob implements Job {
         // TODO fetch all new feed items since last email was sent. If any exists: Create
         // heading, body, and send email to recipients.
         
-//        email.send(heading, body, recipients);
         System.out.println("Email job ran.");
+//        email.send(heading, body, recipients);
     }
     
 }
