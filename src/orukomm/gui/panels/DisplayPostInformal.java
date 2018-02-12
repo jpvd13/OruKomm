@@ -22,18 +22,19 @@ import orukomm.data.FileStorage;
  */
 public class DisplayPostInformal extends javax.swing.JPanel {
 
-    private static String bildURL;
+    
     private static String textPost;
     private static String title;
-    private static String fileName;
-    private static String fileName2;
-    private static String fileName3;
+    
+    
+    
     private ImageIcon attachedImage;
     private FileStorage fs = new FileStorage();
     private ArrayList<String> fileNames = new ArrayList<String>();
     private InformalFeed iff;
     private ImageIcon image;
     private ChangePost chp;
+    private ImageIcon resizedImage;
 
 
     /**
@@ -54,6 +55,12 @@ public class DisplayPostInformal extends javax.swing.JPanel {
 
         this.fileNames = iff.getFileName();
         this.title = title;
+        
+        this.image = iff.selectImage();
+        
+        
+        
+        paintPicture();
         
         setTxtHeadingPost();
         setTxtCreatedPost();
@@ -81,6 +88,7 @@ public class DisplayPostInformal extends javax.swing.JPanel {
         fileNames = chp.getFileName();
         this.title = title;
         setTxtHeadingPost();
+        
 
         setAttachedFilesTxt();
 
@@ -102,17 +110,21 @@ public class DisplayPostInformal extends javax.swing.JPanel {
 
     }     
      
-    public void paintPicture(JLabel label) throws IOException {
-        resizeImage(label);
-        label.setIcon(image);
+    public void paintPicture() throws IOException {
+       // resizeImage();
+        lblDisplay.setIcon(image);
     }
 
-    private ImageIcon resizeImage(JLabel label1) throws IOException {
+    private void resizeImage() throws IOException {
         ImageIcon MyImage = iff.selectImage();
         Image img = MyImage.getImage();
-        Image newImg = img.getScaledInstance(label1.getWidth(), label1.getHeight(), Image.SCALE_SMOOTH);
-        image = new ImageIcon(newImg);
-        return image;
+        
+        Image newImg = img.getScaledInstance(lblDisplay.getWidth(), lblDisplay.getHeight(), Image.SCALE_SMOOTH);
+        resizedImage = new ImageIcon(newImg);
+        
+        
+        
+     // return new ImageIcon(newImg);
     }
 
     private void setAttachedFilesTxt() {
@@ -268,7 +280,7 @@ public class DisplayPostInformal extends javax.swing.JPanel {
 
     private void btnImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImageActionPerformed
         try {
-            paintPicture(lblDisplay);
+            paintPicture();
         } catch (IOException ex){
             Logger.getLogger(DisplayPostInformal.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NullPointerException n){
