@@ -5,6 +5,7 @@
  */
 package orukomm.gui.panels;
 
+import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,6 +18,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
@@ -36,16 +38,13 @@ public class FormalFeed extends javax.swing.JPanel {
      */
     private ArrayList<Post> posts;
     private FileStorage fs = new FileStorage();
-    private static String bildURL;
-    private static String fileURL;
-    private static String fileURL2;
-    private static String fileURL3;
     private String title;
     private String description;
     private int post_id;
     DisplayPostFormal dsv;
-    static BufferedImage image;
     private MainWindow parentFrame;
+     private ImageIcon imageIcon;
+    private ImageIcon resizedImage;
 
     public FormalFeed(MainWindow parentFrame) {
         try {
@@ -154,6 +153,33 @@ public class FormalFeed extends javax.swing.JPanel {
         }
         return fileNames;
     }
+    
+    public ImageIcon selectImage() throws IOException {
+        resizedImage = new ImageIcon();
+        imageIcon = new ImageIcon();
+        String selectSQL = ("SELECT file FROM attachments WHERE post_id = ?");
+        try (Connection conn = fs.connect();
+                PreparedStatement pstmt = conn.prepareStatement(selectSQL)) {
+
+            pstmt.setInt(1, getPostId());
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                
+                byte[] bytes = rs.getBytes("file");
+                imageIcon = new ImageIcon(bytes);
+                Image img = imageIcon.getImage();
+                Image newImg = img.getScaledInstance(607, 388, Image.SCALE_SMOOTH);
+                resizedImage = new ImageIcon(newImg);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(FormalFeed.class.getName()).log(Level.SEVERE, null, ex);
+
+        }
+       
+        return resizedImage;
+    } 
 
     
 

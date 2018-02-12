@@ -28,13 +28,13 @@ public class DisplayPostInformal extends javax.swing.JPanel {
     
     
     
-    private ImageIcon attachedImage;
+   
     private FileStorage fs = new FileStorage();
     private ArrayList<String> fileNames = new ArrayList<String>();
     private InformalFeed iff;
     private ImageIcon image;
     private ChangePost chp;
-    private ImageIcon resizedImage;
+    
 
 
     /**
@@ -42,12 +42,6 @@ public class DisplayPostInformal extends javax.swing.JPanel {
      */
     public DisplayPostInformal(InformalFeed feed, String textPost, String title) throws IOException {
         initComponents();
-        // bildURL = CreatePost.getBildURL();
-        // fileName = CreatePost.getFileURL();
-        // fileName2 = CreatePost.getFileURL2();
-        // fileURL3 = CreatePost.getFileURL3();  
-
-        
         
         this.iff = feed;
         
@@ -111,20 +105,7 @@ public class DisplayPostInformal extends javax.swing.JPanel {
     }     
      
     public void paintPicture() throws IOException {
-       // resizeImage();
         lblDisplay.setIcon(image);
-    }
-
-    private void resizeImage() throws IOException {
-        ImageIcon MyImage = iff.selectImage();
-        Image img = MyImage.getImage();
-        
-        Image newImg = img.getScaledInstance(lblDisplay.getWidth(), lblDisplay.getHeight(), Image.SCALE_SMOOTH);
-        resizedImage = new ImageIcon(newImg);
-        
-        
-        
-     // return new ImageIcon(newImg);
     }
 
     private void setAttachedFilesTxt() {

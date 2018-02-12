@@ -21,13 +21,9 @@ import orukomm.gui.panels.FormalFeed;
  */
 public class DisplayPostFormal extends javax.swing.JPanel {
 
-    private static String bildURL;
     private static String textPost;
     private static String title;
-    private static String fileName;
-    private static String fileName2;
-    private static String fileName3;
-    private static ImageIcon attachedImage;
+    private static ImageIcon image;
     private FileStorage fs = new FileStorage();
     private ArrayList<String> fileNames = new ArrayList<String>();
     private FormalFeed ff;
@@ -53,6 +49,11 @@ public class DisplayPostFormal extends javax.swing.JPanel {
         
         fileNames = ff.getFileName();
         this.title = title;
+        this.image = ff.selectImage();
+        
+        
+        
+        paintPicture();
         
         setTxtHeadingPost();
         setAttachedFilesTxt();
@@ -66,13 +67,7 @@ public class DisplayPostFormal extends javax.swing.JPanel {
     }
     public DisplayPostFormal(ChangePost chp, String textPost, String title) throws IOException {
         initComponents();
-        //bildURL = CreatePostPanel.getBildURL();
-        // fileName = CreatePost.getFileURL();
-        // fileName2 = CreatePost.getFileURL2();
-        // fileURL3 = CreatePost.getFileURL3();  
-
-        //paintPicture(lblDisplay);
-        
+               
         this.chp = chp;
         this.textPost = textPost;
         
@@ -100,17 +95,8 @@ public class DisplayPostFormal extends javax.swing.JPanel {
 
     }
 
-    public void paintPicture(JLabel label) {
-        resizeImage(label);
-        label.setIcon(attachedImage);
-    }
-
-    private ImageIcon resizeImage(JLabel label1) {
-        ImageIcon MyImage = new ImageIcon(bildURL);
-        Image img = MyImage.getImage();
-        Image newImg = img.getScaledInstance(label1.getWidth(), label1.getHeight(), Image.SCALE_SMOOTH);
-        ImageIcon image = new ImageIcon(newImg);
-        return image;
+    public void paintPicture() throws IOException {
+        lblDisplay.setIcon(image);
     }
 
     private void setAttachedFilesTxt() {

@@ -35,10 +35,6 @@ public class InformalFeed extends javax.swing.JPanel {
      */
     private ArrayList<Post> posts;
     private FileStorage fs = new FileStorage();
-    private static String bildURL;
-    private static String fileURL;
-    private static String fileURL2;
-    private static String fileURL3;
     private String title;
     private String description;
     private int post_id;
@@ -94,16 +90,6 @@ public class InformalFeed extends javax.swing.JPanel {
         return post_id;
     }
     
-   
-     private ImageIcon resizeImage() throws IOException {
-        ImageIcon MyImage = selectImage();
-        Image img = MyImage.getImage();
-        Image newImg = img.getScaledInstance(607, 388, Image.SCALE_SMOOTH);
-        //image = new ImageIcon(newImg);
-        
-      return new ImageIcon(newImg);
-    }
-
     private void selectPost(){
         int columnTitle = 0;
         int columnPoster = 1;
