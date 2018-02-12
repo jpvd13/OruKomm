@@ -82,6 +82,14 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Informellt fl&#xf6;de"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuInformalFeedActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="mnuFiltratePosts">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Filtrera inl&#xe4;gg"/>
+              </Properties>
             </MenuItem>
           </SubComponents>
         </Menu>

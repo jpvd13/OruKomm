@@ -7,6 +7,7 @@ package orukomm.gui.panels;
 
 import java.util.ArrayList;
 import javax.swing.DefaultListModel;
+import javax.swing.JOptionPane;
 import orukomm.data.entities.Category;
 import orukomm.data.entities.User;
 import orukomm.data.repositories.CategoryRepository;
@@ -204,7 +205,7 @@ public class PickCategories extends javax.swing.JPanel {
        insertToDB();
        removeFromDB();
 
-       parentFrame.switchPanel(new FormalFeed(parentFrame));
+       JOptionPane.showMessageDialog(null, "Inställningar för kategorier sparade.");
     }//GEN-LAST:event_btnSaveCategoriesActionPerformed
 
     private void btnAddCategoryActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddCategoryActionPerformed
