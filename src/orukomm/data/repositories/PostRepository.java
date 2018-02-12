@@ -191,6 +191,70 @@ public class PostRepository {
         return postList;
 
     }
+    public void DeleteFile(int id) {
+        PreparedStatement ps = null;
+
+        String query = String.format("DELETE from attachments WHERE id = ?");
+
+        try {
+
+            ps = db.getConnection().prepareStatement(query);
+
+
+            ps.setInt(1, id);
+
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(UserRepository.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            close(null, ps, null);
+        }
+
+    }
+
+            public void DeleteAllFiles(int id) {
+        PreparedStatement ps = null;
+
+        String query = String.format("DELETE from attachments WHERE post_id = ?");
+
+        try {
+
+            ps = db.getConnection().prepareStatement(query);
+
+
+            ps.setInt(1, id);
+
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(UserRepository.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            close(null, ps, null);
+        }
+
+    }
+            
+     public void DeletePost(int id) {
+        PreparedStatement ps = null;
+
+        String query = String.format("DELETE from posts WHERE id = ?");
+
+        try {
+
+            ps = db.getConnection().prepareStatement(query);
+
+
+            ps.setInt(1, id);
+
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(UserRepository.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            close(null, ps, null);
+        }
+
+    }
+
+
 
     public ArrayList<Post> fillCategoriesListFormal() {
         ArrayList<Post> postList = new ArrayList<>();
