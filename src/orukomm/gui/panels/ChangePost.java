@@ -5,6 +5,7 @@
  */
 package orukomm.gui.panels;
 
+import java.awt.Image;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,6 +14,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
@@ -41,18 +43,20 @@ public class ChangePost extends javax.swing.JPanel {
     private String username;
     private int role;
     private ArrayList<Post> userPosts;
+    private ImageIcon imageIcon;
+    private ImageIcon resizedImage;
            
     private int post_id;
     DisplayPostV2 dsv;
-    DisplayPostFormal formal;
-    DisplayPostInformal informal;
+    ChangePostFormal formal;
+    ChangePostInformal informal;
     FileStorage fs = new FileStorage();
     
     public ChangePost(MainWindow parentFrame) {
         try {
             //this.dsv = new DisplayPostV2(pnlPost, description, title, post_id);
-            this.formal = new DisplayPostFormal((this), description, title);
-            this.informal = new DisplayPostInformal((this), description, title);
+            this.formal = new ChangePostFormal((this), description, title);
+            this.informal = new ChangePostInformal((this), description, title);
             this.username = parentFrame.loggedInUser.getUsername();
             this.role = parentFrame.loggedInUser.getRole();
             initComponents();
@@ -127,7 +131,14 @@ private void selectPost(){
             }
         }
         try {
-            switchPanel(new DisplayPostFormal((this), description, title));
+            if(rbtnFormal.isSelected())
+            {
+            switchPanel(new ChangePostFormal((this), description, title));}
+            
+            else
+            {
+                switchPanel(new ChangePostInformal((this), description, title));
+            }
         } catch (IOException ex) {
             Logger.getLogger(FormalFeed.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -185,6 +196,33 @@ private void selectPost(){
         }
         return fileNames;
     }
+    
+    public ImageIcon selectImage() throws IOException {
+        resizedImage = new ImageIcon();
+        imageIcon = new ImageIcon();
+        String selectSQL = ("SELECT file FROM attachments WHERE post_id = ? AND type = 1");
+        try (Connection conn = fs.connect();
+                PreparedStatement pstmt = conn.prepareStatement(selectSQL)) {
+
+            pstmt.setInt(1, getPostId());
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                
+                byte[] bytes = rs.getBytes("file");
+                imageIcon = new ImageIcon(bytes);
+                Image img = imageIcon.getImage();
+                Image newImg = img.getScaledInstance(607, 388, Image.SCALE_SMOOTH);
+                resizedImage = new ImageIcon(newImg);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(FormalFeed.class.getName()).log(Level.SEVERE, null, ex);
+
+        }
+       
+        return resizedImage;
+    } 
     
         
         
