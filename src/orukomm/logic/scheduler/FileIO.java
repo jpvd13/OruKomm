@@ -7,9 +7,9 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class File {
+public class FileIO {
 
-    public File() {
+    public FileIO() {
     }
 
     public String read(String fileName) {
