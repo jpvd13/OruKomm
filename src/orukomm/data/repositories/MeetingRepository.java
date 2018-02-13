@@ -234,10 +234,10 @@ public class MeetingRepository implements Repository<Meeting> {
                 PreparedStatement psTime = null;
                 ResultSet rsTime = null;
                 String getTimeSuggestions = String.format("SELECT meeting_time_suggestion.id, meeting_id, time, COUNT(*) AS votes FROM meeting_time_suggestion "
-                + "JOIN meeting_time_suggestion_user ON meeting_time_suggestion_user.meeting_time_suggestion_id = meeting_time_suggestion.id "
-                + "JOIN user ON user.id = meeting_time_suggestion_user.user_id "
-                + "WHERE meeting_id = %d GROUP BY meeting_time_suggestion.id, time ORDER BY votes DESC", meeting.getId());
-                
+                        + "JOIN meeting_time_suggestion_user ON meeting_time_suggestion_user.meeting_time_suggestion_id = meeting_time_suggestion.id "
+                        + "JOIN user ON user.id = meeting_time_suggestion_user.user_id "
+                        + "WHERE meeting_id = %d GROUP BY meeting_time_suggestion.id, time ORDER BY votes DESC", meeting.getId());
+
                 psTime = db.getConnection().prepareStatement(getTimeSuggestions);
                 rsTime = psTime.executeQuery();
 
@@ -251,7 +251,7 @@ public class MeetingRepository implements Repository<Meeting> {
                     timeSuggestions.add(timeSuggestion);
                 }
                 meeting.setTimeSuggestions(timeSuggestions);
-                
+
                 meetings.add(meeting);
             }
 
@@ -275,13 +275,13 @@ public class MeetingRepository implements Repository<Meeting> {
             Logger.getLogger(MeetingRepository.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             close(null, ps, null);
-        }       
+        }
     }
 
     public void removeTimeSuggestion(int timeSuggestionId, int userId) {
         PreparedStatement ps = null;
         String query = String.format("DELETE FROM meeting_time_suggestion_user WHERE meeting_time_suggestion_id = %d AND user_id = %d", timeSuggestionId, userId);
-        
+
         try {
             ps = db.getConnection().prepareStatement(query);
             ps.executeUpdate();
@@ -289,7 +289,7 @@ public class MeetingRepository implements Repository<Meeting> {
             Logger.getLogger(MeetingRepository.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     /*
      * Returns bool attending status for provided user at provided meeting.
      */
@@ -298,24 +298,24 @@ public class MeetingRepository implements Repository<Meeting> {
         ResultSet rs = null;
         int attending = 0;
         String query = String.format("SELECT attending FROM user_meeting WHERE user_id = %d AND meeting_id = %d", userId, meetingId);
-        
+
         try {
             ps = db.getConnection().prepareStatement(query);
             rs = ps.executeQuery();
-            
+
             if (Database.fetchedRows(rs) == 1) {
                 attending = rs.getInt("attending");
             }
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(MeetingRepository.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             close(null, ps, null);
         }
-        
+
         return attending == 1;
     }
-   
+
     @Override
     public void remove(Meeting entity) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -331,4 +331,139 @@ public class MeetingRepository implements Repository<Meeting> {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    public ArrayList<Meeting> getAllMeetings() {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        ArrayList<Meeting> meetings = new ArrayList<>();
+        String query = String.format("SELECT * FROM meeting WHERE date >= CURDATE() ORDER BY date");
+
+        try {
+            ps = db.getConnection().prepareStatement(query);
+            rs = ps.executeQuery();
+
+            // Create meetings array.
+            while (rs.next()) {
+                Meeting meeting = new Meeting();
+                meeting.setId(rs.getInt("id"));
+                meeting.setMeetingCallerUserId(rs.getInt("meeting_caller"));
+                meeting.setTitle(rs.getString("title"));
+                meeting.setDescription(rs.getString("description"));
+                meeting.setDate(rs.getDate("date"));
+
+                meetings.add(meeting);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MeetingRepository.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            close(rs, ps, null);
+        }
+
+        return meetings;
+    }
+
+    public void deleteMeeting(int meetingId) {
+        PreparedStatement ps = null;
+
+        String query1 = ("delete from meeting_time_suggestion_user where\n"
+                + "meeting_time_suggestion_id in(select meeting_time_suggestion.id from meeting_time_suggestion\n"
+                + "where meeting_time_suggestion.meeting_id = ?)");
+
+        String query2 = ("DELETE from meeting_time_suggestion where meeting_id = ?");
+
+        String query3 = ("DELETE FROM user_meeting WHERE meeting_id = ?");
+
+        String query4 = ("DELETE FROM meeting WHERE id = ?");
+
+        try {
+            ps = db.getConnection().prepareStatement(query1);
+            ps.setInt(1, meetingId);
+            ps.executeUpdate();
+
+            ps = db.getConnection().prepareStatement(query2);
+            ps.setInt(1, meetingId);
+            ps.executeUpdate();
+
+            ps = db.getConnection().prepareStatement(query3);
+            ps.setInt(1, meetingId);
+            ps.executeUpdate();
+
+            ps = db.getConnection().prepareStatement(query4);
+            ps.setInt(1, meetingId);
+            ps.executeUpdate();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(MeetingRepository.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            close(null, ps, null);
+        }
+
+    }
+
+    public void deleteMeetingTimeSuggestionUser(int meetingId) {
+        PreparedStatement ps = null;
+
+        String query1 = ("delete from meeting_time_suggestion_user where \n"
+                + "meeting_time_suggestion_id in(select meeting_time_suggestion.id from meeting_time_suggestion \n"
+                + "where meeting_time_suggestion.meeting_id = ?)");
+
+        try {
+            ps = db.getConnection().prepareStatement(query1);
+            ps.setInt(1, meetingId);
+            ps.executeUpdate();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(MeetingRepository.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            close(null, ps, null);
+        }
+
+    }
+
+    public void deleteMeetingTimeSuggestion(int meetingId) {
+        PreparedStatement ps = null;
+
+        String query2 = ("DELETE from meeting_time_suggestion where meeting_id = ?");
+
+        try {
+            ps = db.getConnection().prepareStatement(query2);
+            ps.setInt(1, meetingId);
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(MeetingRepository.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            close(null, ps, null);
+        }
+    }
+
+    public void deleteUserMeeting(int meetingId) {
+        PreparedStatement ps = null;
+
+        String query3 = ("DELETE FROM user_meeting WHERE meeting_id = ?");
+
+        try {
+            ps = db.getConnection().prepareStatement(query3);
+            ps.setInt(1, meetingId);
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(MeetingRepository.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            close(null, ps, null);
+        }
+    }
+
+    public void deleteMeeting1(int meetingId) {
+        PreparedStatement ps = null;
+
+        String query4 = ("DELETE FROM meeting WHERE id = ?");
+
+        try {
+            ps = db.getConnection().prepareStatement(query4);
+            ps.setInt(1, meetingId);
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(MeetingRepository.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            close(null, ps, null);
+        }
+    }
 }
