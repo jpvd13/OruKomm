@@ -36,17 +36,17 @@
                       <Group type="102" attributes="0">
                           <EmptySpace min="-2" pref="224" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jLabel1" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
                               <Group type="102" alignment="0" attributes="0">
                                   <Component id="jScrollPane3" min="-2" pref="170" max="-2" attributes="0"/>
-                                  <EmptySpace pref="36" max="32767" attributes="0"/>
-                                  <Group type="103" groupAlignment="1" attributes="0">
-                                      <Component id="btnAddCategory" min="-2" max="-2" attributes="0"/>
+                                  <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
+                                  <Group type="103" groupAlignment="0" attributes="0">
                                       <Component id="btnRemoveCategory" min="-2" max="-2" attributes="0"/>
+                                      <Component id="btnAddCategory" alignment="1" min="-2" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
-                          <EmptySpace pref="34" max="32767" attributes="0"/>
+                          <EmptySpace pref="44" max="32767" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="jScrollPane4" min="-2" pref="170" max="-2" attributes="0"/>
                               <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
@@ -57,7 +57,7 @@
                           <Component id="btnSaveCategories" min="-2" pref="155" max="-2" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace pref="240" max="32767" attributes="0"/>
+                  <EmptySpace pref="244" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -76,17 +76,18 @@
                               <Component id="jScrollPane3" alignment="1" min="-2" pref="315" max="-2" attributes="0"/>
                               <Component id="jScrollPane4" alignment="1" min="-2" pref="315" max="-2" attributes="0"/>
                           </Group>
+                          <EmptySpace pref="55" max="32767" attributes="0"/>
+                          <Component id="btnSaveCategories" min="-2" pref="39" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="60" max="-2" attributes="0"/>
                       </Group>
                       <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="92" max="-2" attributes="0"/>
+                          <EmptySpace min="-2" pref="103" max="-2" attributes="0"/>
                           <Component id="btnAddCategory" min="-2" max="-2" attributes="0"/>
                           <EmptySpace min="-2" pref="79" max="-2" attributes="0"/>
                           <Component id="btnRemoveCategory" min="-2" max="-2" attributes="0"/>
+                          <EmptySpace max="32767" attributes="0"/>
                       </Group>
                   </Group>
-                  <EmptySpace pref="55" max="32767" attributes="0"/>
-                  <Component id="btnSaveCategories" min="-2" pref="39" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="60" max="-2" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -94,7 +95,7 @@
       <SubComponents>
         <Component class="javax.swing.JButton" name="btnAddCategory">
           <Properties>
-            <Property name="text" type="java.lang.String" value="L&#xe4;gg till"/>
+            <Property name="text" type="java.lang.String" value="&gt;&gt;&gt;"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAddCategoryActionPerformed"/>
@@ -102,7 +103,7 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnRemoveCategory">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Ta bort"/>
+            <Property name="text" type="java.lang.String" value="&lt;&lt;&lt;"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRemoveCategoryActionPerformed"/>
