@@ -82,6 +82,14 @@
               <Properties>
                 <Property name="text" type="java.lang.String" value="Informellt fl&#xf6;de"/>
               </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="mnuInformalFeedActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="mnuFiltratePosts">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Filtrera inl&#xe4;gg"/>
+              </Properties>
             </MenuItem>
           </SubComponents>
         </Menu>
@@ -118,6 +126,11 @@
             <MenuItem class="javax.swing.JMenuItem" name="mnuMyMeetings">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Mina m&#xf6;ten"/>
+              </Properties>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="mnuEditMeetings">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Redigera m&#xf6;ten"/>
               </Properties>
             </MenuItem>
           </SubComponents>

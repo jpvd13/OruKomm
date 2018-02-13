@@ -5,6 +5,7 @@
  */
 package orukomm.gui.panels;
 
+import java.awt.Image;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -15,6 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 import orukomm.data.FileStorage;
@@ -33,16 +35,13 @@ public class InformalFeed extends javax.swing.JPanel {
      */
     private ArrayList<Post> posts;
     private FileStorage fs = new FileStorage();
-    private static String bildURL;
-    private static String fileURL;
-    private static String fileURL2;
-    private static String fileURL3;
     private String title;
     private String description;
     private int post_id;
     DisplayPostInformal dsv;
     private ImageIcon imageIcon;
-    private MainWindow parentFrame;
+    private ImageIcon resizedImage;
+    
 
     
 
@@ -51,9 +50,8 @@ public class InformalFeed extends javax.swing.JPanel {
             this.dsv = new DisplayPostInformal((this), description, title);
             initComponents();
             PostRepository pr = new PostRepository();
-            this.posts = pr.fillCategoriesListInformal();
+            this.posts = pr.fillListInformal();
             initPanels();
-            this.parentFrame = parentFrame;
 
         } catch (IOException ex) {
             Logger.getLogger(InformalFeed.class.getName()).log(Level.SEVERE, null, ex);
@@ -91,7 +89,7 @@ public class InformalFeed extends javax.swing.JPanel {
     public int getPostId() {
         return post_id;
     }
-
+    
     private void selectPost(){
         int columnTitle = 0;
         int columnPoster = 1;
@@ -105,6 +103,7 @@ public class InformalFeed extends javax.swing.JPanel {
             if (post.getUsername().equals(poster) && post.getTitle().equals(title)) {
                 description = post.getDescription();
                 post_id = post.getId();
+                
                 
             }
         }
@@ -137,7 +136,7 @@ public class InformalFeed extends javax.swing.JPanel {
 
         ArrayList<String> fileNames = new ArrayList<String>();
 
-        String selectSQL = ("SELECT name FROM attachments WHERE post_id = ?");
+        String selectSQL = ("SELECT name FROM attachments WHERE post_id = ? AND type = 0");
         try (Connection conn = fs.connect();
                 PreparedStatement pstmt = conn.prepareStatement(selectSQL)) {
 
@@ -156,9 +155,9 @@ public class InformalFeed extends javax.swing.JPanel {
     }
 
     public ImageIcon selectImage() throws IOException {
-        
+        resizedImage = new ImageIcon();
         imageIcon = new ImageIcon();
-        String selectSQL = ("SELECT file FROM attachments WHERE post_id = ?");
+        String selectSQL = ("SELECT file FROM attachments WHERE post_id = ? AND type = 1");
         try (Connection conn = fs.connect();
                 PreparedStatement pstmt = conn.prepareStatement(selectSQL)) {
 
@@ -166,8 +165,12 @@ public class InformalFeed extends javax.swing.JPanel {
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
+                
                 byte[] bytes = rs.getBytes("file");
                 imageIcon = new ImageIcon(bytes);
+                Image img = imageIcon.getImage();
+                Image newImg = img.getScaledInstance(607, 388, Image.SCALE_SMOOTH);
+                resizedImage = new ImageIcon(newImg);
             }
 
         } catch (SQLException ex) {
@@ -175,7 +178,7 @@ public class InformalFeed extends javax.swing.JPanel {
 
         }
        
-        return imageIcon;
+        return resizedImage;
     } 
 
    /* public ImageIcon getImage() {
@@ -195,7 +198,6 @@ public class InformalFeed extends javax.swing.JPanel {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblFormalFeed = new javax.swing.JTable();
         pnlInfoFeed = new javax.swing.JPanel();
-        btnFiltrateCategories = new javax.swing.JButton();
 
         tblFormalFeed.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -228,39 +230,28 @@ public class InformalFeed extends javax.swing.JPanel {
 
         pnlInfoFeed.setLayout(new java.awt.CardLayout());
 
-        btnFiltrateCategories.setText("Filtrera kategorier");
-        btnFiltrateCategories.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnFiltrateCategoriesActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(13, 13, 13)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(pnlInfoFeed, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(85, 85, 85)
-                        .addComponent(btnFiltrateCategories)))
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(19, 19, 19)
+                .addComponent(pnlInfoFeed, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(445, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(24, 24, 24)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(pnlInfoFeed, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(33, 33, 33)
-                .addComponent(btnFiltrateCategories)
-                .addContainerGap(140, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(32, 32, 32)
+                        .addComponent(pnlInfoFeed, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(198, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -271,13 +262,8 @@ public class InformalFeed extends javax.swing.JPanel {
 
     }//GEN-LAST:event_tblFormalFeedMouseClicked
 
-    private void btnFiltrateCategoriesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrateCategoriesActionPerformed
-    parentFrame.switchPanel(new PickCategories(parentFrame));
-    }//GEN-LAST:event_btnFiltrateCategoriesActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnFiltrateCategories;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel pnlInfoFeed;
     public javax.swing.JTable tblFormalFeed;

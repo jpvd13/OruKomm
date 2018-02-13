@@ -22,18 +22,19 @@ import orukomm.data.FileStorage;
  */
 public class DisplayPostInformal extends javax.swing.JPanel {
 
-    private static String bildURL;
+    
     private static String textPost;
     private static String title;
-    private static String fileName;
-    private static String fileName2;
-    private static String fileName3;
-    private ImageIcon attachedImage;
+    
+    
+    
+   
     private FileStorage fs = new FileStorage();
     private ArrayList<String> fileNames = new ArrayList<String>();
     private InformalFeed iff;
     private ImageIcon image;
     private ChangePost chp;
+    
 
 
     /**
@@ -41,12 +42,6 @@ public class DisplayPostInformal extends javax.swing.JPanel {
      */
     public DisplayPostInformal(InformalFeed feed, String textPost, String title) throws IOException {
         initComponents();
-        // bildURL = CreatePost.getBildURL();
-        // fileName = CreatePost.getFileURL();
-        // fileName2 = CreatePost.getFileURL2();
-        // fileURL3 = CreatePost.getFileURL3();  
-
-        
         
         this.iff = feed;
         
@@ -54,6 +49,12 @@ public class DisplayPostInformal extends javax.swing.JPanel {
 
         this.fileNames = iff.getFileName();
         this.title = title;
+        
+        this.image = iff.selectImage();
+        
+        
+        
+        paintPicture();
         
         setTxtHeadingPost();
         setTxtCreatedPost();
@@ -81,6 +82,7 @@ public class DisplayPostInformal extends javax.swing.JPanel {
         fileNames = chp.getFileName();
         this.title = title;
         setTxtHeadingPost();
+        
 
         setAttachedFilesTxt();
 
@@ -102,17 +104,8 @@ public class DisplayPostInformal extends javax.swing.JPanel {
 
     }     
      
-    public void paintPicture(JLabel label) throws IOException {
-        resizeImage(label);
-        label.setIcon(image);
-    }
-
-    private ImageIcon resizeImage(JLabel label1) throws IOException {
-        ImageIcon MyImage = iff.selectImage();
-        Image img = MyImage.getImage();
-        Image newImg = img.getScaledInstance(label1.getWidth(), label1.getHeight(), Image.SCALE_SMOOTH);
-        image = new ImageIcon(newImg);
-        return image;
+    public void paintPicture() throws IOException {
+        lblDisplay.setIcon(image);
     }
 
     private void setAttachedFilesTxt() {
@@ -170,7 +163,6 @@ public class DisplayPostInformal extends javax.swing.JPanel {
         lblBifogad2 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtUserOutput = new javax.swing.JTextArea();
-        btnImage = new javax.swing.JButton();
 
         lblHeading.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
         lblHeading.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
@@ -193,13 +185,6 @@ public class DisplayPostInformal extends javax.swing.JPanel {
         txtUserOutput.setRows(5);
         jScrollPane1.setViewportView(txtUserOutput);
 
-        btnImage.setText("Visa Bild");
-        btnImage.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnImageActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -210,38 +195,36 @@ public class DisplayPostInformal extends javax.swing.JPanel {
                         .addContainerGap()
                         .addComponent(lblDisplay, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(58, 58, 58)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(lblBifogad2)
-                                .addGap(18, 18, 18)
-                                .addComponent(lblURL2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(lblBifogad1)
-                                .addGap(18, 18, 18)
-                                .addComponent(lblURL1, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(lblBifogad3)
-                                .addGap(18, 18, 18)
-                                .addComponent(lblURL3, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(0, 183, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jScrollPane1))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(lblHeading, javax.swing.GroupLayout.PREFERRED_SIZE, 434, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnImage)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(58, 58, 58)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(lblBifogad2)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(lblURL2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(lblBifogad1)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(lblURL1, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addComponent(lblBifogad3)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(lblURL3, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                            .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(lblHeading, javax.swing.GroupLayout.PREFERRED_SIZE, 434, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(0, 152, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnImage, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(lblHeading, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(lblHeading, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(lblDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 381, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
@@ -266,19 +249,8 @@ public class DisplayPostInformal extends javax.swing.JPanel {
         iff.chooseDirectory();
     }//GEN-LAST:event_lblURL1MouseClicked
 
-    private void btnImageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnImageActionPerformed
-        try {
-            paintPicture(lblDisplay);
-        } catch (IOException ex){
-            Logger.getLogger(DisplayPostInformal.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (NullPointerException n){
-            JOptionPane.showMessageDialog(null, "Ingen bild att visa");
-        }
-    }//GEN-LAST:event_btnImageActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnImage;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblBifogad1;
     private javax.swing.JLabel lblBifogad2;

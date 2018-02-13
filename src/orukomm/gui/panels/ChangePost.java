@@ -5,6 +5,7 @@
  */
 package orukomm.gui.panels;
 
+import java.awt.Image;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -13,6 +14,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
@@ -38,17 +40,26 @@ public class ChangePost extends javax.swing.JPanel {
     private static String fileURL3;
     private String title;
     private String description;
+    private String username;
+    private int role;
+    private ArrayList<Post> userPosts;
+    private ImageIcon imageIcon;
+    private ImageIcon resizedImage;
+    private int pictureID;
+           
     private int post_id;
     DisplayPostV2 dsv;
-    DisplayPostFormal formal;
+    ChangePostFormal1 formal;
     DisplayPostInformal informal;
     FileStorage fs = new FileStorage();
     
     public ChangePost(MainWindow parentFrame) {
         try {
             //this.dsv = new DisplayPostV2(pnlPost, description, title, post_id);
-            this.formal = new DisplayPostFormal((this), description, title);
+            this.formal = new ChangePostFormal1((this), description, title);
             this.informal = new DisplayPostInformal((this), description, title);
+            this.username = parentFrame.loggedInUser.getUsername();
+            this.role = parentFrame.loggedInUser.getRole();
             initComponents();
             initPanels();
         } catch (IOException ex) {
@@ -72,20 +83,23 @@ public class ChangePost extends javax.swing.JPanel {
     
   
 
-    public void fillTable() {
+    public void fillTable(ArrayList<Post> list) {
         
 
         DefaultTableModel model = (DefaultTableModel) tblFormalFeed.getModel();  //Typecastar JTablemodellen till en DefaultTableModel
-        Object[] row = new Object[4];    // Använder Object klassen så att Arrayn kan ta in vilka object som helst
-        for (int i = 0; i < posts.size(); i++) {
-            row[0] = posts.get(i).getTitle();
-            row[1] = posts.get(i).getUsername();
-            row[2] = posts.get(i).getDate();
+        Object[] row = new Object[3];    // Använder Object klassen så att Arrayn kan ta in vilka object som helst
+        for (int i = 0; i < list.size(); i++) {
+            row[0] = list.get(i).getTitle();
+            row[1] = list.get(i).getUsername();
+            row[2] = list.get(i).getDate();
             //row[3] = posts.get(i).getId(); //Ska tas bort när vi hittar lösning på hur vi hämtar ut post ID till attachments
             model.addRow(row);
         }
 
     }
+   
+        
+    
     
     public void clearTable()
     {
@@ -97,31 +111,45 @@ public class ChangePost extends javax.swing.JPanel {
         return post_id;
     }
     
-    private void selectPost(){
+private void selectPost(){
         int columnTitle = 0;
         int columnPoster = 1;
         
-        int columnId = 3; //Ska tas bort när vi hittar lösning på hur vi hämtar ut post ID till attachments
+      
         
         int row = tblFormalFeed.getSelectedRow();
         title = tblFormalFeed.getModel().getValueAt(row, columnTitle).toString();
         String poster = tblFormalFeed.getModel().getValueAt(row, columnPoster).toString();
         description = "";
-        String stringId = tblFormalFeed.getModel().getValueAt(row, columnId).toString();
+       
         
-        post_id = Integer.parseInt(stringId); //Ska tas bort när vi hittar lösning på hur vi hämtar ut post ID till attachments
+       
         
         for (Post post : posts) {
             if (post.getUsername().equals(poster) && post.getTitle().equals(title)) {
                 description = post.getDescription();
+                post_id = post.getId();
             }
         }
         try {
-            switchPanel(new DisplayPostV2((this), description, title, post_id));
+            switchPanel(new ChangePostFormal1((this), description, title));
         } catch (IOException ex) {
-            Logger.getLogger(ChangePost.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(FormalFeed.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
+    }  
+    
+    public ArrayList<Post> userPosts() 
+   {
+       ArrayList<Post> userPosts = new ArrayList<>(); 
+       for(Post post : posts){
+           if (post.getUsername().equals(username))
+           {
+               Post ponta = post;
+               userPosts.add(ponta);
+           }
+       }
+       return userPosts;
+   }
     
      public void chooseDirectory() {
 
@@ -163,6 +191,62 @@ public class ChangePost extends javax.swing.JPanel {
         return fileNames;
     }
     
+       public ImageIcon selectImage() throws IOException {
+        resizedImage = new ImageIcon();
+        imageIcon = new ImageIcon();
+        String selectSQL = ("SELECT file, id FROM attachments WHERE post_id = ? AND type = 1");
+        try (Connection conn = fs.connect();
+                PreparedStatement pstmt = conn.prepareStatement(selectSQL)) {
+
+            pstmt.setInt(1, getPostId());
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                
+                byte[] bytes = rs.getBytes("file");
+                rs.getInt("id");
+                imageIcon = new ImageIcon(bytes);
+                Image img = imageIcon.getImage();
+                Image newImg = img.getScaledInstance(607, 388, Image.SCALE_SMOOTH);
+                resizedImage = new ImageIcon(newImg);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(FormalFeed.class.getName()).log(Level.SEVERE, null, ex);
+
+        }
+       
+        return resizedImage;
+    } 
+      public int storKuk()
+      {
+        
+        String selectSQL = ("SELECT id FROM attachments WHERE post_id = ? AND type = 1");
+        try (Connection conn = fs.connect();
+                PreparedStatement pstmt = conn.prepareStatement(selectSQL)) {
+
+            pstmt.setInt(1, getPostId());
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                
+               
+                this.pictureID = rs.getInt("id");
+                
+               
+              
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(FormalFeed.class.getName()).log(Level.SEVERE, null, ex);
+
+        }
+       
+        return pictureID;
+    }  
+       
+
+    
         
         
     
@@ -188,11 +272,11 @@ public class ChangePost extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Titel", "Författare", "Datum", "ID"
+                "Titel", "Författare", "Datum"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -210,7 +294,6 @@ public class ChangePost extends javax.swing.JPanel {
             tblFormalFeed.getColumnModel().getColumn(0).setResizable(false);
             tblFormalFeed.getColumnModel().getColumn(1).setResizable(false);
             tblFormalFeed.getColumnModel().getColumn(2).setResizable(false);
-            tblFormalFeed.getColumnModel().getColumn(3).setResizable(false);
         }
 
         pnlPost.setLayout(new java.awt.CardLayout());
@@ -270,16 +353,37 @@ public class ChangePost extends javax.swing.JPanel {
 
     private void rbtnFormalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbtnFormalActionPerformed
         clearTable();
-        PostRepository pr = new PostRepository();
+            PostRepository pr = new PostRepository();
+            
+           
+        if(role == 2)
+        {
             this.posts = pr.fillListFormal();
-            fillTable();
+            userPosts = userPosts();
+            fillTable(userPosts);
+        }
+        else
+        {
+            this.posts = pr.fillListFormal();
+        fillTable(posts);
+        }
     }//GEN-LAST:event_rbtnFormalActionPerformed
 
     private void rbtnInformalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rbtnInformalActionPerformed
         clearTable();
-        PostRepository pr = new PostRepository();
-            this.posts = pr.fillListInformal();
-            fillTable();
+          PostRepository pr = new PostRepository();
+          
+          if (role == 2)
+          {
+          this.posts = pr.fillListInformal();
+          userPosts = userPosts();
+          fillTable(userPosts);
+          }
+          
+          else {
+          this.posts = pr.fillListInformal();
+          fillTable(posts);
+          }
     }//GEN-LAST:event_rbtnInformalActionPerformed
 
 
