@@ -5,6 +5,10 @@ import orukomm.data.FileStorage;
 
 public class Post {
     private int id;
+    private int poster;
+    private User posterUser;
+    private Category categoryCategory;
+    private int category;
     private String title;
     private String username;
     private int flow;
@@ -19,6 +23,38 @@ public class Post {
         
         
         
+    }
+    
+    public int getCategory() {
+        return category;
+    }
+
+    public void setCategory(int category) {
+        this.category = category;
+    }
+    
+    public User getPosterUser() {
+        return posterUser;
+    }
+
+    public void setPosterUser(User posterUser) {
+        this.posterUser = posterUser;
+    }
+    
+    public int getPoster() {
+        return poster;
+    }
+
+    public void setPoster(int poster) {
+        this.poster = poster;
+    }
+    
+    public Category getCategoryCategory() {
+        return categoryCategory;
+    }
+
+    public void setCategoryCategory(Category categoryCategory) {
+        this.categoryCategory = categoryCategory;
     }
 
     public int getFlow() {

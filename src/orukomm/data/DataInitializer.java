@@ -179,16 +179,18 @@ public class DataInitializer {
             ps.executeUpdate();
             
             // Category data.
-            String insertCategoryData = "INSERT INTO category VALUES(null, 'Kul')";
+            String insertCategoryData = "INSERT INTO category VALUES(null, 'Kul'), (null, 'Kategori0'), (null, 'Kategori1'), (null, 'kategori2')";
             
             PreparedStatement ps2 = db.getConnection().prepareStatement(insertCategoryData);
             ps2.executeUpdate();
-            
                       
             // Posts data.
             String insertPostsData = "INSERT INTO posts VALUES"
                     + " (null , 1, 'Bla', 'Bla', 1, 1, '2008-11-11') ,"
-                    + " (null , 1, 'bild', 'bild', 1, 1, '2008-02-08')";
+                    + " (null , 1, 'bild', 'bild', 1, 1, '2008-02-08'), "
+                    + " (null , 4, 'Oof', 'Ajf sdalfd fsdkfsd.', 1, 0, '2018-02-08'), "
+                    + " (null , 4, 'Rab', 'Kgdfjnb KJHgfb fe cx, ffjkd.', 2, 1, '2018-02-11'), "
+                    + " (null , 2, 'Zab', 'Ifnbdl oi ds.', 1, 0, '2018-02-11')";
             
             PreparedStatement ps3 = db.getConnection().prepareStatement(insertPostsData);
             ps3.executeUpdate();
