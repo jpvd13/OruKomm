@@ -191,7 +191,7 @@ public class PostRepository {
         return postList;
 
     }
-    public void DeleteFile(int id) {
+    public void deleteFile(int id) {
         PreparedStatement ps = null;
 
         String query = String.format("DELETE from attachments WHERE id = ?");

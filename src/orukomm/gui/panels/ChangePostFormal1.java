@@ -1,0 +1,380 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package orukomm.gui.panels;
+
+import java.awt.Cursor;
+import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.ImageIcon;
+import javax.swing.JFileChooser;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import orukomm.data.FileStorage;
+import orukomm.data.repositories.PostRepository;
+import orukomm.gui.panels.FormalFeed;
+
+/**
+ *
+ * @author Pontu
+ */
+public class ChangePostFormal1 extends javax.swing.JPanel {
+
+    private static String textPost;
+    private static String title;
+    private static ImageIcon image;
+    private FileStorage fs = new FileStorage();
+    private ArrayList<String> fileNames = new ArrayList<String>();
+    private FormalFeed ff;
+    private ChangePost chp;
+    private int pictureID;
+    private static ImageIcon attachedImage;
+    private static String bildURL;
+
+    /**
+     * Creates new form CreatedPost
+     */
+    public ChangePostFormal1() {
+    }
+
+    public ChangePostFormal1(ChangePost chp, String textPost, String title) throws IOException {
+        initComponents();
+        //bildURL = CreatePostPanel.getBildURL();
+        // fileName = CreatePost.getFileURL();
+        // fileName2 = CreatePost.getFileURL2();
+        // fileURL3 = CreatePost.getFileURL3();  
+
+        //paintPicture(lblDisplay);
+        
+        this.chp = chp;
+        this.textPost = textPost;
+        
+        fileNames = chp.getFileName();
+        this.title = title;
+        this.image = chp.selectImage();
+        this.pictureID = chp.storKuk();
+        
+        
+        
+        paintPicture();
+        
+        setTxtHeadingPost();
+        setAttachedFilesTxt();
+        setTxtCreatedPost();
+
+        txtUserOutput.setEditable(true);
+        txtUserOutput.setLineWrap(true);
+        txtUserOutput.setWrapStyleWord(true);
+
+        
+    }
+    
+
+    private void setTxtCreatedPost() {
+        txtUserOutput.setText(textPost);
+
+    }
+
+    public void setTxtHeadingPost() {
+        lblHeading.setText(title);
+
+    }
+
+    public void paintPicture() throws IOException {
+        lblDisplay.setIcon(image);
+    }
+
+    private void setAttachedFilesTxt() {
+
+        if (fileNames.size() == 1) {
+            lblURL1.setText(fileNames.get(0));
+            lblBifogad1.setText("Bifogad fil1: ");
+
+            lblURL1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        }
+        if (fileNames.size() == 2) {
+            lblURL1.setText(fileNames.get(0));
+            lblURL2.setText(fileNames.get(1));
+
+            lblBifogad1.setText("Bifogad fil1: ");
+            lblBifogad2.setText("Bifogad fil2: ");
+
+            lblURL1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            lblURL2.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        }
+        if (fileNames.size() == 3) {
+            lblURL1.setText(fileNames.get(0));
+            lblURL2.setText(fileNames.get(1));
+            lblURL3.setText(fileNames.get(2));
+
+            lblBifogad1.setText("Bifogad fil1: ");
+            lblBifogad2.setText("Bifogad fil2: ");
+            lblBifogad3.setText("Bifogad fil3: ");
+
+            lblURL1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            lblURL2.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+            lblURL3.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        }
+        
+         lblURL1.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+         lblURL2.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+         lblURL3.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+    }
+    
+    public void removePicture(int id)
+    {
+        PostRepository pr = new PostRepository();
+        pr.deleteFile(id);
+        lblDisplay.setIcon(null);
+    }
+    
+    private ImageIcon resizeImage(JLabel label1) {
+        ImageIcon MyImage = new ImageIcon(bildURL);
+        Image img = MyImage.getImage();
+        Image newImg = img.getScaledInstance(label1.getWidth(), label1.getHeight(), Image.SCALE_SMOOTH);
+        ImageIcon image = new ImageIcon(newImg);
+        this.image = image;
+        
+        return image;
+    }
+    
+    public void paintPicture2() {
+        resizeImage(lblDisplay);
+        lblDisplay.setIcon(image);
+    }
+    
+     public void insertAttachedPicture() {
+            fs.insertFile(bildURL, 1);
+    }
+    
+   
+    /**
+     * /**
+     * This method is called from within the constructor to initialize the form. WARNING: Do NOT modify this code. The
+     * content of this method is always regenerated by the Form Editor.
+     */
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        lblDisplay = new javax.swing.JLabel();
+        lblHeading = new javax.swing.JLabel();
+        lblBifogad1 = new javax.swing.JLabel();
+        lblBifogad3 = new javax.swing.JLabel();
+        lblURL1 = new javax.swing.JLabel();
+        lblURL2 = new javax.swing.JLabel();
+        lblURL3 = new javax.swing.JLabel();
+        lblBifogad2 = new javax.swing.JLabel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        txtUserOutput = new javax.swing.JTextArea();
+        btnChange = new javax.swing.JButton();
+        btnRemove = new javax.swing.JButton();
+        btnAdd = new javax.swing.JButton();
+
+        lblHeading.setFont(new java.awt.Font("Tahoma", 0, 36)); // NOI18N
+        lblHeading.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
+        lblURL1.setForeground(new java.awt.Color(0, 0, 255));
+        lblURL1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        lblURL1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblURL1MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                lblURL1MouseEntered(evt);
+            }
+        });
+
+        lblURL2.setForeground(new java.awt.Color(0, 0, 255));
+        lblURL2.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        lblURL2.addContainerListener(new java.awt.event.ContainerAdapter() {
+            public void componentAdded(java.awt.event.ContainerEvent evt) {
+                lblURL2ComponentAdded(evt);
+            }
+        });
+
+        lblURL3.setForeground(new java.awt.Color(0, 0, 255));
+        lblURL3.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        lblURL3.addContainerListener(new java.awt.event.ContainerAdapter() {
+            public void componentAdded(java.awt.event.ContainerEvent evt) {
+                lblURL3ComponentAdded(evt);
+            }
+        });
+
+        lblBifogad2.setText(" ");
+
+        txtUserOutput.setColumns(20);
+        txtUserOutput.setRows(5);
+        jScrollPane1.setViewportView(txtUserOutput);
+
+        btnChange.setText("Ändra");
+
+        btnRemove.setText("Ta bort");
+        btnRemove.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRemoveActionPerformed(evt);
+            }
+        });
+
+        btnAdd.setText("Lägg till");
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblDisplay, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(btnRemove)
+                                    .addComponent(btnAdd)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblHeading, javax.swing.GroupLayout.DEFAULT_SIZE, 565, Short.MAX_VALUE)
+                                .addGap(12, 12, 12))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(58, 58, 58)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblBifogad2)
+                                .addGap(18, 18, 18)
+                                .addComponent(lblURL2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblBifogad1)
+                                .addGap(18, 18, 18)
+                                .addComponent(lblURL1, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblBifogad3)
+                                .addGap(18, 18, 18)
+                                .addComponent(lblURL3, javax.swing.GroupLayout.PREFERRED_SIZE, 333, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnChange))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1)))
+                .addContainerGap())
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lblHeading, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(lblDisplay, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(132, 132, 132)
+                        .addComponent(btnRemove)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnAdd)))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lblBifogad1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblURL1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lblBifogad2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblURL2, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(lblBifogad3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblURL3, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap(37, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnChange)
+                        .addContainerGap())))
+        );
+
+        btnAdd.setVisible(false);
+    }// </editor-fold>//GEN-END:initComponents
+
+    private void lblURL1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblURL1MouseClicked
+        ff.chooseDirectory();
+    }//GEN-LAST:event_lblURL1MouseClicked
+
+    private void lblURL2ComponentAdded(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_lblURL2ComponentAdded
+        lblBifogad2.setText("Bifogad fil2: ");
+    }//GEN-LAST:event_lblURL2ComponentAdded
+
+    private void lblURL3ComponentAdded(java.awt.event.ContainerEvent evt) {//GEN-FIRST:event_lblURL3ComponentAdded
+        lblBifogad3.setText("Bifogad fil3: ");
+    }//GEN-LAST:event_lblURL3ComponentAdded
+
+
+    private void lblURL1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblURL1MouseEntered
+      
+    }//GEN-LAST:event_lblURL1MouseEntered
+
+    private void btnRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRemoveActionPerformed
+        
+        removePicture(pictureID);
+        btnRemove.setVisible(false);
+        btnAdd.setVisible(true);
+    }//GEN-LAST:event_btnRemoveActionPerformed
+
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+
+                JFileChooser file = new JFileChooser();
+        file.setCurrentDirectory(new File(System.getProperty("user.home")));
+        //filter the files
+        FileNameExtensionFilter filter = new FileNameExtensionFilter("*.Images", "jpg", "gif", "png");
+        file.addChoosableFileFilter(filter);
+        int result = file.showSaveDialog(null);
+        //if the user click on save in Jfilechooser
+        if (result == JFileChooser.APPROVE_OPTION) {
+            File selectedFile = file.getSelectedFile();
+            String path = selectedFile.getAbsolutePath();
+            this.bildURL = path;
+            paintPicture2();
+            insertAttachedPicture();
+            btnAdd.setVisible(false);
+            btnRemove.setVisible(true);
+                    
+
+            
+
+        } else if (result == JFileChooser.CANCEL_OPTION) {
+            System.out.println("No File Select");
+        }
+
+    }//GEN-LAST:event_btnAddActionPerformed
+
+
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAdd;
+    private javax.swing.JButton btnChange;
+    private javax.swing.JButton btnRemove;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JLabel lblBifogad1;
+    private javax.swing.JLabel lblBifogad2;
+    private javax.swing.JLabel lblBifogad3;
+    private javax.swing.JLabel lblDisplay;
+    private javax.swing.JLabel lblHeading;
+    private javax.swing.JLabel lblURL1;
+    private javax.swing.JLabel lblURL2;
+    private javax.swing.JLabel lblURL3;
+    private javax.swing.JTextArea txtUserOutput;
+    // End of variables declaration//GEN-END:variables
+}
