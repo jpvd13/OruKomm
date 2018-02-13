@@ -82,8 +82,6 @@ public class Email {
             message.setContent(body, "text/html; charset=utf8");
             
             Transport.send(message);
-            System.out.println("E-mails successfully sent");
-
         } catch (MessagingException me) {
             throw new RuntimeException(me);
         }

@@ -18,8 +18,8 @@ public class Cron {
         Trigger trigger = TriggerBuilder
                 .newTrigger()
                 .withIdentity("EmailTrigger")
-                .startAt(todayAt(15, 56, 0)) // Email job fires at 12:00:00 every day.
-                .withSchedule(simpleSchedule()
+                .startAt(todayAt(9, 0, 0)) // Email job fires at 09:00:00 every day. 
+               .withSchedule(simpleSchedule()
                         .withIntervalInHours(24)
                         .repeatForever())
                 .build();
@@ -27,8 +27,6 @@ public class Cron {
         Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
         scheduler.start();
         scheduler.scheduleJob(jobDetail, trigger);
-        
-        new EmailJob().executeSimulation();
     }
 
 }

@@ -35,18 +35,10 @@ public class EmailJob implements Job {
         postRepo = new PostRepository();
         userRepo = new UserRepository();
         newPosts = new ArrayList<>();
-
-//        recipients = userRepo.getUsersWithSummedNotifications(); // Retrieve recipients. TODO fix user table
-//        email = new Email();
     }
 
     @Override
     public void execute(JobExecutionContext jec) throws JobExecutionException {
-
-        System.out.println("job ran");
-    }
-
-    public void executeSimulation() {
         String today = new Date(Calendar.getInstance().getTime().getTime()).toString();
         String jobLastRan = today;
         FileIO fio = new FileIO();
@@ -67,21 +59,18 @@ public class EmailJob implements Job {
         newPosts = postRepo.getPostsSince(jobLastRan);
 
         if (newPosts.size() > 0) {
-            // New posts: Create email and send to recipients.
-//            recipients = userRepo.getEmailRecipients(); // Create method in user repo; 'til then, use test recipients.
+            // New posts exists: send email to recipients.
             recipients = new ArrayList<>();
+            recipients = userRepo.getUsersWithAggregatedNotifications();
             User u1 = new User();
-            User u2 = new User();
             u1.setEmail("ad.solecki@gmail.com");
-            u2.setEmail("orukomm2@gmail.com");
             recipients.add(u1);
-            recipients.add(u2);
 
             // Create email.
             String heading = "Daily notification summary";
             String body = String.format("<h1>Notifications %s</h1>\n", today);
             for (Post post : newPosts) {
-                // Only show max 100 chars of each post.
+                // Only show max 100 chars of each new post.
                 if (post.getDescription().length() > 100) {
                     post.setDescription(post.getDescription().substring(0, 100));
                 }
@@ -92,12 +81,13 @@ public class EmailJob implements Job {
             }
 
             email = new Email();
-            System.out.println(String.format("%s \n %s", heading, body));
-
+            email.send(heading, body, recipients);
+            System.out.println("Email notifications sent.");
+            
             // Update date for sent notifications.
             fio.write(LAST_CRON_JOB_FILE, today);
         } else {
-            System.out.println(String.format("No new feed items since %s.", jobLastRan));
+            System.out.println(String.format("No new feed items since %s: not sending any notifications.", jobLastRan));
         }
     }
 }

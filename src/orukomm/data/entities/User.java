@@ -7,138 +7,145 @@ import java.util.EnumSet;
  */
 public class User implements Entity {
 
-	private int id;
-	private String firstName;
-	private String surname;
-	private String username;
-	private String passwordHash;
-	private String salt;
-	private int role;
-        private String email;
+    private int id;
+    private String firstName;
+    private String surname;
+    private String username;
+    private String passwordHash;
+    private String salt;
+    private int role;
+    private String email;
+    private boolean aggregatedNotification;
 
-        
-        public static int MAX_LENGTH_FIRST_NAME = 32;
-        public static int MAX_LENGTH_SURNAME = 32;
-        public static int MAX_LENGTH_USERNAME = 64;
-        public static int MAX_LENGTH_PASSWORDHASH = 128;
-        public static int MAX_LENGTH_EMAIL = 128;
+    public static int MAX_LENGTH_FIRST_NAME = 32;
+    public static int MAX_LENGTH_SURNAME = 32;
+    public static int MAX_LENGTH_USERNAME = 64;
+    public static int MAX_LENGTH_PASSWORDHASH = 128;
+    public static int MAX_LENGTH_EMAIL = 128;
 
-	
-	@Override
-	public int getId() {
-		return this.id;
-	}
+    @Override
+    public int getId() {
+        return this.id;
+    }
 
-	@Override
-	public void setId(int id) {
-		this.id = id;
-	}
+    @Override
+    public void setId(int id) {
+        this.id = id;
+    }
 
-	public String getUsername() {
-		return username;
-	}
+    public String getUsername() {
+        return username;
+    }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
-	public String getPassword() {
-		return passwordHash;
-	}
+    public String getPassword() {
+        return passwordHash;
+    }
 
-	public void setPassword(String password) {
-		this.passwordHash = password;
-	}
+    public void setPassword(String password) {
+        this.passwordHash = password;
+    }
 
-	public String getSalt() {
-		return salt;
-	}
+    public String getSalt() {
+        return salt;
+    }
 
-	public void setSalt(String salt) {
-		this.salt = salt;
-	}
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
 
-	public String getFirstName() {
-		return firstName;
-	}
+    public String getFirstName() {
+        return firstName;
+    }
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-	public String getSurname() {
-		return surname;
-	}
+    public String getSurname() {
+        return surname;
+    }
 
-	public void setSurname(String surname) {
-		this.surname = surname;
-	}
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
 
-	public int getRole() {
-		return role;
-	}
+    public int getRole() {
+        return role;
+    }
 
-	public void setRole(int role) {
-		this.role = role;
-	}
+    public void setRole(int role) {
+        this.role = role;
+    }
 
-	public String getEmail() {
-		return email;
-	}
+    public String getEmail() {
+        return email;
+    }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
-	@Override
-	public String toString() {
-		return firstName + " " + surname;
-	}
+    @Override
+    public String toString() {
+        return firstName + " " + surname;
+    }
 
-	/*
+    public boolean getAggregatedNotification() {
+        return aggregatedNotification;
+    }
+
+    public void setAggregatedNotification(boolean aggregatedNotification) {
+        this.aggregatedNotification = aggregatedNotification;
+    }
+
+    /*
 	 * User permissions represented as a bit field structure.
-	 */
-	public enum PermissionFlag {
-		NONE(1 << 0),
-		USER(1 << 1),
-		ADMIN(1 << 2),
-		SUPERADMIN(1 << 3);
+     */
+    public enum PermissionFlag {
+        NONE(1 << 0),
+        USER(1 << 1),
+        ADMIN(1 << 2),
+        SUPERADMIN(1 << 3);
 
-		private final int permissionFlagValue;
+        private final int permissionFlagValue;
 
-		PermissionFlag(int permissionFlagValue) {
-			this.permissionFlagValue = permissionFlagValue;
-		}
+        PermissionFlag(int permissionFlagValue) {
+            this.permissionFlagValue = permissionFlagValue;
+        }
 
-		public int getPermissionFlagValue() {
-			return permissionFlagValue;
-		}
+        public int getPermissionFlagValue() {
+            return permissionFlagValue;
+        }
 
-		/*
+        /*
 		 * Translates numeric permission code into a set of flags.
-		 */
-		public EnumSet<PermissionFlag> getPermissionFlags(int permissionValue) {
-			EnumSet<PermissionFlag> permissionFlags = EnumSet.noneOf(PermissionFlag.class);
-			for (PermissionFlag permissionFlag : PermissionFlag.values()) {
-				int flagValue = permissionFlag.permissionFlagValue;
-				if ((flagValue & permissionValue) == flagValue) {
-					permissionFlags.add(permissionFlag);
-				}
-			}
+         */
+        public EnumSet<PermissionFlag> getPermissionFlags(int permissionValue) {
+            EnumSet<PermissionFlag> permissionFlags = EnumSet.noneOf(PermissionFlag.class);
+            for (PermissionFlag permissionFlag : PermissionFlag.values()) {
+                int flagValue = permissionFlag.permissionFlagValue;
+                if ((flagValue & permissionValue) == flagValue) {
+                    permissionFlags.add(permissionFlag);
+                }
+            }
 
-			return permissionFlags;
-		}
+            return permissionFlags;
+        }
 
-		/*
+        /*
 		 * Translates a set of permission flags into a numeric role code.
-		 */
-		public int getPermissionValue(EnumSet<PermissionFlag> permissions) {
-			int value = 0;
-			for (PermissionFlag permissionFlag : permissions) {
-				value |= permissionFlag.getPermissionFlagValue();
-			}
+         */
+        public int getPermissionValue(EnumSet<PermissionFlag> permissions) {
+            int value = 0;
+            for (PermissionFlag permissionFlag : permissions) {
+                value |= permissionFlag.getPermissionFlagValue();
+            }
 
-			return value;
-		}
-	}
+            return value;
+        }
+    }
 }

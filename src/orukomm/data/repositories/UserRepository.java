@@ -23,7 +23,7 @@ public class UserRepository implements Repository<User> {
     @Override
     public void add(User user) {
         PreparedStatement ps = null;
-        String query = String.format("INSERT INTO user VALUES (null, ?, ?, ?, ?, '%s', '%s', '%d')",
+        String query = String.format("INSERT INTO user VALUES (null, ?, ?, ?, ?, '%s', '%s', '%d', 1)",
                 user.getPassword(), user.getSalt(), user.getRole());
 
         try {
@@ -259,37 +259,39 @@ public class UserRepository implements Repository<User> {
         return user;
     }
 
-//    /*
-//     * Returns list of all users that wants to have email notification news sent in batches.
-//     */
-//    public ArrayList<User> getUsersWithSummedNotifications() {
-//        ArrayList<User> users = new ArrayList<>();
-//        PreparedStatement ps = null;
-//        ResultSet rs = null;
-//        String query = "SELECT * FROM user WHERE summed_notification = true";
-//
-//        try {
-//            ps = db.getConnection().prepareStatement(query);
-//            rs = ps.executeQuery();
-//
-//            while (rs.next()) {
-//                User user = new User();
-//                user.setId(rs.getInt("id"));
-//                user.setFirstName(rs.getString("first_name"));
-//                user.setSurname(rs.getString("surname"));
-//                user.setUsername(rs.getString("username"));
-//                user.setPassword(rs.getString("password_hash"));
-//                user.setSalt(rs.getString("salt"));
-//                user.setRole(rs.getInt("role"));
-//                user.setEmail(rs.getString("email"));
-//                user.setSummedNotification(rs.getBoolean("summed_notification"));
-//            }
-//        } catch (SQLException ex) {
-//            Logger.getLogger(UserRepository.class.getName()).log(Level.SEVERE, null, ex);
-//        } finally {
-//            close(rs, ps, null);
-//        }
-//
-//        return users;
-//    }
+    /*
+     * Returns list of all users that wants to have email notification news sent in batches.
+     */
+    public ArrayList<User> getUsersWithAggregatedNotifications() {
+        ArrayList<User> users = new ArrayList<>();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        String query = "SELECT * FROM user WHERE aggregated_notification = 1";
+
+        try {
+            ps = db.getConnection().prepareStatement(query);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                User user = new User();
+                user.setId(rs.getInt("id"));
+                user.setFirstName(rs.getString("first_name"));
+                user.setSurname(rs.getString("surname"));
+                user.setUsername(rs.getString("username"));
+                user.setPassword(rs.getString("password_hash"));
+                user.setSalt(rs.getString("salt"));
+                user.setRole(rs.getInt("role"));
+                user.setEmail(rs.getString("email"));
+                user.setAggregatedNotification(rs.getBoolean("aggregated_notification"));
+                
+                users.add(user);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(UserRepository.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            close(rs, ps, null);
+        }
+
+        return users;
+    }
 }
