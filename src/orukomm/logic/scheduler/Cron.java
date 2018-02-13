@@ -12,22 +12,21 @@ import org.quartz.impl.StdSchedulerFactory;
 import orukomm.logic.scheduler.jobs.EmailJob;
 
 public class Cron {
-    
+
     public static void main(String[] args) throws SchedulerException {
         JobDetail jobDetail = JobBuilder.newJob(EmailJob.class).build();
-        System.out.println("hehe");
         Trigger trigger = TriggerBuilder
                 .newTrigger()
                 .withIdentity("EmailTrigger")
-                .startAt(todayAt(12, 0, 0)) // Email job fires at 12:00:00 every day.
-                .withSchedule(simpleSchedule()
-                    .withIntervalInHours(24)
-                    .repeatForever())
+                .startAt(todayAt(9, 0, 0)) // Email job fires at 09:00:00 every day. 
+               .withSchedule(simpleSchedule()
+                        .withIntervalInHours(24)
+                        .repeatForever())
                 .build();
 
         Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
         scheduler.start();
         scheduler.scheduleJob(jobDetail, trigger);
     }
-    
+
 }
