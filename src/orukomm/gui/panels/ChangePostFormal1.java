@@ -71,11 +71,19 @@ public class ChangePostFormal1 extends javax.swing.JPanel {
         
         
         paintPicture();
+        PostRepository pr = new PostRepository();
+        if (pr.hasPictureFile(post_id))
+        {
+        btnRemove.setVisible(true);
+        btnAdd.setVisible(false);
+        }
+        else{
+            btnRemove.setVisible(false);
+        btnAdd.setVisible(true);
+        }
         
         System.out.println(image);
-        if (lblDisplay.getIcon() == null) {
-  // this means there is no icon
-}
+        
         setTxtHeadingPost();
         setAttachedFilesTxt();
         setTxtCreatedPost();

@@ -12,7 +12,11 @@ import javax.swing.JOptionPane;
 import orukomm.data.DataInitializer;
 import orukomm.data.Database;
 import static orukomm.data.Database.close;
+
+import orukomm.data.entities.Attachments;
+
 import orukomm.data.entities.Category;
+
 import orukomm.data.entities.Post;
 import orukomm.data.entities.User;
 
@@ -410,6 +414,50 @@ public class PostRepository {
         return posts;
     }
     
-   
+    public ArrayList<Attachments> fillAttachments(int post_id)
+    {
+    ArrayList<Attachments> attachments = new ArrayList<>();
+        Attachments attachment;
 
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+        String query = String.format("SELECT type FROM attachments WHERE post_id = ?");
+
+        try {
+            ps = db.getConnection().prepareStatement(query);
+            ps.setInt(1, post_id);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+
+                attachment = new Attachments();
+                attachment.setType(rs.getInt("type"));
+
+                attachments.add(attachment);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(DataInitializer.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "databasfel");
+        }
+        
+        return attachments;
+    }
+    
+   public boolean hasPictureFile(int post_id)
+   {
+       boolean found = false;
+       
+       for (Attachments a : fillAttachments(post_id))
+       {
+        if (a.getType() == 1)
+        {
+            
+         found = true;   
+        }
+           
+       }
+return found;
+} 
 }
