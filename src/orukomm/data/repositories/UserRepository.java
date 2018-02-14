@@ -58,8 +58,9 @@ public class UserRepository implements Repository<User> {
     @Override
     public void update(User user) {
         PreparedStatement ps = null;
-        String query = String.format("UPDATE user SET first_name = ?, surname = ?, email = ?, password_hash = '%s', salt = '%s' WHERE id = '%d'",
-                user.getPassword(), user.getSalt(), user.getId());
+        String query = String.format("UPDATE user SET first_name = ?, surname = ?, email = ?, password_hash = '%s', salt = '%s',"
+                + "aggregated_notification = %b WHERE id = '%d'",
+                user.getPassword(), user.getSalt(), user.getAggregatedNotification(), user.getId());
         try {
             ps = db.getConnection().prepareStatement(query);
             ps.setString(1, user.getFirstName());
