@@ -12,6 +12,8 @@ import orukomm.gui.panels.AdminUpdateUsers;
 import orukomm.gui.panels.ChangePost;
 import orukomm.gui.panels.CreateMeeting;
 import orukomm.gui.panels.CreatePostPanel;
+import orukomm.gui.panels.CreateResearchGroup;
+import orukomm.gui.panels.EditAndDeleteMeetings;
 import orukomm.gui.panels.FormalFeed;
 import orukomm.gui.panels.Login;
 import orukomm.gui.panels.Meetings;
@@ -55,8 +57,10 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
         mnuFeed.setVisible(hasUserPermission);
         mnuPost.setVisible(hasUserPermission);
         mnuMeetings.setVisible(hasUserPermission);
+        
 
         mnuAdministrationEditUser.setVisible(hasAdminPermission);
+        mnuEditMeetings.setVisible(hasAdminPermission);
         
         mnuAdministration.setVisible(hasSuperadminPermission);
         mnuAdministrationAddCategory.setVisible(hasSuperadminPermission);
@@ -113,6 +117,12 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
         
         mnuFiltratePosts.setActionCommand("mnuFiltratePosts");
         mnuFiltratePosts.addActionListener(this);
+        
+        mnuFeedResearch.setActionCommand("mnuFeedResearch");
+        mnuFeedResearch.addActionListener(this);
+        
+        mnuEditMeetings.setActionCommand("mnuEditMeetings");
+        mnuEditMeetings.addActionListener(this);
     }
 
     /*
@@ -177,6 +187,14 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
             case "mnuFiltratePosts":
                 switchPanel(new PickCategories(this));
                 break;
+                
+            case "mnuFeedResearch":
+                switchPanel(new CreateResearchGroup(this));
+                break;
+                
+            case "mnuEditMeetings":
+                switchPanel(new EditAndDeleteMeetings(this));
+                break;
         }
     }
 
@@ -211,12 +229,14 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
         mnuFormalFeed = new javax.swing.JMenuItem();
         mnuInformalFeed = new javax.swing.JMenuItem();
         mnuFiltratePosts = new javax.swing.JMenuItem();
+        mnuFeedResearch = new javax.swing.JMenuItem();
         mnuPost = new javax.swing.JMenu();
         mnuNewPost = new javax.swing.JMenuItem();
         mnuChangePost = new javax.swing.JMenuItem();
         mnuMeetings = new javax.swing.JMenu();
         mnuMeetingCreate = new javax.swing.JMenuItem();
         mnuMyMeetings = new javax.swing.JMenuItem();
+        mnuEditMeetings = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -275,6 +295,9 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
         mnuFiltratePosts.setText("Filtrera inlägg");
         mnuFeed.add(mnuFiltratePosts);
 
+        mnuFeedResearch.setText("Forskning");
+        mnuFeed.add(mnuFeedResearch);
+
         mnubMain.add(mnuFeed);
 
         mnuPost.setText("Inlägg");
@@ -299,6 +322,9 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 
         mnuMyMeetings.setText("Mina möten");
         mnuMeetings.add(mnuMyMeetings);
+
+        mnuEditMeetings.setText("Redigera möten");
+        mnuMeetings.add(mnuEditMeetings);
 
         mnubMain.add(mnuMeetings);
 
@@ -338,7 +364,9 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
     private javax.swing.JMenu mnuArchive;
     private javax.swing.JMenuItem mnuArchiveExit;
     private javax.swing.JMenuItem mnuChangePost;
+    private javax.swing.JMenuItem mnuEditMeetings;
     private javax.swing.JMenu mnuFeed;
+    private javax.swing.JMenuItem mnuFeedResearch;
     private javax.swing.JMenuItem mnuFiltratePosts;
     private javax.swing.JMenuItem mnuFormalFeed;
     private javax.swing.JMenuItem mnuInformalFeed;

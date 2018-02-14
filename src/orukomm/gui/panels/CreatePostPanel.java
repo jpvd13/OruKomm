@@ -13,9 +13,12 @@ import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import orukomm.data.FileStorage;
 import orukomm.data.entities.Category;
+import orukomm.data.entities.Post;
 import orukomm.data.entities.User;
 import orukomm.data.repositories.CategoryRepository;
+import orukomm.data.repositories.UserRepository;
 import orukomm.gui.MainWindow;
+import orukomm.logic.scheduler.jobs.Email;
 import orukomm.logic.security.Validation;
 
 public class CreatePostPanel extends javax.swing.JPanel {
@@ -440,13 +443,24 @@ public class CreatePostPanel extends javax.swing.JPanel {
 
             insertAttachedPicture();
             insertAttachedFiles();
-          if (lblURL1.getText().isEmpty() && lblURL2.getText().isEmpty() && lblURL3.getText().isEmpty() && lblImageURL.getText().isEmpty()) {
+          
               JOptionPane.showMessageDialog(null, "Inlägg skapat!");
+              
+              Email email = new Email();
+              UserRepository userRepo = new UserRepository();
+              ArrayList<User> recipients = new ArrayList<>();
+              recipients = userRepo.getUsersWithAggregatedNotifications(false);
+              
+              String heading = "Ny post i orukomm";
+              Post post = new Post();
+              String body = String.format("<p>%s %s har skrivit ett nytt inlägg i orukomm: <i>%s</i></p>",
+                      parentFrame.loggedInUser.getFirstName(), parentFrame.loggedInUser.getSurname(), textHeading);
+              email.send(heading, body, recipients);
               
             clearFields();
           }
                        
-        }
+        
         
 
     }//GEN-LAST:event_jButton1ActionPerformed

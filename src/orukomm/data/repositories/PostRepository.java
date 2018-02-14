@@ -1,5 +1,6 @@
 package orukomm.data.repositories;
 
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -11,8 +12,13 @@ import javax.swing.JOptionPane;
 import orukomm.data.DataInitializer;
 import orukomm.data.Database;
 import static orukomm.data.Database.close;
+
 import orukomm.data.entities.Attachments;
+
+import orukomm.data.entities.Category;
+
 import orukomm.data.entities.Post;
+import orukomm.data.entities.User;
 
 public class PostRepository {
 
@@ -335,11 +341,77 @@ public class PostRepository {
             Logger.getLogger(DataInitializer.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, "databasfel");
         }
-        //finally {
-        //    close(rs, ps, null);
-        // }
-        return postList;
 
+        return postList;
+    }
+
+    /*
+     * Returns all posts, including poster and category, since @param date.
+     */
+    public ArrayList<Post> getPostsSince(String date) {
+        ArrayList<Post> posts = new ArrayList<>();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        String query = String.format("SELECT * FROM posts WHERE date > '%s'", date.toString());
+
+        try {
+            ps = db.getConnection().prepareStatement(query);
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                Post post = new Post();
+                post.setId(rs.getInt("id"));
+                post.setPoster(rs.getInt("poster"));
+                post.setTitle(rs.getString("title"));
+                post.setDescription(rs.getString("description"));
+                post.setCategory(rs.getInt("category"));
+                post.setFlow(rs.getInt("flow"));
+                post.setDate(rs.getString("date"));
+
+                // Get poster object for post.
+                String posterQuery = String.format("SELECT * FROM user WHERE id = %d", post.getPoster());
+                PreparedStatement psPoster = null;
+                ResultSet rsPoster = null;
+                
+                psPoster = db.getConnection().prepareStatement(posterQuery);
+                rsPoster = psPoster.executeQuery();
+                
+                while (rsPoster.next()) {
+                    User poster = new User();
+                    // This method will only be called from a context (email cron job) where only the first name and
+                    // surname will be used.
+                    poster.setFirstName(rsPoster.getString("first_name"));
+                    poster.setSurname(rsPoster.getString("surname"));
+                    
+                    post.setPosterUser(poster);
+                }
+                
+                // Get category of post.
+                PreparedStatement psCategory = null;
+                ResultSet rsCategory = null;
+                String queryCat = String.format("SELECT * from category WHERE id = %d", post.getCategory());
+
+                psCategory = db.getConnection().prepareStatement(queryCat);
+                rsCategory = psCategory.executeQuery();
+                
+                while (rsCategory.next()) {
+                    Category category = new Category();
+                    category.setId(rsCategory.getInt("id"));
+                    category.setCategory(rsCategory.getString("category"));
+                    
+                    post.setCategoryCategory(category);
+                }
+                
+                posts.add(post);
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(PostRepository.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            close(rs, ps, null);
+        }
+
+        return posts;
     }
     
     public ArrayList<Attachments> fillAttachments(int post_id)
