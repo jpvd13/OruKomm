@@ -50,7 +50,6 @@ public class UpdateAccount extends javax.swing.JPanel {
             editUser.setEmail(txtfEmail.getText());
             editUser.setRole(parentFrame.loggedInUser.getRole());
             editUser.setAggregatedNotification(chcNotifications.isSelected());
-            System.out.println(chcNotifications.isSelected());
 
             // Check if password should be updated.
             if (!Validation.isEmptyOrNull(pswPassword.getText()) || !Validation.isEmptyOrNull(pswPasswordConfirmation.getText())) {
