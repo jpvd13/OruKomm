@@ -176,6 +176,7 @@ public class UserRepository implements Repository<User> {
                 user.setPassword(rs.getString("password_hash"));
                 user.setSalt(rs.getString("salt"));
                 user.setRole(rs.getInt("role"));
+                user.setAggregatedNotification(rs.getBoolean("aggregated_notification"));
             }
         } catch (SQLException ex) {
             Logger.getLogger(DataInitializer.class.getName()).log(Level.SEVERE, null, ex);
@@ -248,6 +249,7 @@ public class UserRepository implements Repository<User> {
                     user.setSalt(rs.getString("salt"));
                     user.setRole(rs.getInt("role"));
                     user.setEmail(rs.getString("email"));
+                    user.setAggregatedNotification(rs.getBoolean("aggregated_notification"));
                 }
             }
         } catch (SQLException ex) {
