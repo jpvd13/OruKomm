@@ -364,11 +364,11 @@ public class MeetingRepository implements Repository<Meeting> {
     public void deleteMeeting(int meetingId) {
         PreparedStatement ps = null;
 
-        String query1 = ("delete from meeting_time_suggestion_user where\n"
-                + "meeting_time_suggestion_id in(select meeting_time_suggestion.id from meeting_time_suggestion\n"
-                + "where meeting_time_suggestion.meeting_id = ?)");
+        String query1 = ("DELETE FROM meeting_time_suggestion_user WHERE\n"
+                + "meeting_time_suggestion_id IN(SELECT meeting_time_suggestion.id FROM meeting_time_suggestion\n"
+                + "WHERE meeting_time_suggestion.meeting_id = ?)");
 
-        String query2 = ("DELETE from meeting_time_suggestion where meeting_id = ?");
+        String query2 = ("DELETE FROM meeting_time_suggestion WHERE meeting_id = ?");
 
         String query3 = ("DELETE FROM user_meeting WHERE meeting_id = ?");
 
@@ -399,71 +399,246 @@ public class MeetingRepository implements Repository<Meeting> {
 
     }
 
-    public void deleteMeetingTimeSuggestionUser(int meetingId) {
+    public ArrayList<User> getInvitedUsers(Meeting met) {
         PreparedStatement ps = null;
+        ResultSet rs = null;
+        ArrayList<User> users = new ArrayList<>();
 
-        String query1 = ("delete from meeting_time_suggestion_user where \n"
-                + "meeting_time_suggestion_id in(select meeting_time_suggestion.id from meeting_time_suggestion \n"
-                + "where meeting_time_suggestion.meeting_id = ?)");
+        String query = ("SELECT * FROM `user`\n"
+                + "JOIN user_meeting ON user_meeting.user_id = `user`.id\n"
+                + "WHERE meeting_id = ?");
 
         try {
-            ps = db.getConnection().prepareStatement(query1);
-            ps.setInt(1, meetingId);
-            ps.executeUpdate();
+            ps = db.getConnection().prepareStatement(query);
+            ps.setInt(1, met.getId());
+            rs = ps.executeQuery();
+
+            // Create meetings array.
+            while (rs.next()) {
+                User user = new User();
+
+                user.setId(rs.getInt("id"));
+                user.setFirstName(rs.getString("first_name"));
+                user.setSurname(rs.getString("surname"));
+                user.setUsername(rs.getString("username"));
+                user.setEmail(rs.getString("email"));
+                user.setPassword(rs.getString("password_hash"));
+                user.setSalt(rs.getString("salt"));
+                user.setRole(rs.getInt("role"));
+
+                users.add(user);
+            }
+            return users;
 
         } catch (SQLException ex) {
             Logger.getLogger(MeetingRepository.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            close(null, ps, null);
+        }
+        return users;
+
+    }
+
+    public ArrayList<User> getNotInvitedUsers(Meeting met) {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        ArrayList<User> users = new ArrayList<>();
+
+        String query = ("SELECT * FROM `user`\n"
+                + "WHERE `user`.id NOT IN(SELECT user_id FROM user_meeting\n"
+                + "WHERE meeting_id = ?)");
+
+        try {
+            ps = db.getConnection().prepareStatement(query);
+            ps.setInt(1, met.getId());
+            rs = ps.executeQuery();
+
+            // Create meetings array.
+            while (rs.next()) {
+                User user = new User();
+
+                user.setId(rs.getInt("id"));
+                user.setFirstName(rs.getString("first_name"));
+                user.setSurname(rs.getString("surname"));
+                user.setUsername(rs.getString("username"));
+                user.setEmail(rs.getString("email"));
+                user.setPassword(rs.getString("password_hash"));
+                user.setSalt(rs.getString("salt"));
+                user.setRole(rs.getInt("role"));
+
+                users.add(user);
+            }
+            return users;
+
+        } catch (SQLException ex) {
+            Logger.getLogger(MeetingRepository.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return users;
+
+    }
+
+    public ArrayList<TimeSuggestion> getTimeSuggestions(Meeting met) {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        ArrayList<TimeSuggestion> suggestions = new ArrayList<>();
+
+        String query = ("SELECT * FROM meeting_time_suggestion WHERE meeting_id = ?");
+
+        try {
+            ps = db.getConnection().prepareStatement(query);
+            ps.setInt(1, met.getId());
+            rs = ps.executeQuery();
+
+            // Create meetings array.
+            while (rs.next()) {
+                TimeSuggestion timeSuggestion = new TimeSuggestion();
+                timeSuggestion.setId(rs.getInt("id"));
+                timeSuggestion.setMeetingid(rs.getInt("meeting_id"));
+                timeSuggestion.setTime(rs.getTime("time"));
+
+                suggestions.add(timeSuggestion);
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MeetingRepository.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return suggestions;
+    }
+
+    public void editMeetingTimeSuggestions(Meeting meeting) {
+        PreparedStatement ps = null;
+
+        if (meeting.getTimeSuggestions().size() > 0) {
+            // Insert time sugesstions into `meeting_time_suggestion`.
+            try {
+                for (int i = 0; i < meeting.getTimeSuggestions().size(); i++) {
+                    String query = ("UPDATE meeting_time_suggestion SET time = ?\n"
+                            + "WHERE meeting_id = ? AND id = ?");
+                    System.out.println(meeting.getTimeSuggestions().size());
+
+                    ps = db.getConnection().prepareStatement(query);
+                    ps.setTime(1, meeting.getTimeSuggestions().get(i).getTime());
+                    ps.setInt(2, meeting.getId());
+                    ps.setInt(3, meeting.getTimeSuggestions().get(i).getId());
+                    ps.executeUpdate();
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(MeetingRepository.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
 
     }
 
-    public void deleteMeetingTimeSuggestion(int meetingId) {
+    public void insertMeetingTimeSuggestion(Meeting meeting) {
         PreparedStatement ps = null;
+        String query = null;
 
-        String query2 = ("DELETE from meeting_time_suggestion where meeting_id = ?");
-
+        // Insert time sugesstions into `meeting_time_suggestion`.
         try {
-            ps = db.getConnection().prepareStatement(query2);
-            ps.setInt(1, meetingId);
-            ps.executeUpdate();
+
+            if (meeting.getTimeSuggestions().size() > 0) {
+                for (int i = 0; i < meeting.getTimeSuggestions().size(); i++) {
+                    query = ("INSERT INTO meeting_time_suggestion VALUES (null, ?, ?)");
+
+                    ps = db.getConnection().prepareStatement(query);
+                    ps.setInt(1, meeting.getId());
+                    ps.setTime(2, meeting.getTimeSuggestions().get(i).getTime());
+                    ps.executeUpdate();
+                }
+            }
         } catch (SQLException ex) {
             Logger.getLogger(MeetingRepository.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            close(null, ps, null);
         }
     }
 
-    public void deleteUserMeeting(int meetingId) {
+    public void updateMeetingTimeSuggestion(Meeting meeting) {
         PreparedStatement ps = null;
-
-        String query3 = ("DELETE FROM user_meeting WHERE meeting_id = ?");
+        String query = null;
 
         try {
-            ps = db.getConnection().prepareStatement(query3);
-            ps.setInt(1, meetingId);
-            ps.executeUpdate();
+
+            if (meeting.getTimeSuggestions().size() > 0) {
+                for (int i = 0; i < meeting.getTimeSuggestions().size(); i++) {
+                    query = ("UPDATE meeting_time_suggestion SET time = ?"
+                            + "WHERE id = ? AND meeting_id = ?");
+
+                    ps = db.getConnection().prepareStatement(query);
+                    ps.setTime(1, meeting.getTimeSuggestions().get(i).getTime());
+                    ps.setInt(2, meeting.getTimeSuggestions().get(i).getId());
+                    ps.setInt(3, meeting.getId());
+                    ps.executeUpdate();
+                }
+            }
         } catch (SQLException ex) {
             Logger.getLogger(MeetingRepository.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            close(null, ps, null);
         }
     }
 
-    public void deleteMeeting1(int meetingId) {
+    public void deleteMeetingSuggestions(Meeting meeting) {
         PreparedStatement ps = null;
-
-        String query4 = ("DELETE FROM meeting WHERE id = ?");
+        String query = null;
 
         try {
-            ps = db.getConnection().prepareStatement(query4);
-            ps.setInt(1, meetingId);
+            /*for (int i = 0; i < meeting.getTimeSuggestions().size(); i++) {
+             query = ("DELETE FROM meeting_time_suggestion_user WHERE \n"
+                    + "meeting_time_suggestion_id = ?");
+             */
+            query = ("delete from meeting_time_suggestion_user where\n"
+                    + "meeting_time_suggestion_id  in(select meeting_time_suggestion.id\n"
+                    + "from meeting_time_suggestion where meeting_id = ?)");
+            ps = db.getConnection().prepareStatement(query);
+            ps.setInt(1, meeting.getId());
             ps.executeUpdate();
+
+            query = ("DELETE FROM meeting_time_suggestion WHERE meeting_id = ?");
+            ps = db.getConnection().prepareStatement(query);
+            ps.setInt(1, meeting.getId());
+            ps.executeUpdate();
+
         } catch (SQLException ex) {
             Logger.getLogger(MeetingRepository.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            close(null, ps, null);
+        }
+    }
+
+    public void editUserMeeting(Meeting meeting) {
+        PreparedStatement ps = null;
+
+        try {
+            String query = ("DELETE FROM user_meeting WHERE meeting_id = ?");
+            ps = db.getConnection().prepareStatement(query);
+            ps.setInt(1, meeting.getId());
+            ps.executeUpdate();
+
+            for (int i = 0; i < meeting.getInvitedUsers().size(); i++) {
+                query = ("INSERT INTO user_meeting VALUES (?, ?, 0)");
+
+                ps = db.getConnection().prepareStatement(query);
+                ps.setInt(1, meeting.getInvitedUsers().get(i).getId());
+                ps.setInt(2, meeting.getId());
+                ps.executeUpdate();
+
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MeetingRepository.class
+                    .getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public void editMeeting(Meeting meeting) {
+        PreparedStatement ps = null;
+
+        try {
+            String query = ("UPDATE meeting set title = ?, description = ?, `date` = ?\n"
+                    + "WHERE id = ?");
+
+            ps = db.getConnection().prepareStatement(query);
+            ps.setString(1, meeting.getTitle());
+            ps.setString(2, meeting.getDescription());
+            ps.setDate(3, meeting.getDate());
+            ps.setInt(4, meeting.getId());
+            ps.executeUpdate();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(MeetingRepository.class
+                    .getName()).log(Level.SEVERE, null, ex);
         }
     }
 }
