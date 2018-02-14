@@ -440,13 +440,13 @@ public class CreatePostPanel extends javax.swing.JPanel {
 
             insertAttachedPicture();
             insertAttachedFiles();
-          if (lblURL1.getText().isEmpty() && lblURL2.getText().isEmpty() && lblURL3.getText().isEmpty() && lblImageURL.getText().isEmpty()) {
+          
               JOptionPane.showMessageDialog(null, "Inlägg skapat!");
               
             clearFields();
           }
                        
-        }
+        
         
 
     }//GEN-LAST:event_jButton1ActionPerformed
