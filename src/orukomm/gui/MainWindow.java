@@ -12,6 +12,7 @@ import orukomm.gui.panels.AdminUpdateUsers;
 import orukomm.gui.panels.ChangePost;
 import orukomm.gui.panels.CreateMeeting;
 import orukomm.gui.panels.CreatePostPanel;
+import orukomm.gui.panels.CreateResearchGroup;
 import orukomm.gui.panels.EditAndDeleteMeetings;
 import orukomm.gui.panels.FormalFeed;
 import orukomm.gui.panels.Login;
@@ -117,6 +118,9 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
         mnuFiltratePosts.setActionCommand("mnuFiltratePosts");
         mnuFiltratePosts.addActionListener(this);
         
+        mnuFeedResearch.setActionCommand("mnuFeedResearch");
+        mnuFeedResearch.addActionListener(this);
+        
         mnuEditMeetings.setActionCommand("mnuEditMeetings");
         mnuEditMeetings.addActionListener(this);
     }
@@ -184,6 +188,10 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
                 switchPanel(new PickCategories(this));
                 break;
                 
+            case "mnuFeedResearch":
+                switchPanel(new CreateResearchGroup(this));
+                break;
+                
             case "mnuEditMeetings":
                 switchPanel(new EditAndDeleteMeetings(this));
                 break;
@@ -221,6 +229,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
         mnuFormalFeed = new javax.swing.JMenuItem();
         mnuInformalFeed = new javax.swing.JMenuItem();
         mnuFiltratePosts = new javax.swing.JMenuItem();
+        mnuFeedResearch = new javax.swing.JMenuItem();
         mnuPost = new javax.swing.JMenu();
         mnuNewPost = new javax.swing.JMenuItem();
         mnuChangePost = new javax.swing.JMenuItem();
@@ -285,6 +294,9 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
 
         mnuFiltratePosts.setText("Filtrera inlägg");
         mnuFeed.add(mnuFiltratePosts);
+
+        mnuFeedResearch.setText("Forskning");
+        mnuFeed.add(mnuFeedResearch);
 
         mnubMain.add(mnuFeed);
 
@@ -354,6 +366,7 @@ public class MainWindow extends javax.swing.JFrame implements ActionListener {
     private javax.swing.JMenuItem mnuChangePost;
     private javax.swing.JMenuItem mnuEditMeetings;
     private javax.swing.JMenu mnuFeed;
+    private javax.swing.JMenuItem mnuFeedResearch;
     private javax.swing.JMenuItem mnuFiltratePosts;
     private javax.swing.JMenuItem mnuFormalFeed;
     private javax.swing.JMenuItem mnuInformalFeed;
