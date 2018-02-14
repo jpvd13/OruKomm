@@ -142,9 +142,6 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Ta bort inl&#xe4;gg"/>
       </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnDeleteActionPerformed"/>
-      </Events>
     </Component>
   </SubComponents>
 </Form>

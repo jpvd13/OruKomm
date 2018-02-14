@@ -296,11 +296,6 @@ private void selectPost(){
         });
 
         btnDelete.setText("Ta bort inlägg");
-        btnDelete.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnDeleteActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -378,45 +373,6 @@ private void selectPost(){
           fillTable(posts);
           }
     }//GEN-LAST:event_rbtnInformalActionPerformed
-
-    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        PostRepository pr = new PostRepository();
-        pr.DeleteAllFiles(post_id);
-        pr.DeletePost(post_id);
-        clearTable();
-        pnlPost.setVisible(false);
-        
-        if (rbtnFormal.isSelected()){
-            
-            if(role == 2)
-        {
-            this.posts = pr.fillListFormal();
-            userPosts = userPosts();
-            fillTable(userPosts);
-        }
-        else
-        {
-            this.posts = pr.fillListFormal();
-        fillTable(posts);
-        }
-        }
-        else {
-            
-                    if (role == 2)
-          {
-          this.posts = pr.fillListInformal();
-          userPosts = userPosts();
-          fillTable(userPosts);
-          }
-          
-          else {
-          this.posts = pr.fillListInformal();
-          fillTable(posts);
-          }
-                    
-                    }
-            
-    }//GEN-LAST:event_btnDeleteActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
