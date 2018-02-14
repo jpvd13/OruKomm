@@ -123,6 +123,65 @@ public class FileStorage {
             System.out.println(e.getMessage());
         }
     }
+    
+    public void changeFile(String file, int post_id) {
+        // update sql
+        String fileName = file.substring(file.lastIndexOf("\\") + 1);
+        selectMax();
+        String updateSQL = "INSERT INTO attachments values(null, ?, ?, ?, ?)";
+
+        try (Connection conn = connect();
+                PreparedStatement pstmt = conn.prepareStatement(updateSQL)) {
+
+            pstmt.setInt(1, post_id);
+            pstmt.setBytes(2, FileStorage.this.readFile(file));
+            pstmt.setInt(3, 0);
+            pstmt.setString(4, fileName);
+           
+
+            fileSize = readFile(file).length;
+            System.out.println(fileSize);
+            if (fileSize <= 26144400) {
+                pstmt.executeUpdate();
+                System.out.println("Stored file as " + fileName + " in attachments column.");
+               
+            } else {
+                JOptionPane.showMessageDialog(null, fileName + " är för stor (" + fileSize / 1024 / 1024 + "MB). Får max vara 25MB");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+    
+    public void insertPictureFile(String file, int post_id) {
+        // update sql
+        String fileName = file.substring(file.lastIndexOf("\\") + 1);
+        selectMax();
+        String updateSQL = "INSERT INTO attachments values(null, ?, ?, ?, ?)";
+
+        try (Connection conn = connect();
+                PreparedStatement pstmt = conn.prepareStatement(updateSQL)) {
+            
+            
+            pstmt.setInt(1, post_id);
+            pstmt.setBytes(2, FileStorage.this.readFile(file));
+            pstmt.setInt(3, 1);
+            pstmt.setString(4, fileName);
+           
+
+            fileSize = readFile(file).length;
+            System.out.println(fileSize);
+            if (fileSize <= 26144400) {
+                pstmt.executeUpdate();
+                System.out.println("Stored file as " + fileName + " in attachments column.");
+               
+            } else {
+                JOptionPane.showMessageDialog(null, fileName + " är för stor (" + fileSize / 1024 / 1024 + "MB). Får max vara 25MB");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 
     public boolean fileSize() {
         boolean ok = true;
