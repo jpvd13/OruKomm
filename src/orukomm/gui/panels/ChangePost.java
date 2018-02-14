@@ -46,6 +46,7 @@ public class ChangePost extends javax.swing.JPanel {
     private ImageIcon imageIcon;
     private ImageIcon resizedImage;
     private int pictureID;
+    
            
     private int post_id;
     DisplayPostV2 dsv;
@@ -56,7 +57,7 @@ public class ChangePost extends javax.swing.JPanel {
     public ChangePost(MainWindow parentFrame) {
         try {
             //this.dsv = new DisplayPostV2(pnlPost, description, title, post_id);
-            this.formal = new ChangePostFormal1((this), description, title);
+            this.formal = new ChangePostFormal1((this), description, title, post_id);
             this.informal = new DisplayPostInformal((this), description, title);
             this.username = parentFrame.loggedInUser.getUsername();
             this.role = parentFrame.loggedInUser.getRole();
@@ -108,13 +109,14 @@ public class ChangePost extends javax.swing.JPanel {
     }
     
     public int getPostId(){
+        
         return post_id;
     }
     
 private void selectPost(){
         int columnTitle = 0;
         int columnPoster = 1;
-        
+        pnlPost.setVisible(true);
       
         
         int row = tblFormalFeed.getSelectedRow();
@@ -132,7 +134,7 @@ private void selectPost(){
             }
         }
         try {
-            switchPanel(new ChangePostFormal1((this), description, title));
+            switchPanel(new ChangePostFormal1((this), description, title, post_id));
         } catch (IOException ex) {
             Logger.getLogger(FormalFeed.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -173,7 +175,7 @@ private void selectPost(){
 
         ArrayList<String> fileNames = new ArrayList<String>();
 
-        String selectSQL = ("SELECT name FROM attachments WHERE post_id = ?");
+        String selectSQL = ("SELECT name FROM attachments WHERE post_id = ? AND type = 0");
         try (Connection conn = fs.connect();
                 PreparedStatement pstmt = conn.prepareStatement(selectSQL)) {
 
@@ -209,41 +211,19 @@ private void selectPost(){
                 Image img = imageIcon.getImage();
                 Image newImg = img.getScaledInstance(607, 388, Image.SCALE_SMOOTH);
                 resizedImage = new ImageIcon(newImg);
+                
             }
 
         } catch (SQLException ex) {
             Logger.getLogger(FormalFeed.class.getName()).log(Level.SEVERE, null, ex);
 
         }
-       
+        
         return resizedImage;
     } 
-      public int storKuk()
-      {
+     
+
         
-        String selectSQL = ("SELECT id FROM attachments WHERE post_id = ? AND type = 1");
-        try (Connection conn = fs.connect();
-                PreparedStatement pstmt = conn.prepareStatement(selectSQL)) {
-
-            pstmt.setInt(1, getPostId());
-            ResultSet rs = pstmt.executeQuery();
-
-            while (rs.next()) {
-                
-               
-                this.pictureID = rs.getInt("id");
-                
-               
-              
-            }
-
-        } catch (SQLException ex) {
-            Logger.getLogger(FormalFeed.class.getName()).log(Level.SEVERE, null, ex);
-
-        }
-       
-        return pictureID;
-    }  
        
 
     
@@ -266,6 +246,7 @@ private void selectPost(){
         pnlPost = new javax.swing.JPanel();
         rbtnFormal = new javax.swing.JRadioButton();
         rbtnInformal = new javax.swing.JRadioButton();
+        btnDelete = new javax.swing.JButton();
 
         tblFormalFeed.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -314,6 +295,13 @@ private void selectPost(){
             }
         });
 
+        btnDelete.setText("Ta bort inlägg");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -327,9 +315,12 @@ private void selectPost(){
                         .addComponent(rbtnInformal))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(13, 13, 13)
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(pnlPost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnDelete)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 305, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(pnlPost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap(445, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -342,7 +333,9 @@ private void selectPost(){
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(pnlPost, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(188, Short.MAX_VALUE))
+                .addGap(26, 26, 26)
+                .addComponent(btnDelete)
+                .addContainerGap(130, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -386,8 +379,48 @@ private void selectPost(){
           }
     }//GEN-LAST:event_rbtnInformalActionPerformed
 
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        PostRepository pr = new PostRepository();
+        pr.DeleteAllFiles(post_id);
+        pr.DeletePost(post_id);
+        clearTable();
+        pnlPost.setVisible(false);
+        
+        if (rbtnFormal.isSelected()){
+            
+            if(role == 2)
+        {
+            this.posts = pr.fillListFormal();
+            userPosts = userPosts();
+            fillTable(userPosts);
+        }
+        else
+        {
+            this.posts = pr.fillListFormal();
+        fillTable(posts);
+        }
+        }
+        else {
+            
+                    if (role == 2)
+          {
+          this.posts = pr.fillListInformal();
+          userPosts = userPosts();
+          fillTable(userPosts);
+          }
+          
+          else {
+          this.posts = pr.fillListInformal();
+          fillTable(posts);
+          }
+                    
+                    }
+            
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnDelete;
     private javax.swing.ButtonGroup btnGroupFeed;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JPanel pnlPost;

@@ -128,7 +128,7 @@ public class PostRepository {
 
     }
 
-    public void updatePost(int id, String title, String description) {
+    public void updatePost(int post_id, String title, String description) {
         PreparedStatement ps = null;
 
         String query = String.format("UPDATE posts SET title = ?, description = ? WHERE id = ?");
@@ -139,7 +139,7 @@ public class PostRepository {
 
             ps.setString(1, title);
             ps.setString(2, description);
-            ps.setInt(3, id);
+            ps.setInt(3, post_id);
 
             ps.executeUpdate();
         } catch (SQLException ex) {
@@ -194,7 +194,50 @@ public class PostRepository {
     public void deleteFile(int id) {
         PreparedStatement ps = null;
 
-        String query = String.format("DELETE from attachments WHERE id = ?");
+        String query = String.format("DELETE from attachments WHERE post_id = ?");
+
+        try {
+
+            ps = db.getConnection().prepareStatement(query);
+
+
+            ps.setInt(1, id);
+
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(UserRepository.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            close(null, ps, null);
+        }
+
+    }
+    
+    public void deleteSingleFile(int id, String name) {
+        PreparedStatement ps = null;
+
+        String query = String.format("DELETE from attachments WHERE post_id = ? AND name = ?");
+
+        try {
+
+            ps = db.getConnection().prepareStatement(query);
+
+
+            ps.setInt(1, id);
+            ps.setString(2, name);
+
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            Logger.getLogger(UserRepository.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            close(null, ps, null);
+        }
+
+    }
+    
+    public void deletePicture(int id) {
+        PreparedStatement ps = null;
+
+        String query = String.format("DELETE from attachments WHERE post_id = ? AND Type = 1");
 
         try {
 
@@ -297,5 +340,7 @@ public class PostRepository {
         return postList;
 
     }
+    
+   
 
 }
