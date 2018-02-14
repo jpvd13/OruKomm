@@ -265,11 +265,11 @@ public class UserRepository implements Repository<User> {
     /*
      * Returns list of all users that wants to have email notification news sent in batches.
      */
-    public ArrayList<User> getUsersWithAggregatedNotifications() {
+    public ArrayList<User> getUsersWithAggregatedNotifications(boolean aggregatedNotification) {
         ArrayList<User> users = new ArrayList<>();
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String query = "SELECT * FROM user WHERE aggregated_notification = 1";
+        String query = String.format("SELECT * FROM user WHERE aggregated_notification = %b", aggregatedNotification);
 
         try {
             ps = db.getConnection().prepareStatement(query);

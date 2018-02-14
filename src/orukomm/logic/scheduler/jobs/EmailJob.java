@@ -61,10 +61,7 @@ public class EmailJob implements Job {
         if (newPosts.size() > 0) {
             // New posts exists: send email to recipients.
             recipients = new ArrayList<>();
-            recipients = userRepo.getUsersWithAggregatedNotifications();
-            User u1 = new User();
-            u1.setEmail("ad.solecki@gmail.com");
-            recipients.add(u1);
+            recipients = userRepo.getUsersWithAggregatedNotifications(true);
 
             // Create email.
             String heading = "Daily notification summary";
