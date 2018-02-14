@@ -19,7 +19,7 @@ public class Cron {
                 .newTrigger()
                 .withIdentity("EmailTrigger")
                 .startAt(todayAt(9, 0, 0)) // Email job fires at 09:00:00 every day. 
-               .withSchedule(simpleSchedule()
+                .withSchedule(simpleSchedule()
                         .withIntervalInHours(24)
                         .repeatForever())
                 .build();
