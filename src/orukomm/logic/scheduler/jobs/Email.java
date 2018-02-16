@@ -13,32 +13,14 @@ import orukomm.data.entities.User;
 
 public class Email {
 
-    private String username = "orukomm@gmail.com";
-    private String password = "hejsan123";
+    private String username = "foo@bar.com";
+    private String password = "foobar";
     public String heading;
     public String message;
     public ArrayList<User> recipients;
 
     private Session session;
 
-    /*
-     * Test code for sending email:
- 
-        ArrayList<User> recipients = new ArrayList<>();
-        User user = new User();
-        User user2 = new User();
-        user.setEmail("orukomm2@gmail.com");
-        user2.setEmail("ad.solecki@gmail.com");
-        recipients.add(user);
-        recipients.add(user2);
-
-        String heading = "E-mail heading";
-        String body = String.format("<h1>I are email</h1>\n<p>Hello, %s!</p>", user.getFirstName());
-
-        Email email = new Email();
-        email.send(heading, body, recipients);
-     * 
-     */
     public Email() {
         Properties properties = new Properties();
 
