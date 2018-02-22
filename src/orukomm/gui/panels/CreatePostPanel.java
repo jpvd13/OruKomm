@@ -3,11 +3,10 @@ package orukomm.gui.panels;
 import java.io.File;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import javax.mail.MessagingException;
 import javax.swing.DefaultListModel;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.WindowConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
@@ -19,7 +18,6 @@ import orukomm.data.repositories.CategoryRepository;
 import orukomm.data.repositories.UserRepository;
 import orukomm.gui.MainWindow;
 import orukomm.logic.scheduler.jobs.Email;
-import orukomm.logic.security.Validation;
 
 public class CreatePostPanel extends javax.swing.JPanel {
 
@@ -455,7 +453,11 @@ public class CreatePostPanel extends javax.swing.JPanel {
               Post post = new Post();
               String body = String.format("<p>%s %s har skrivit ett nytt inlägg i orukomm: <i>%s</i></p>",
                       parentFrame.loggedInUser.getFirstName(), parentFrame.loggedInUser.getSurname(), textHeading);
-              email.send(heading, body, recipients);
+              try {
+                email.send(heading, body, recipients);
+              } catch (MessagingException me) {
+                  System.err.println(me.getMessage());
+              }
               
             clearFields();
           }

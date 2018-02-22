@@ -49,24 +49,20 @@ public class Email {
     /*
      * Sends an email to all recipients in @param recipients.
      */
-    public void send(String heading, String body, ArrayList<User> recipients) {
-        try {
-            Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress(username));
+    public void send(String heading, String body, ArrayList<User> recipients) throws MessagingException {
+        Message message = new MimeMessage(session);
+        message.setFrom(new InternetAddress(username));
 
-            String recipientsCsv = "";
-            for (User user : recipients) {
-                recipientsCsv += user.getEmail() + ",";
-            }
-
-            message.addRecipients(Message.RecipientType.TO, InternetAddress.parse(recipientsCsv));
-            message.setSubject(heading);
-            message.setContent(body, "text/html; charset=utf8");
-            
-            Transport.send(message);
-        } catch (MessagingException me) {
-            throw new RuntimeException(me);
+        String recipientsCsv = "";
+        for (User user : recipients) {
+            recipientsCsv += user.getEmail() + ",";
         }
+
+        message.addRecipients(Message.RecipientType.TO, InternetAddress.parse(recipientsCsv));
+        message.setSubject(heading);
+        message.setContent(body, "text/html; charset=utf8");
+
+        Transport.send(message);
     }
 
     public String getHeading() {
